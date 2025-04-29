@@ -40,6 +40,14 @@ class Phan_quyen(Base):
     Ten_quyen = Column(String, index=True)
     Mo_ta = Column(String, index=True)
 
+
+class Dang_nhap(Base):
+    __tablename__ = 'Dang_nhap'
+    id = Column(Integer, ForeignKey('Nhan_vien.id'))
+    Ten_dang_nhap = Column(String,index=True)
+    Mat_khau = Column(String)
+
+
 class Nhan_vien(Base):
     __tablename__ = 'Nhan_vien'
     id = Column(Integer, primary_key=True, index=True)
@@ -52,7 +60,6 @@ class Nhan_vien(Base):
     Mã_Chi_nhanh = Column(Integer, ForeignKey('Chi_nhanh.id'))
     Ma_chuc_vu = Column(Integer, ForeignKey('Phan_quyen.id'))
     
-
 
 class Chuyen_khoan(Base):
     __tablename__ = 'Chuyen_khoan'
