@@ -70,7 +70,7 @@ class Chuyen_khoan(Base):
     Số_tiền = Column(Float, index=True)
     Nội_dung = Column(String, index=True)
     
-class so_tich_kiem(Base):
+class So_tich_kiem(Base):
     __tablename__ = 'So_tich_kiem'
     id = Column(Integer, primary_key=True, index =True)
     Ma_nhan_vien = Column(Integer, ForeignKey = 'Nhan_vien.id')
