@@ -55,3 +55,19 @@ db_dependency = Annotated[Session, Depends(get_db)]
 @app.post("/thao-tac/", response_model=schemas.ThaoTac)
 def create_thao_tac(thao_tac: schemas.ThaoTacCreate, db: Session = Depends(get_db)):
     return crud.create_thao_tac(db=db, thao_tac=thao_tac)
+
+@app.post("/khach-hang/", response_model=schemas.KhachHang)
+def create_khach_hang(khach_hang: schemas.KhachHangCreate, db: Session = Depends(get_db)):
+    return crud.create_khach_hang(db=db, khach_hang=khach_hang)
+
+@app.get("/khach-hang/{khach_hang_id}", response_model=schemas.KhachHang)
+def get_khach_hang(khach_hang_id: int, db: Session = Depends(get_db)):
+    db_khach_hang = crud.get_khach_hang(db=db, khach_hang_id=khach_hang_id)
+    if db_khach_hang is None:
+        raise HTTPException(status_code=404, detail="Khách hàng không tồn tại")
+    return db_khach_hang
+
+
+@app.delete("/thao-tac/{thao_tac_id}", response_model=schemas.ThaoTac)
+def delete_thao_tac(thao_tac_id: int, db: Session = Depends(get_db)):
+    return crud.delete_thao_tac(db=db, thao_tac_id=thao_tac_id)

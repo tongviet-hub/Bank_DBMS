@@ -34,3 +34,24 @@ def create_thao_tac(db: Session, thao_tac: ThaoTacCreate):
     db.commit()
     db.refresh(db_thao_tac)
     return db_thao_tac
+
+def create_khach_hang(db: Session, khach_hang: KhachHangCreate):
+    db_khach_hang = Khach_hang(**khach_hang.dict())
+    db.add(db_khach_hang)
+    db.commit()
+    db.refresh(db_khach_hang)
+    return db_khach_hang
+
+def get_khach_hang(db: Session, khach_hang_id: int):
+    db_khach_hang = db.query(Khach_hang).filter(Khach_hang.id == khach_hang_id).first()
+    if db_khach_hang is None:
+        raise HTTPException(status_code=404, detail="Khách hàng không tồn tại")
+    return db_khach_hang
+
+def delete_thao_tac(db: Session, thao_tac_id: int):
+    db_thao_tac = db.query(Thao_tac).filter(Thao_tac.id == thao_tac_id).first()
+    if db_thao_tac is None:
+        raise HTTPException(status_code=404, detail="Thao tác không tồn tại")
+    db.delete(db_thao_tac)
+    db.commit()
+    return {"message": "Thao tác đã được xóa thành công"}
