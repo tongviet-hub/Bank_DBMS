@@ -8,7 +8,7 @@ class KhachHangBase(BaseModel):
     Ngay_sinh: date
     Phone: str
     Email: str
-    Dia_chỉ: str
+    Dia_chi: str
 
 class KhachHangCreate(KhachHangBase):
     pass
@@ -93,7 +93,7 @@ class NhanVienBase(BaseModel):
     CCCD: str
     Phone: str
     Email: str
-    Dia_chỉ: str
+    Dia_chi: str
     Luong: int
     Ma_chi_nhanh: int  # Sửa tên trường
     Ma_chuc_vu: int
