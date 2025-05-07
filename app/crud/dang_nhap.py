@@ -1,14 +1,19 @@
+from sqlalchemy.orm import Session
+from fastapi import HTTPException
+from models import Dang_nhap
+from schemas import DangNhapCreate
 
-
-
-def create_loai_tai_khoan(db: Session, loai_tai_khoan: LoaiTaiKhoanCreate):
-    db_loai_tai_khoan = Loai_tai_khoan(**loai_tai_khoan.dict())
-    db.add(db_loai_tai_khoan)
+def create_dang_nhap(db: Session, dang_nhap: DangNhapCreate):
+    # Mã hóa mật khẩu trước khi lưu
+    dang_nhap.password = hash_password(dang_nhap.password)
+    db_dang_nhap = Dang_nhap(**dang_nhap.dict())
+    db.add(db_dang_nhap)
     db.commit()
-    db.refresh(db_loai_tai_khoan)
-    return db_loai_tai_khoan
-def get_loai_tai_khoan(db: Session, loai_tai_khoan_id: int):
-    db_loai_tai_khoan = db.query(Loai_tai_khoan).filter(Loai_tai_khoan.id == loai_tai_khoan_id).first()
-    if db_loai_tai_khoan is None:
-        raise HTTPException(status_code=404, detail="Loại tài khoản không tồn tại")
-    return db_loai_tai_khoan
+    db.refresh(db_dang_nhap)
+    return db_dang_nhap
+
+def get_dang_nhap(db: Session, dang_nhap_id: int):
+    db_dang_nhap = db.query(Dang_nhap).filter(Dang_nhap.id == dang_nhap_id).first()
+    if db_dang_nhap is None:
+        raise HTTPException(status_code=404, detail="Đăng nhập không tồn tại")
+    return db_dang_nhap

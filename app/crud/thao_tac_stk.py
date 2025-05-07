@@ -1,3 +1,10 @@
+from sqlalchemy.orm import Session
+from fastapi import HTTPException
+from app.models import Thao_tac_so_tiet_kiem
+from app.schemas import ThaoTacSoTietKiemCreate
+
+
+
 def create_thao_tac_so_tiet_kiem(db: Session, thao_tac_so_tiet_kiem: ThaoTacSoTietKiemCreate):
     db_thao_tac_so_tiet_kiem = Thao_tac_so_tiet_kiem(**thao_tac_so_tiet_kiem.dict())
     db.add(db_thao_tac_so_tiet_kiem)
