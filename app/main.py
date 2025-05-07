@@ -2,13 +2,13 @@
 from fastapi import FastAPI, HTTPException, Depends
 from pydantic import BaseModel
 from typing import List, Annotated
-import app.models as models,schemas,crud
+import app.models as models,schemas
 from database import SessionLocal, engine
 from sqlalchemy.orm import Session
-from helper import verify_password 
+from helper import verify_password
+import app.crud as crud
 app = FastAPI()
 models.Base.metadata.create_all(bind=engine)
-
 
 def get_db():
     db = SessionLocal()

@@ -1,7 +1,9 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
-from models import Dang_nhap
-from schemas import DangNhapCreate
+from app.helper.security import hash_password
+from app.helper.security import verify_password
+from app.models import Dang_nhap
+from app.schemas import DangNhapCreate
 
 def create_dang_nhap(db: Session, dang_nhap: DangNhapCreate):
     # Mã hóa mật khẩu trước khi lưu
@@ -17,3 +19,10 @@ def get_dang_nhap(db: Session, dang_nhap_id: int):
     if db_dang_nhap is None:
         raise HTTPException(status_code=404, detail="Đăng nhập không tồn tại")
     return db_dang_nhap
+
+def get_all_dang_nhap(db: Session):
+    """
+    Lấy danh sách tất cả đăng nhập.
+    """
+    return db.query(Dang_nhap).all()
+
