@@ -2,10 +2,9 @@
 from fastapi import FastAPI, HTTPException, Depends
 from pydantic import BaseModel
 from typing import List, Annotated
-import models,schemas,crud
+import app.models as models,schemas,crud
 from database import SessionLocal, engine
 from sqlalchemy.orm import Session
-import crud
 from helper import verify_password 
 app = FastAPI()
 models.Base.metadata.create_all(bind=engine)
