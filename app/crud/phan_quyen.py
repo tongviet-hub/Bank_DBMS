@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
-from app.models import Phan_quyen
-from app.schemas import PhanQuyenCreate
+from models import Phan_quyen
+from schemas import PhanQuyenCreate
 
 
 
@@ -15,7 +15,7 @@ def get_phan_quyen(db: Session, phan_quyen_id: int = None, phan_quyen_name: str 
     if phan_quyen_id:
         db_phan_quyen = db.query(Phan_quyen).filter(Phan_quyen.id == phan_quyen_id).first()
     elif phan_quyen_name:
-        db_phan_quyen = db.query(Phan_quyen).filter(Phan_quyen.Name.ilike(f"%{phan_quyen_name}%")).all()
+        db_phan_quyen = db.query(Phan_quyen).filter(Phan_quyen.Ten_chuc_vu.ilike(f"%{phan_quyen_name}%")).all()
     else:
         raise HTTPException(status_code=400, detail="Cần cung cấp ID hoặc tên phân quyền")
     if db_phan_quyen is None:
@@ -28,16 +28,14 @@ def get_all_phan_quyen(db: Session):
     """
     return db.query(Phan_quyen).all()
 
-def delete_phan_quyen(db: Session, phan_quyen_id: int = None, phan_quyen_name: str = None):
+def delete_phan_quyen(db: Session, phan_quyen_id: int = None):
     """
-    Xóa phân quyền theo ID hoặc tên.
+    Xóa phân quyền theo ID.
     """
     if phan_quyen_id:
         db_phan_quyen = db.query(Phan_quyen).filter(Phan_quyen.id == phan_quyen_id).first()
-    elif phan_quyen_name:
-        db_phan_quyen = db.query(Phan_quyen).filter(Phan_quyen.Name.ilike(f"%{phan_quyen_name}%")).all()
     else:
-        raise HTTPException(status_code=400, detail="Cần cung cấp ID hoặc tên phân quyền")
+        raise HTTPException(status_code=400, detail="Cần cung cấp ID để xóa phân quyền")
     if db_phan_quyen is None:
         raise HTTPException(status_code=404, detail="Phân quyền không tồn tại")
     db.delete(db_phan_quyen)

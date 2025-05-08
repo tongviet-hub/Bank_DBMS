@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
-from app.models import Loai_tiet_kiem
-from app.schemas import LoaiTietKiemCreate
+from models import Loai_tiet_kiem
+from schemas import LoaiTietKiemCreate
 
 
 
@@ -15,7 +15,7 @@ def get_loai_tiet_kiem(db: Session, loai_tiet_kiem_id: int = None, loai_tiet_kie
     if loai_tiet_kiem_id:
         db_loai_tiet_kiem = db.query(Loai_tiet_kiem).filter(Loai_tiet_kiem.id == loai_tiet_kiem_id).first()
     elif loai_tiet_kiem_name:
-        db_loai_tiet_kiem = db.query(Loai_tiet_kiem).filter(Loai_tiet_kiem.Name == loai_tiet_kiem_name).first()
+        db_loai_tiet_kiem = db.query(Loai_tiet_kiem).filter(Loai_tiet_kiem.Ten_loai == loai_tiet_kiem_name).first()
     else:
         raise HTTPException(status_code=400, detail="Cần cung cấp ID hoặc tên loại tiết kiệm")
     if db_loai_tiet_kiem is None:

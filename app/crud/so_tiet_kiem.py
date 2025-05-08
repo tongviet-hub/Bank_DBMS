@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
-from app.models import So_tiet_kiem
-from app.schemas import SoTietKiemCreate
+from models import So_tiet_kiem
+from schemas import SoTietKiemCreate
 
 
 
@@ -31,14 +31,12 @@ def get_all_so_tiet_kiem(db: Session):
 
 def delete_so_tiet_kiem(db: Session, so_tiet_kiem_id: int = None, so_tiet_kiem_name: str = None):
     """
-    Xóa sổ tiết kiệm theo ID hoặc tên.
+    Xóa sổ tiết kiệm theo ID.
     """
     if so_tiet_kiem_id:
         db_so_tiet_kiem = db.query(So_tiet_kiem).filter(So_tiet_kiem.id == so_tiet_kiem_id).first()
-    elif so_tiet_kiem_name:
-        db_so_tiet_kiem = db.query(So_tiet_kiem).filter(So_tiet_kiem.Name.ilike(f"%{so_tiet_kiem_name}%")).all()
     else:
-        raise HTTPException(status_code=400, detail="Cần cung cấp ID hoặc tên sổ tiết kiệm")
+        raise HTTPException(status_code=400, detail="Cần cung cấp ID sổ tiết kiệm")
     if db_so_tiet_kiem is None:
         raise HTTPException(status_code=404, detail="Sổ tiết kiệm không tồn tại")
     db.delete(db_so_tiet_kiem)

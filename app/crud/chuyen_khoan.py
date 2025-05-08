@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
-from app.models import Chuyen_khoan
+from models import Chuyen_khoan
 from schemas import ChuyenKhoanCreate
 def create_chuyen_khoan(db: Session, chuyen_khoan: ChuyenKhoanCreate):
     db_chuyen_khoan = Chuyen_khoan(**chuyen_khoan.model_dump())
@@ -9,11 +9,9 @@ def create_chuyen_khoan(db: Session, chuyen_khoan: ChuyenKhoanCreate):
     db.refresh(db_chuyen_khoan)
     return db_chuyen_khoan
 
-def get_chuyen_khoan(db: Session, chuyen_khoan_id: int = None, chuyen_khoan_name: str = None):
+def get_chuyen_khoan(db: Session, chuyen_khoan_id: int = None):
     if chuyen_khoan_id:
         db_chuyen_khoan = db.query(Chuyen_khoan).filter(Chuyen_khoan.id == chuyen_khoan_id).first()
-    elif chuyen_khoan_name:
-        db_chuyen_khoan = db.query(Chuyen_khoan).filter(Chuyen_khoan.Name.ilike(f"%{chuyen_khoan_name}%")).all()
     else:
         raise HTTPException(status_code=400, detail="Cần cung cấp ID hoặc tên chuyển khoản")
     if db_chuyen_khoan is None:

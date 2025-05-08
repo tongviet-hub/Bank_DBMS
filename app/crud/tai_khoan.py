@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
-from app.models import Tai_khoan
-from app.schemas import TaiKhoanCreate
+from models import Tai_khoan
+from schemas import TaiKhoanCreate
 
 
 def create_tai_khoan(db: Session, tai_khoan: TaiKhoanCreate):

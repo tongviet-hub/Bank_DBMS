@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
-from app.models import Thao_tac_so_tiet_kiem
-from app.schemas import ThaoTacSoTietKiemCreate
+from models import Thao_tac_so_tiet_kiem
+from schemas import ThaoTacSoTietKiemCreate
 
 
 

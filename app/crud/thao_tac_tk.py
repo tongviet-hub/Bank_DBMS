@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
-from app.models import Thao_tac_tai_khoan
-from app.schemas import ThaoTacTaiKhoanCreate
+from models import Thao_tac_tai_khoan
+from schemas import ThaoTacTaiKhoanCreate
 
 
 
@@ -12,13 +12,11 @@ def create_thao_tac_tai_khoan(db: Session, thao_tac_tai_khoan: ThaoTacTaiKhoanCr
     db.commit()
     db.refresh(db_thao_tac_tai_khoan)
     return db_thao_tac_tai_khoan
-def get_thao_tac_tai_khoan(db: Session, thao_tac_tai_khoan_id: int = None, thao_tac_tai_khoan_name: str = None):
+def get_thao_tac_tai_khoan(db: Session, thao_tac_tai_khoan_id: int = None):
     if thao_tac_tai_khoan_id:
         db_thao_tac_tai_khoan = db.query(Thao_tac_tai_khoan).filter(Thao_tac_tai_khoan.id == thao_tac_tai_khoan_id).first()
-    elif thao_tac_tai_khoan_name:
-        db_thao_tac_tai_khoan = db.query(Thao_tac_tai_khoan).filter(Thao_tac_tai_khoan.Name.ilike(f"%{thao_tac_tai_khoan_name}%")).all()
     else:
-        raise HTTPException(status_code=400, detail="Cần cung cấp ID hoặc tên thao tác tài khoản")
+        raise HTTPException(status_code=400, detail="Cần cung cấp ID để tìm kiếm thao tác tài khoản")
     if db_thao_tac_tai_khoan is None:
         raise HTTPException(status_code=404, detail="Thao tác tài khoản không tồn tại")
     return db_thao_tac_tai_khoan

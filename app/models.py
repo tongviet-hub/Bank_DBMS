@@ -24,7 +24,9 @@ class Loai_tai_khoan(Base):
     __tablename__ = 'Loai_tai_khoan'
     id = Column(Integer, primary_key=True,autoincrement=True)
     Ten_loai = Column(String(50))  # Tên loại tài khoản, giới hạn 50 ký tự
-    Lai_suat = Column(Float)
+    Chuc_nang_chinh = Column(String(255))  # Chức năng chính, giới hạn 255 ký tự
+    Dieu_kien_mo_so = Column(String(255))  # Điều kiện mở sổ, giới hạn 255 ký tự
+    So_du_toi_thieu = Column(Float)  # Số dư tối thiểu, kiểu số thực
 
 class Chi_nhanh(Base):
     __tablename__ = 'Chi_nhanh'

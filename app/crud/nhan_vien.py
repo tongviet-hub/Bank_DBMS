@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
-from app.models import Nhan_vien
-from app.schemas import NhanVienCreate
+from models import Nhan_vien
+from schemas import NhanVienCreate
 
 
 

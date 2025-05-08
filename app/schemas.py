@@ -36,7 +36,9 @@ class TaiKhoan(TaiKhoanBase):
 # ========== LOẠI TÀI KHOẢN ==========
 class LoaiTaiKhoanBase(BaseModel):
     Ten_loai: str
-    Lai_suat: float
+    Chuc_nang_chinh: str
+    Dieu_kien_mo_so: str  
+    So_du_toi_thieu: float  
 
 class LoaiTaiKhoanCreate(LoaiTaiKhoanBase):
     pass
@@ -49,7 +51,7 @@ class LoaiTaiKhoan(LoaiTaiKhoanBase):
 # ========== CHI NHÁNH ==========
 class ChiNhanhBase(BaseModel):
     Name: str
-    Dia_Chi: str
+    Dia_chi: str
     Phone: str
 
 class ChiNhanhCreate(ChiNhanhBase):

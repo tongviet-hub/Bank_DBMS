@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
-from app.models import Loai_tai_khoan
-from app.schemas import LoaiTaiKhoanCreate
+from models import Loai_tai_khoan
+from schemas import LoaiTaiKhoanCreate
 
 def create_loai_tai_khoan(db: Session, loai_tai_khoan: LoaiTaiKhoanCreate):
     db_loai_tai_khoan = Loai_tai_khoan(**loai_tai_khoan.dict())
@@ -13,7 +13,7 @@ def get_loai_tai_khoan(db: Session, loai_tai_khoan_id: int= None, loai_tai_khoan
     if loai_tai_khoan_id:
         db_loai_tai_khoan = db.query(Loai_tai_khoan).filter(Loai_tai_khoan.id == loai_tai_khoan_id).first()
     elif loai_tai_khoan_name:
-        db_loai_tai_khoan = db.query(Loai_tai_khoan).filter(Loai_tai_khoan.Name.ilike(f"%{loai_tai_khoan_name}%")).all()
+        db_loai_tai_khoan = db.query(Loai_tai_khoan).filter(Loai_tai_khoan.Ten_loai.ilike(f"%{loai_tai_khoan_name}%")).all()
     else:
         raise HTTPException(status_code=400, detail="Cần cung cấp ID hoặc tên loại tài khoản")
     if db_loai_tai_khoan is None:
