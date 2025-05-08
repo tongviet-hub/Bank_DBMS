@@ -13,7 +13,9 @@ def get_loai_tai_khoan(db: Session, loai_tai_khoan_id: int= None, loai_tai_khoan
     if loai_tai_khoan_id:
         db_loai_tai_khoan = db.query(Loai_tai_khoan).filter(Loai_tai_khoan.id == loai_tai_khoan_id).first()
     elif loai_tai_khoan_name:
-        db_loai_tai_khoan = db.query(Loai_tai_khoan).filter(Loai_tai_khoan.Name == loai_tai_khoan_name).first()
+        db_loai_tai_khoan = db.query(Loai_tai_khoan).filter(Loai_tai_khoan.Name.ilike(f"%{loai_tai_khoan_name}%")).all()
+    else:
+        raise HTTPException(status_code=400, detail="Cần cung cấp ID hoặc tên loại tài khoản")
     if db_loai_tai_khoan is None:
         raise HTTPException(status_code=404, detail="Loại tài khoản không tồn tại")
     return db_loai_tai_khoan
@@ -31,9 +33,11 @@ def delete_loai_tai_khoan(db: Session, loai_tai_khoan_id: int = None, loai_tai_k
     if loai_tai_khoan_id:
         db_loai_tai_khoan = db.query(Loai_tai_khoan).filter(Loai_tai_khoan.id == loai_tai_khoan_id).first()
     elif loai_tai_khoan_name:
-        db_loai_tai_khoan = db.query(Loai_tai_khoan).filter(Loai_tai_khoan.Name == loai_tai_khoan_name).first()
-    else:
+        db_loai_tai_khoan = db.query(Loai_tai_khoan).filter(Loai_tai_khoan.ilike(f"%{loai_tai_khoan_name}%")).all()
+    else:   
         raise HTTPException(status_code=400, detail="Cần cung cấp ID hoặc tên loại tài khoản")
+    if db_loai_tai_khoan is None:
+        raise HTTPException(status_code=404, detail="Loại tài khoản không tồn tại")
     db.delete(db_loai_tai_khoan)
     db.commit()
     return {"message": "Loại tài khoản đã được xóa thành công"}

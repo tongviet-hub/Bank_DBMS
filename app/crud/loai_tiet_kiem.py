@@ -35,7 +35,7 @@ def delete_loai_tiet_kiem(db: Session, loai_tiet_kiem_id: int = None, loai_tiet_
     if loai_tiet_kiem_id:
         db_loai_tiet_kiem = db.query(Loai_tiet_kiem).filter(Loai_tiet_kiem.id == loai_tiet_kiem_id).first()
     elif loai_tiet_kiem_name:
-        db_loai_tiet_kiem = db.query(Loai_tiet_kiem).filter(Loai_tiet_kiem.Name == loai_tiet_kiem_name).first()
+        db_loai_tiet_kiem = db.query(Loai_tiet_kiem).filter(Loai_tiet_kiem.Name.ilike).all()
     else:
         raise HTTPException(status_code=400, detail="Cần cung cấp ID hoặc tên loại tiết kiệm")
     if db_loai_tiet_kiem is None:

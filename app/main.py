@@ -7,6 +7,7 @@ from database import SessionLocal, engine
 from sqlalchemy.orm import Session
 from helper import verify_password
 import app.crud as crud
+from app.helper.security import hash_password, verify_password
 app = FastAPI()
 models.Base.metadata.create_all(bind=engine)
 
@@ -150,7 +151,7 @@ def get_dang_nhap(dang_nhap_id: int, db: Session = Depends(get_db)):
 
 @app.post("/dang-nhap/verify/")
 def verify_dang_nhap(username: str, password: str, db: Session = Depends(get_db)):
-    db_dang_nhap = db.query(models.Dang_nhap).filter(models.Dang_nhap.username == username).first()
+    db_dang_nhap = db.query(models.Dang_nhap).filter(models.Dang_nhap.Ten_dang_nhap == username).first()
     if not db_dang_nhap or not verify_password(password, db_dang_nhap.password):
         raise HTTPException(status_code=401, detail="Tên đăng nhập hoặc mật khẩu không đúng")
     return {"message": "Đăng nhập thành công"}

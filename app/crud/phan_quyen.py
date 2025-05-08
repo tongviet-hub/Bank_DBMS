@@ -15,7 +15,7 @@ def get_phan_quyen(db: Session, phan_quyen_id: int = None, phan_quyen_name: str 
     if phan_quyen_id:
         db_phan_quyen = db.query(Phan_quyen).filter(Phan_quyen.id == phan_quyen_id).first()
     elif phan_quyen_name:
-        db_phan_quyen = db.query(Phan_quyen).filter(Phan_quyen.Name == phan_quyen_name).first()
+        db_phan_quyen = db.query(Phan_quyen).filter(Phan_quyen.Name.ilike(f"%{phan_quyen_name}%")).all()
     else:
         raise HTTPException(status_code=400, detail="Cần cung cấp ID hoặc tên phân quyền")
     if db_phan_quyen is None:
@@ -35,7 +35,7 @@ def delete_phan_quyen(db: Session, phan_quyen_id: int = None, phan_quyen_name: s
     if phan_quyen_id:
         db_phan_quyen = db.query(Phan_quyen).filter(Phan_quyen.id == phan_quyen_id).first()
     elif phan_quyen_name:
-        db_phan_quyen = db.query(Phan_quyen).filter(Phan_quyen.Name == phan_quyen_name).first()
+        db_phan_quyen = db.query(Phan_quyen).filter(Phan_quyen.Name.ilike(f"%{phan_quyen_name}%")).all()
     else:
         raise HTTPException(status_code=400, detail="Cần cung cấp ID hoặc tên phân quyền")
     if db_phan_quyen is None:

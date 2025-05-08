@@ -1,53 +1,53 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
-from app.models import Chi_nhanh
-from schemas import ChiNhanhCreate
-
-def create_chi_nhanh(db: Session, chi_nhanh: ChiNhanhCreate):
-    """
-    Tạo mới một chi nhánh trong cơ sở dữ liệu.
-    """
-    db_chi_nhanh = Chi_nhanh(**chi_nhanh.dict())
-    db.add(db_chi_nhanh)
+from app.models import Chuyen_khoan
+from schemas import ChuyenKhoanCreate
+def create_chuyen_khoan(db: Session, chuyen_khoan: ChuyenKhoanCreate):
+    db_chuyen_khoan = Chuyen_khoan(**chuyen_khoan.model_dump())
+    db.add(db_chuyen_khoan)
     db.commit()
-    db.refresh(db_chi_nhanh)
-    return db_chi_nhanh
+    db.refresh(db_chuyen_khoan)
+    return db_chuyen_khoan
 
-def get_chi_nhanh(db: Session, chi_nhanh_id: int):
-    """
-    Lấy thông tin chi nhánh theo ID.
-    """
-    db_chi_nhanh = db.query(Chi_nhanh).filter(Chi_nhanh.id == chi_nhanh_id).first()
-    if not db_chi_nhanh:
-        raise HTTPException(status_code=404, detail="Chi nhánh không tồn tại")
-    return db_chi_nhanh
+def get_chuyen_khoan(db: Session, chuyen_khoan_id: int = None, chuyen_khoan_name: str = None):
+    if chuyen_khoan_id:
+        db_chuyen_khoan = db.query(Chuyen_khoan).filter(Chuyen_khoan.id == chuyen_khoan_id).first()
+    elif chuyen_khoan_name:
+        db_chuyen_khoan = db.query(Chuyen_khoan).filter(Chuyen_khoan.Name.ilike(f"%{chuyen_khoan_name}%")).all()
+    else:
+        raise HTTPException(status_code=400, detail="Cần cung cấp ID hoặc tên chuyển khoản")
+    if db_chuyen_khoan is None:
+        raise HTTPException(status_code=404, detail="Chuyển khoản không tồn tại")
+    return db_chuyen_khoan
 
-def get_all_chi_nhanh(db: Session):
+def get_all_chuyen_khoan(db: Session):
     """
-    Lấy danh sách tất cả các chi nhánh.
+    Lấy danh sách tất cả chuyển khoản.
     """
-    return db.query(Chi_nhanh).all()
+    return db.query(Chuyen_khoan).all()
 
-def delete_chi_nhanh(db: Session, chi_nhanh_id: int):
+def delete_chuyen_khoan(db: Session, chuyen_khoan_id: int = None, chuyen_khoan_name: str = None):
     """
-    Xóa một chi nhánh theo ID.
+    Xóa chuyển khoản theo ID hoặc tên.
     """
-    db_chi_nhanh = db.query(Chi_nhanh).filter(Chi_nhanh.id == chi_nhanh_id).first()
-    if not db_chi_nhanh:
-        raise HTTPException(status_code=404, detail="Chi nhánh không tồn tại")
-    db.delete(db_chi_nhanh)
+    if chuyen_khoan_id:
+        db_chuyen_khoan = db.query(Chuyen_khoan).filter(Chuyen_khoan.id == chuyen_khoan_id).first()
+    elif chuyen_khoan_name:
+        db_chuyen_khoan = db.query(Chuyen_khoan).filter(Chuyen_khoan.Name.ilike(f"%{chuyen_khoan_name}%")).all()
+    else:
+        raise HTTPException(status_code=400, detail="Cần cung cấp ID hoặc tên chuyển khoản")
+    if db_chuyen_khoan is None:
+        raise HTTPException(status_code=404, detail="Chuyển khoản không tồn tại")
+    db.delete(db_chuyen_khoan)
     db.commit()
-    return {"message": "Chi nhánh đã được xóa thành công"}
+    return {"message": "Chuyển khoản đã được xóa thành công"}
 
-def update_chi_nhanh(db: Session, chi_nhanh_id: int, chi_nhanh: ChiNhanhCreate):
-    """
-    Cập nhật thông tin chi nhánh theo ID.
-    """
-    db_chi_nhanh = db.query(Chi_nhanh).filter(Chi_nhanh.id == chi_nhanh_id).first()
-    if not db_chi_nhanh:
-        raise HTTPException(status_code=404, detail="Chi nhánh không tồn tại")
-    for key, value in chi_nhanh.dict().items():
-        setattr(db_chi_nhanh, key, value)
+def update_chuyen_khoan(db: Session, chuyen_khoan_id: int, chuyen_khoan: ChuyenKhoanCreate):
+    db_chuyen_khoan = db.query(Chuyen_khoan).filter(Chuyen_khoan.id == chuyen_khoan_id).first()
+    if db_chuyen_khoan is None:
+        raise HTTPException(status_code=404, detail="Chuyển khoản không tồn tại")
+    for key, value in chuyen_khoan.model_dump().items():
+        setattr(db_chuyen_khoan, key, value)
     db.commit()
-    db.refresh(db_chi_nhanh)
-    return db_chi_nhanh
+    db.refresh(db_chuyen_khoan)
+    return db_chuyen_khoan

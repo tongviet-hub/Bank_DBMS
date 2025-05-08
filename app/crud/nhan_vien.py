@@ -36,7 +36,7 @@ def delete_nhan_vien(db: Session, nhan_vien_id: int = None, nhan_vien_name: str 
     if nhan_vien_id:
         db_nhan_vien = db.query(Nhan_vien).filter(Nhan_vien.id == nhan_vien_id).first()
     elif nhan_vien_name:
-        db_nhan_vien = db.query(Nhan_vien).filter(Nhan_vien.Name == nhan_vien_name).first()
+        db_nhan_vien = db.query(Nhan_vien).filter(Nhan_vien.Name.ilike(f"%{nhan_vien_name}%")).all()
     else:
         raise HTTPException(status_code=400, detail="Cần cung cấp ID hoặc tên nhân viên")
     if db_nhan_vien is None:
