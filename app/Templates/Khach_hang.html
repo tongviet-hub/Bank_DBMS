@@ -105,14 +105,15 @@
 
                 customers.forEach(customer => {
                     const row = document.createElement("tr");
+                    console.log(customer);
                     row.innerHTML = `
                         <td>${customer.id}</td>
-                        <td>${customer.cccd}</td>
-                        <td>${customer.name}</td>
-                        <td>${customer.ngay_sinh}</td>
-                        <td>${customer.phone}</td>
-                        <td>${customer.email}</td>
-                        <td>${customer.dia_chi}</td>
+                        <td>${customer.CCCD}</td>
+                        <td>${customer.Name}</td>
+                        <td>${customer.Ngay_sinh}</td>
+                        <td>${customer.Phone}</td>
+                        <td>${customer.Email}</td>
+                        <td>${customer.Dia_chi}</td>
                         <td>
                             <button class="btn btn-delete" onclick="deleteCustomer(${customer.id})">Xóa</button>
                         </td>

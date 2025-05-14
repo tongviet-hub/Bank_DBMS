@@ -1,5 +1,4 @@
-
-INSERT INTO Khach_hang (CCCD, Name, Ngay_sinh, Phone, Email, Dia_chi) VALUES
+INSERT INTO "Khach_hang" ("CCCD", "Name", "Ngay_sinh", "Phone", "Email", "Dia_chi") VALUES
 ('079203012345', 'Nguyễn Thành An', '1990-01-01', '0123456789', 'nguyenan@example.com', '123 Đường ABC, TP.HCM'),
 ('079195023456', 'Trần Thị Bích Ngọc', '1995-05-05', '0987654321', 'bichngoc@example.com', '456 Đường XYZ, Hà Nội'),
 ('079188034567', 'Lê Minh Cường', '1988-03-15', '0912345678', 'minhcuong@example.com', '789 Đường DEF, Đà Nẵng'),
