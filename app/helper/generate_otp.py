@@ -7,3 +7,4 @@ def generate_otp(length: int = 6) -> str:
     if length <= 0:
         raise ValueError("Độ dài OTP phải lớn hơn 0")
     return ''.join(random.choices("0123456789", k=length))
+print(generate_otp(10))

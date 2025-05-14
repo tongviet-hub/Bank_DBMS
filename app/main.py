@@ -40,3 +40,12 @@ app.include_router(so_tiet_kiem_router, prefix="/so-tiet-kiem", tags=["Sổ ti�
 app.include_router(tai_khoan_router, prefix="/tai-khoan", tags=["Tài khoản"])
 app.include_router(nhan_vien_router, prefix="/nhan-vien", tags=["Nhân viên"])
 
+from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Cho phép tất cả các nguồn (hoặc chỉ định nguồn cụ thể)
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)

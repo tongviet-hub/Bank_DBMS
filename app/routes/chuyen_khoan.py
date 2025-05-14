@@ -27,12 +27,12 @@ def search_chuyen_khoan(
     db: Session = Depends(get_db)
 ):
     """
-    Tìm kiếm giao dịch chuyển khoản theo ID, tài khoản gửi hoặc tài khoản nhận.
+    Tìm kiếm giao dịch chuyển khoản theo ID.
     """
     if chuyen_khoan_id:
         db_chuyen_khoan = crud.get_chuyen_khoan(db=db, chuyen_khoan_id=chuyen_khoan_id)
         return [db_chuyen_khoan] if db_chuyen_khoan else []
-    raise HTTPException(status_code=400, detail="Cần cung cấp ID, tài khoản gửi hoặc tài khoản nhận để tìm kiếm")
+    raise HTTPException(status_code=400, detail="Cần cung cấp ID")
 
 @router.delete("/chuyen-khoan/{chuyen_khoan_id}")
 def delete_chuyen_khoan(chuyen_khoan_id: int, db: Session = Depends(get_db)):

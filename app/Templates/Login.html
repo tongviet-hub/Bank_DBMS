@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập - Ngân hàng Immortal</title>
+    <style>
+        body {
+            text-align: center;
+            background: radial-gradient(circle, rgba(238, 174, 202, 1) 0%, rgba(148, 187, 233, 1) 100%);
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.5em;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .register-link {
+            margin-top: 20px;
+            color: #666;
+        }
+
+        .register-link a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        .error {
+            color: red;
+            font-size: 12px;
+            text-align: left;
+            margin-top: -5px;
+            margin-bottom: 10px;
+            display: none;
+        }
+
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #e0d1d9;
+            color: black;
+            padding: 10px 20px;
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+            font-size: 12px;
+        }
+
+        .footer-left {
+            text-align: left;
+            max-width: 50%;
+        }
+
+        .footer-right {
+            text-align: center;
+            display: flex;
+            align-items: center;
+            padding-right: 40px;
+        }
+
+        .footer-right img {
+            margin: 8px 0;
+            width: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .footer-right img:hover {
+            transform: scale(1.2);
+        }
+
+        .big-letter {
+            font-size: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <h1>Chào mừng đến Ngân hàng Immortal</h1>
+        <form id="loginForm">
+            <input type="email" id="email" placeholder="Email" required>
+            <div id="emailError" class="error">Vui lòng nhập địa chỉ email hợp lệ (@gmail.com)</div>
+
+            <input type="password" id="password" placeholder="Mật khẩu" required>
+            <div id="passwordError" class="error">Mật khẩu phải có ít nhất 8 ký tự</div>
+
+            <button type="submit">Đăng nhập</button>
+        </form>
+
+        <div class="register-link">
+            Chưa có tài khoản? <a href="register.html">Đăng ký tại đây</a>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="footer-left">
+            <strong>
+                <p>Khám phá dịch vụ của chúng tôi và trải nghiệm ngân hàng liền mạch.</p>
+                <p>© 2025 Ngân hàng Immortal. Đã đăng ký bản quyền.</p>
+            </strong>
+        </div>
+        <div class="footer-right">
+            <p class="big-letter"> <strong>Liên hệ chúng tôi: </strong></p>
+            <a href="https://www.facebook.com/viet.tong.9210256" target="_blank" style="margin: 0 10px;">
+                <img src="https://cdn-icons-png.flaticon.com/512/124/124010.png" alt="Facebook" style="width: 20px;">
+            </a>
+            <a href="https://twitter.com" target="_blank" style="margin: 0 10px;">
+                <img src="https://cdn-icons-png.flaticon.com/512/124/124021.png" alt="Twitter" style="width: 20px;">
+            </a>
+            <a href="https://instagram.com" target="_blank" style="margin: 0 10px;">
+                <img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" alt="Instagram" style="width: 20px;">
+            </a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("loginForm").onsubmit = function (e) {
+            e.preventDefault();
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            let valid = true;
+
+            // Validate email
+            if (!email.includes("@gmail.com")) {
+                document.getElementById("emailError").style.display = "block";
+                valid = false;
+            } else {
+                document.getElementById("emailError").style.display = "none";
+            }
+
+            // Validate password length
+            if (password.length < 8) {
+                document.getElementById("passwordError").style.display = "block";
+                valid = false;
+            } else {
+                document.getElementById("passwordError").style.display = "none";
+            }
+
+            if (valid) {
+                alert("Đăng nhập thành công!");
+                // Here you would typically submit the form to your backend
+            }
+        };
+    </script>
+</body>
+
+</html>

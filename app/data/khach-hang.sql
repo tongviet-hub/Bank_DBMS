@@ -1,0 +1,17 @@
+
+INSERT INTO Khach_hang (CCCD, Name, Ngay_sinh, Phone, Email, Dia_chi) VALUES
+('079203012345', 'Nguyễn Thành An', '1990-01-01', '0123456789', 'nguyenan@example.com', '123 Đường ABC, TP.HCM'),
+('079195023456', 'Trần Thị Bích Ngọc', '1995-05-05', '0987654321', 'bichngoc@example.com', '456 Đường XYZ, Hà Nội'),
+('079188034567', 'Lê Minh Cường', '1988-03-15', '0912345678', 'minhcuong@example.com', '789 Đường DEF, Đà Nẵng'),
+('079192045678', 'Phạm Thị Diễm Hương', '1992-07-20', '0934567890', 'diemhuong@example.com', '321 Đường GHI, Hải Phòng'),
+('079185056789', 'Hoàng Đức Minh', '1985-11-11', '0945678901', 'ducminh@example.com', '654 Đường JKL, Cần Thơ'),
+('079198067890', 'Nguyễn Thị Phương Thảo', '1998-02-28', '0956789012', 'phuongthao@example.com', '987 Đường MNO, Đà Lạt'),
+('079193078901', 'Trần Quang Huy', '1993-06-10', '0967890123', 'quanghuy@example.com', '123 Đường PQR, Nha Trang'),
+('079191089012', 'Lê Thị Hồng Nhung', '1991-09-25', '0978901234', 'hongnhung@example.com', '456 Đường STU, Huế'),
+('079187090123', 'Phạm Văn Khoa', '1987-12-05', '0989012345', 'vankhoa@example.com', '789 Đường VWX, Quảng Ninh'),
+('079194001234', 'Hoàng Thị Mai Linh', '1994-04-18', '0990123456', 'mailinh@example.com', '321 Đường YZ, Bình Dương'),
+('079190012345', 'Nguyễn Đức Nam', '1990-08-30', '0901234567', 'ducnam@example.com', '654 Đường ABC, Đồng Nai'),
+('079196023456', 'Trần Thị Thanh Tâm', '1996-01-15', '0912345678', 'thanhtam@example.com', '987 Đường DEF, Vũng Tàu'),
+('079189034567', 'Lê Hoàng Tuấn', '1989-03-10', '0923456789', 'hoangtuan@example.com', '123 Đường GHI, Bình Phước'),
+('079197045678', 'Phạm Thị Tuyết Nhi', '1997-07-22', '0934567890', 'tuyetnhi@example.com', '456 Đường JKL, Long An'),
+('079192056789', 'Hoàng Văn Minh Quân', '1992-11-30', '0945678901', 'minhquan@example.com', '789 Đường MNO, Tiền Giang'); 
