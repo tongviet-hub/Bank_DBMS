@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Explore Immortal Bank's innovative services including iSave+, SmartInterest™, Immortal Shield™, and iAdvisor.">
+    <meta name="keywords" content="immortal bank, banking services, savings, insurance, financial advisory">
+    <title>Services - Immortal Bank</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow-x: hidden;
+            font-family: 'Arial', sans-serif;
+            color: #ffffff;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            z-index: 3;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .navbar ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar ul li {
+            margin: 0 20px;
+            position: relative;
+        }
+
+        .navbar ul li a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+
+        .navbar ul li a:hover {
+            color: #fdbb2d;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            min-width: 150px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            z-index: 1;
+            border-radius: 8px;
+            opacity: 0;
+            transform: translateX(-50%) translateY(10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .dropdown-content a {
+            display: block;
+            padding: 12px 16px;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+
+        .dropdown-content a:hover {
+            background: #1a2a6c;
+            color: #fdbb2d;
+            border-radius: 4px;
+        }
+
+        .background {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            background-size: 400% 400%;
+            animation: gradientAnimation 15s ease infinite;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 80px 20px;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .service-card {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            border-color: #fdbb2d;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+        }
+
+        .service-card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #fdbb2d;
+        }
+
+        .service-card p, .service-card ul {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin: 10px 0;
+        }
+
+        .service-card ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            .service-card h2 {
+                font-size: 1.5rem;
+            }
+            .navbar ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <ul>
+            <li class="dropdown">
+                <a href="#" aria-label="Account Menu">Account</a>
+                <div class="dropdown-content">
+                    <a href="#">Sign Up</a>
+                    <a href="sign_in.html">Sign In</a>
+                </div>
+            </li>
+            <li><a href="service.html">Service</a></li>
+            <li><a href="interest.html">Interest</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="about.html">About</a></li>
+        </ul>
+    </nav>
+    <div class="background">
+        <div class="overlay"></div>
+        <div class="particles" id="particles-js"></div>
+        <div class="content">
+            <h1>Our Services</h1>
+            <div class="service-card">
+                <h2>Sổ Tích Kiệm iSave+</h2>
+                <p>iSave+ là giải pháp tiết kiệm linh hoạt được thiết kế để đáp ứng nhu cầu tài chính đa dạng của khách hàng trong thời đại số hóa.</p>
+                <p><strong>Đặc điểm nổi bật:</strong></p>
+                <ul>
+                    <li>Kỳ hạn đa dạng: từ 1 tuần đến 36 tháng</li>
+                    <li>Mức lãi suất cạnh tranh, điều chỉnh theo chu kỳ và biến động thị trường</li>
+                    <li>Lựa chọn “Tái tục tự động” hoặc “Gửi tiết kiệm một lần – nhận lãi cuối kỳ”</li>
+                    <li>Gửi và rút hoàn toàn online qua ứng dụng Immortal Banking App</li>
+                    <li>Tùy chọn “Tiết kiệm định kỳ tự động” để khách hàng không cần thao tác thủ công mỗi tháng</li>
+                </ul>
+                <p><strong>Tính năng nâng cao:</strong></p>
+                <ul>
+                    <li>iTime Capsule: Khách hàng có thể gửi tiết kiệm kèm thông điệp cho chính mình hoặc người thân trong tương lai, mở sau khi kỳ hạn kết thúc. Một sự kết hợp giữa tài chính và ý nghĩa tinh thần.</li>
+                </ul>
+            </div>
+            <div class="service-card">
+                <h2>Lãi Suất Linh Hoạt – SmartInterest™</h2>
+                <p>Giải pháp dành cho khách hàng muốn hưởng lợi từ lãi suất thị trường mà vẫn duy trì mức an toàn tối thiểu.</p>
+                <p><strong>Tính năng chính:</strong></p>
+                <ul>
+                    <li>Lãi suất điều chỉnh theo biến động lãi suất thị trường mỗi quý</li>
+                    <li>Cam kết mức lãi suất tối thiểu, đảm bảo khách hàng không thiệt thòi</li>
+                    <li>Khách hàng có thể “khóa lãi suất” tại thời điểm cao nhất để bảo toàn lợi nhuận</li>
+                    <li>Giao diện trực quan theo dõi mức sinh lời trên từng khoản gửi trong ứng dụng</li>
+                </ul>
+            </div>
+            <div class="service-card">
+                <h2>Bảo Hiểm Tài Chính – Immortal Shield™</h2>
+                <p>Immortal Bank hợp tác với các công ty bảo hiểm hàng đầu nhằm cung cấp các giải pháp bảo vệ tài chính toàn diện.</p>
+                <p><strong>Các gói bảo hiểm bao gồm:</strong></p>
+                <ul>
+                    <li>Bảo hiểm nhân thọ và chăm sóc sức khỏe cá nhân</li>
+                    <li>Bảo hiểm tài sản cố định, phương tiện cá nhân</li>
+                    <li>Bảo hiểm mất việc, thu nhập gián đoạn và bệnh hiểm nghèo</li>
+                    <li>Gói bảo hiểm gia đình trọn gói với ưu đãi theo nhóm thành viên</li>
+                </ul>
+                <p><strong>Ưu điểm vượt trội:</strong></p>
+                <ul>
+                    <li>Quy trình đăng ký và bồi thường đơn giản, minh bạch</li>
+                    <li>Tích hợp trực tiếp vào tài khoản ngân hàng để theo dõi và thanh toán phí</li>
+                    <li>Chính sách hoàn phí nếu không xảy ra rủi ro trong thời hạn hợp đồng</li>
+                </ul>
+            </div>
+            <div class="service-card">
+                <h2>Tư Vấn Tài Chính Cá Nhân – iAdvisor</h2>
+                <p>Immortal Bank cung cấp dịch vụ cố vấn tài chính cho từng cá nhân, giúp khách hàng đưa ra quyết định đúng đắn dựa trên dữ liệu và mục tiêu sống cụ thể.</p>
+                <p><strong>Dịch vụ bao gồm:</strong></p>
+                <ul>
+                    <li>Lập kế hoạch tài chính cá nhân và gia đình</li>
+                    <li>Quản lý chi tiêu, ngân sách và phân bổ thu nhập</li>
+                    <li>Tư vấn tiết kiệm – đầu tư phù hợp theo từng độ tuổi và giai đoạn tài chính</li>
+                    <li>Đánh giá rủi ro tài chính và đề xuất giải pháp phòng ngừa</li>
+                </ul>
+                <p><strong>Hình thức tư vấn:</strong></p>
+                <ul>
+                    <li>Qua ứng dụng (trò chuyện trực tuyến, AI hỗ trợ)</li>
+                    <li>Cuộc gọi video với chuyên gia tài chính</li>
+                    <li>Tư vấn trực tiếp tại chi nhánh theo lịch hẹn</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="../particles.min.js"></script>
+    <script>
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 50, density: { enable: true, value_area: 800 } },
+                color: { value: '#ffffff' },
+                shape: { type: 'circle', stroke: { width: 0, color: '#000000' } },
+                opacity: { value: 0.5, random: true },
+                size: { value: 3, random: true },
+                line_linked: { enable: true, distance: 150, color: '#ffffff', opacity: 0.4, width: 1 },
+                move: { enable: true, speed: 2, direction: 'none', random: false, straight: false, out_mode: 'out', bounce: false }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true },
+                modes: { grab: { distance: 400, line_linked: { opacity: 1 } }, bubble: { distance: 400, size: 40, duration: 2, opacity: 8 }, repulse: { distance: 200, duration: 0.4 }, push: { particles_nb: 4 }, remove: { particles_nb: 2 } }
+            },
+            retina_detect: true
+        });
+    </script>
+</body>
+</html>

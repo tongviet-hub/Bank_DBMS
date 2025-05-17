@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interest Rates - Immortal Bank</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow-x: hidden;
+            font-family: 'Arial', sans-serif;
+            color: #ffffff;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            z-index: 3;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .navbar ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar ul li {
+            margin: 0 20px;
+            position: relative;
+        }
+
+        .navbar ul li a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+
+        .navbar ul li a:hover {
+            color: #fdbb2d;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            min-width: 150px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            z-index: 1;
+            border-radius: 8px;
+            opacity: 0;
+            transform: translateX(-50%) translateY(10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .dropdown-content a {
+            display: block;
+            padding: 12px 16px;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+
+        .dropdown-content a:hover {
+            background: #1a2a6c;
+            color: #fdbb2d;
+            border-radius: 4px;
+        }
+
+        .background {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            background-size: 400% 400%;
+            animation: gradientAnimation 15s ease infinite;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            margin-bottom: 40px;
+            animation: fadeIn 1s ease-in;
+        }
+
+        .table-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            overflow-x: auto;
+            animation: fadeInUp 1s ease-in;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 1rem;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        th {
+            background: rgba(0, 0, 0, 0.5);
+            color: #fdbb2d;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        td {
+            color: #ffffff;
+        }
+
+        tr {
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            table {
+                font-size: 0.9rem;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+
+            .navbar ul li {
+                margin: 0 10px;
+            }
+
+            .navbar ul li a {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            th, td {
+                font-size: 0.8rem;
+                padding: 8px;
+            }
+
+            .table-container {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <ul>
+            <li class="dropdown">
+                <a href="#">Account</a>
+                <div class="dropdown-content">
+                    <a href="#">Sign Up</a>
+                    <a href="sign_in.html">Sign In</a>
+                </div>
+            </li>
+            <li><a href="service.html">Service</a></li>
+            <li><a href="interest.html">Interest</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="about.html">About</a></li>
+        </ul>
+    </nav>
+    <div class="background">
+        <div class="overlay"></div>
+        <div class="particles" id="particles-js"></div>
+        <div class="content">
+            <h1>Interest Rates</h1>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Kỳ hạn</th>
+                            <th>Lãi suất (%/năm)</th>
+                            <th>Hình thức gửi</th>
+                            <th>Hình thức lĩnh lãi</th>
+                            <th>Ghi chú</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Không kỳ hạn</td>
+                            <td>0.10%</td>
+                            <td>Tại quầy, Online</td>
+                            <td>Cuối kỳ</td>
+                            <td>Lãi suất thấp, thích hợp gửi ngắn hạn linh hoạt</td>
+                        </tr>
+                        <tr>
+                            <td>1 tháng</td>
+                            <td>3.80%</td>
+                            <td>Tại quầy, Online</td>
+                            <td>Cuối kỳ</td>
+                            <td>Lãi suất cố định, không rút giữa kỳ</td>
+                        </tr>
+                        <tr>
+                            <td>3 tháng</td>
+                            <td>4.20%</td>
+                            <td>Tại quầy, Online</td>
+                            <td>Cuối kỳ</td>
+                            <td>Gửi online thường được ưu đãi thêm</td>
+                        </tr>
+                        <tr>
+                            <td>6 tháng</td>
+                            <td>5.00%</td>
+                            <td>Tại quầy, Online</td>
+                            <td>Cuối kỳ / Hàng tháng</td>
+                            <td>Kỳ hạn phổ biến, phù hợp mục tiêu ngắn hạn</td>
+                        </tr>
+                        <tr>
+                            <td>12 tháng</td>
+                            <td>5.40%</td>
+                            <td>Tại quầy, Online</td>
+                            <td>Cuối kỳ / Hàng tháng</td>
+                            <td>Lãi suất tốt, phù hợp tích lũy dài hạn</td>
+                        </tr>
+                        <tr>
+                            <td>24 tháng</td>
+                            <td>5.60%</td>
+                            <td>Tại quầy, Online</td>
+                            <td>Cuối kỳ / Hàng tháng</td>
+                            <td>Thích hợp gửi tiết kiệm an toàn lâu dài</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="../particles.min.js"></script>
+    <script>
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: '#ffffff' },
+                shape: { type: 'circle', stroke: { width: 0, color: '#000000' } },
+                opacity: { value: 0.5, random: true },
+                size: { value: 3, random: true },
+                line_linked: { enable: true, distance: 150, color: '#ffffff', opacity: 0.4, width: 1 },
+                move: { enable: true, speed: 2, direction: 'none', random: false, straight: false, out_mode: 'out', bounce: false }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true },
+                modes: { grab: { distance: 400, line_linked: { opacity: 1 } }, bubble: { distance: 400, size: 40, duration: 2, opacity: 8 }, repulse: { distance: 200, duration: 0.4 }, push: { particles_nb: 4 }, remove: { particles_nb: 2 } }
+            },
+            retina_detect: true
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+/* 1. Midnight Blue Gradient - Professional and calming, ideal for banking interfaces */
+.interactive-window-1 {
+    background: linear-gradient(135deg, #0a1d37, #1e3a8a);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.interactive-window-1:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.3);
+}
+
+/* 2. Emerald Glassmorphism - Modern and transparent, great for modals */
+.interactive-window-2 {
+    background: linear-gradient(135deg, rgba(15, 118, 110, 0.8), rgba(5, 150, 105, 0.8));
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    color: #e6fffa;
+    transition: background 0.3s ease;
+}
+.interactive-window-2:hover {
+    background: linear-gradient(135deg, rgba(15, 118, 110, 1), rgba(5, 150, 105, 1));
+}
+
+/* 3. Dark Slate with Neon Accent - Futuristic and bold, perfect for premium features */
+.interactive-window-3 {
+    background: linear-gradient(135deg, #1f2937, #374151);
+    border: 1px solid #10b981;
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+    color: #f3f4f6;
+    transition: box-shadow 0.3s ease;
+}
+.interactive-window-3:hover {
+    box-shadow: 0 0 25px rgba(16, 185, 129, 0.5);
+}
+
+/* 4. Warm Sunset Gradient - Inviting and approachable, good for user-friendly interfaces */
+.interactive-window-4 {
+    background: linear-gradient(135deg, #f97316, #ef4444);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff7ed;
+    transition: transform 0.3s ease;
+}
+.interactive-window-4:hover {
+    transform: scale(1.02);
+}

@@ -116,6 +116,7 @@
                         <td>${customer.Dia_chi}</td>
                         <td>
                             <button class="btn btn-delete" onclick="deleteCustomer(${customer.id})">Xóa</button>
+                            <button class="btn" onclick="editcustomer(${customer.id})">Sửa</button>
                         </td>
                     `;
                     tableBody.appendChild(row);
@@ -139,6 +140,27 @@
                 }
             } catch (error) {
                 console.error("Lỗi khi xóa khách hàng:", error);
+            }
+        }
+
+        
+        // Hàm chỉnh sửa khách hàng
+
+        async function editcustomer(id) {
+            try {
+                const response = await fetch(`${apiUrL}${id}`,{
+                    method: "PUT",
+                });
+                if (response.ok) {
+                    alert("Khách hàng đã được sửa thành công!");
+                    fetchCustomers(); // Cập nhật lại danh sách
+                }
+                else {
+                    alert("Lỗi khi sửa khách hàng!")
+                }
+            }
+            catch (error) {
+                console.error("Lỗi khi lấy thông tin khách hàng:", error);
             }
         }
 
