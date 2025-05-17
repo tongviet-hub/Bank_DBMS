@@ -11,14 +11,14 @@ def create_khach_hang(db: Session, khach_hang: KhachHangCreate):
     db.refresh(db_khach_hang)
     return db_khach_hang
 
-def get_khach_hang(db: Session, khach_hang_id: int = None, khach_hang_name: str = None):
+def get_khach_hang(db: Session, khach_hang_id: str = None, khach_hang_name: str = None):
     """
     Lấy thông tin khách hàng theo ID hoặc tìm kiếm theo một phần tên.
     """
     if khach_hang_id:
         db_khach_hang = db.query(Khach_hang).filter(Khach_hang.id == khach_hang_id).first()
     elif khach_hang_name:
-        db_khach_hang = db.query(Khach_hang).filter(Khach_hang.Name.ilike(f"%{khach_hang_name}%")).all()
+        db_khach_hang = db.query(Khach_hang).filter(Khach_hang.Ho_va_ten.ilike(f"%{khach_hang_name}%")).all()
     else:
         raise HTTPException(status_code=400, detail="Cần cung cấp ID hoặc tên khách hàng")
 
@@ -32,14 +32,14 @@ def get_all_khach_hang(db: Session):
     """
     return db.query(Khach_hang).all()
 
-def delete_khach_hang(db: Session, khach_hang_id: int = None, khach_hang_name: str = None):
+def delete_khach_hang(db: Session, khach_hang_id: str = None, khach_hang_name: str = None):
     """
     Xóa khách hàng theo ID hoặc tìm kiếm theo một phần tên.
     """
     if khach_hang_id:
         db_khach_hang = db.query(Khach_hang).filter(Khach_hang.id == khach_hang_id).first()
     elif khach_hang_name:
-        db_khach_hang = db.query(Khach_hang).filter(Khach_hang.Name.ilike(f"%{khach_hang_name}%")).first()
+        db_khach_hang = db.query(Khach_hang).filter(Khach_hang.Ho_va_ten.ilike(f"%{khach_hang_name}%")).first()
     else:
         raise HTTPException(status_code=400, detail="Cần cung cấp ID hoặc tên khách hàng")
 
@@ -51,7 +51,7 @@ def delete_khach_hang(db: Session, khach_hang_id: int = None, khach_hang_name: s
     return {"message": "Khách hàng đã được xóa thành công"}
 
 
-def update_khach_hang(db: Session, khach_hang_id: int, khach_hang: KhachHangCreate):
+def update_khach_hang(db: Session, khach_hang_id: str, khach_hang: KhachHangCreate):
     db_khach_hang = db.query(Khach_hang).filter(Khach_hang.id == khach_hang_id).first()
     if db_khach_hang is None:
         raise HTTPException(status_code=404, detail="Khách hàng không tồn tại")

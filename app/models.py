@@ -4,19 +4,22 @@ from database import Base
 
 class Khach_hang(Base):
     __tablename__ = 'Khach_hang'
-    id = Column(Integer, primary_key=True,autoincrement=True)
-    CCCD = Column(String(12), index=True)  # Căn cước công dân, giới hạn 12 ký tự
-    Name = Column(String(100))  # Tên khách hàng, giới hạn 100 ký tự
+    id = Column(String(10), primary_key=True)
+    Ho_va_ten = Column(String(100))  # Tên khách hàng, giới hạn 100 ký tự
+    Gioi_tinh = Column(String(10)) # Giới tính, giới hạn 10 ký tự
     Ngay_sinh = Column(Date)
-    Phone = Column(String(15))  # Số điện thoại, giới hạn 15 ký tự
-    Email = Column(String(100))  # Email, giới hạn 100 ký tự
+    CCCD = Column(String(12), index=True)  # Căn cước công dân, giới hạn 12 ký tự
     Dia_chi = Column(String(255))  # Địa chỉ, giới hạn 255 ký tự
+    SDT = Column(String(15))  # Số điện thoại, giới hạn 15 ký tự
+    Email = Column(String(100))  # Email, giới hạn 100 ký tự
+    Ngay_cap_nhat = Column(Date)
+    
 
 class Tai_khoan(Base):
     __tablename__ = 'Tai_khoan'
     id = Column(Integer, primary_key=True,autoincrement=True)
     Ma_chi_nhanh = Column(Integer, ForeignKey('Chi_nhanh.id'), index=True)
-    Ma_khach_hang = Column(Integer, ForeignKey('Khach_hang.id'), index=True)
+    Ma_khach_hang = Column(String, ForeignKey('Khach_hang.id'), index=True)
     Ma_tai_khoan = Column(Integer, ForeignKey('Loai_tai_khoan.id'))
     Noi_cap = Column(Date)
 
@@ -91,7 +94,7 @@ class Thao_tac_so_tiet_kiem(Base):
     Ma_so_tiet_kiem = Column(Integer, ForeignKey('So_tiet_kiem.id'), index=True)
     Ma_nhan_vien = Column(Integer, ForeignKey('Nhan_vien.id'))
     Ma_thao_tac = Column(Integer, ForeignKey('Thao_tac.id'))
-    Ma_khach_hang = Column(Integer, ForeignKey('Khach_hang.id'))
+    Ma_khach_hang = Column(String, ForeignKey('Khach_hang.id'))
     Ngay_thao_tac = Column(DateTime)
     Ghi_chu = Column(String)  # Ghi chú thao tác có thể dài, sử dụng TEXT
 

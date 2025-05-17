@@ -3,18 +3,22 @@ from datetime import date
 
 # ========== KHÁCH HÀNG ==========
 class KhachHangBase(BaseModel):
-    CCCD: str
-    Name: str
+    id: str
+    Ho_va_ten: str
+    Gioi_tinh: str
     Ngay_sinh: date
-    Phone: str
-    Email: str
+    CCCD: str
     Dia_chi: str
+    SDT: str
+    Email: str
+    Ngay_cap_nhat: date
+
 
 class KhachHangCreate(KhachHangBase):
     pass
 
 class KhachHang(KhachHangBase):
-    id: int
+    pass
     class Config:
         from_attributes = True  # Đã sửa
 

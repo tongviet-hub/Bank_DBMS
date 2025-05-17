@@ -23,7 +23,7 @@ def get_all_khach_hang(db: Session = Depends(get_db)):
 
 @router.get("/khach-hang/search/", response_model=list[schemas.KhachHang])
 def search_khach_hang(
-    khach_hang_id: int | None = None,
+    khach_hang_id: str | None = None,
     name: str | None = None,
     db: Session = Depends(get_db)
 ):
@@ -39,14 +39,14 @@ def search_khach_hang(
     raise HTTPException(status_code=400, detail="Cần cung cấp ID hoặc tên để tìm kiếm")
 
 @router.delete("/khach-hang/{khach_hang_id}")
-def delete_khach_hang(khach_hang_id: int, db: Session = Depends(get_db)):
+def delete_khach_hang(khach_hang_id: str, db: Session = Depends(get_db)):
     """
     Xóa khách hàng theo ID.
     """
     return crud.delete_khach_hang(db=db, khach_hang_id=khach_hang_id)
 
 @router.put("/khach-hang/{khach_hang_id}", response_model=schemas.KhachHang)
-def update_khach_hang(khach_hang_id: int, khach_hang: schemas.KhachHangCreate, db: Session = Depends(get_db)):
+def update_khach_hang(khach_hang_id: str, khach_hang: schemas.KhachHangCreate, db: Session = Depends(get_db)):
     """
     Cập nhật thông tin khách hàng.
     """
