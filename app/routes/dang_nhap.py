@@ -23,7 +23,7 @@ def get_all_dang_nhap(db: Session = Depends(get_db)):
 
 @router.get("/dang-nhap/search/", response_model=list[schemas.DangNhap])
 def search_dang_nhap(
-    dang_nhap_id: int | None = None,
+    dang_nhap_id: str | None = None,
     username: str | None = None,
     db: Session = Depends(get_db)
 ):
@@ -34,19 +34,19 @@ def search_dang_nhap(
         db_dang_nhap = crud.get_dang_nhap(db=db, dang_nhap_id=dang_nhap_id)
         return [db_dang_nhap] if db_dang_nhap else []
     if username:
-        db_dang_nhap = crud.get_dang_nhap_by_username(db=db, username=username)
+        db_dang_nhap = crud.get_dang_nhap(db=db, username=username)
         return db_dang_nhap
     raise HTTPException(status_code=400, detail="Cần cung cấp ID hoặc tên người dùng để tìm kiếm")
 
 @router.delete("/dang-nhap/{dang_nhap_id}")
-def delete_dang_nhap(dang_nhap_id: int, db: Session = Depends(get_db)):
+def delete_dang_nhap(dang_nhap_id: str, db: Session = Depends(get_db)):
     """
     Xóa thông tin đăng nhập theo ID.
     """
     return crud.delete_dang_nhap(db=db, dang_nhap_id=dang_nhap_id)
 
 @router.put("/dang-nhap/{dang_nhap_id}", response_model=schemas.DangNhap)
-def update_dang_nhap(dang_nhap_id: int, dang_nhap: schemas.DangNhapCreate, db: Session = Depends(get_db)):
+def update_dang_nhap(dang_nhap_id: str, dang_nhap: schemas.DangNhapCreate, db: Session = Depends(get_db)):
     """
     Cập nhật thông tin đăng nhập.
     """

@@ -1,5 +1,5 @@
-
 from fastapi import FastAPI, HTTPException, Depends
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Annotated
 import models as models
@@ -24,6 +24,18 @@ from routes.nhan_vien import router as nhan_vien_router
 from helper.security import hash_password, verify_password
 from dependencies import get_db
 app = FastAPI()
+
+# Add CORS middleware before including routers
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # In production, replace with specific origins
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],  # Specify allowed methods
+    allow_headers=["*"],
+    expose_headers=["*"],
+    max_age=600,  # Cache preflight requests for 10 minutes
+)
+
 models.Base.metadata.create_all(bind=engine)
 db_dependency = Annotated[Session, Depends(get_db)] 
 app.include_router(chi_nhanh_router, prefix="/chi-nhanh", tags=["Chi nhánh"])
@@ -39,13 +51,3 @@ app.include_router(phan_quyen_router, prefix="/phan-quyen", tags=["Phân quyền
 app.include_router(so_tiet_kiem_router, prefix="/so-tiet-kiem", tags=["Sổ tiết kiệm"])
 app.include_router(tai_khoan_router, prefix="/tai-khoan", tags=["Tài khoản"])
 app.include_router(nhan_vien_router, prefix="/nhan-vien", tags=["Nhân viên"])
-
-from fastapi.middleware.cors import CORSMiddleware
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # Cho phép tất cả các nguồn (hoặc chỉ định nguồn cụ thể)
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)

@@ -13,13 +13,13 @@ def get_all_thao_tac(db: Session = Depends(get_db)):
     return crud.get_all_thao_tac(db=db)
 
 @router.post("/thao-tac/", response_model=schemas.ThaoTac)
-def create_thao_tac(thao_tac: schemas.ThaoTacBase, db: Session = Depends(get_db)):
+def create_thao_tac(thao_tac: schemas.ThaoTac, db: Session = Depends(get_db)):
     """Tạo mới một thao tác"""
     return crud.create_thao_tac(thao_tac=thao_tac, db=db)
 
 @router.get("/thao-tac/search", response_model=List[schemas.ThaoTac])
 def search_thao_tac(
-    thao_tac_id: int | None = None,
+    thao_tac_id: str | None = None,
     ten_thao_tac: str | None = None,
     db: Session = Depends(get_db)
 ):
@@ -33,11 +33,11 @@ def search_thao_tac(
     raise HTTPException(status_code=400, detail="Cần cung cấp ID hoặc tên để tìm kiếm")
 
 @router.delete("/thao-tac/{thao_tac_id}")
-def delete_thao_tac(thao_tac_id: int, db: Session = Depends(get_db)):
+def delete_thao_tac(thao_tac_id: str, db: Session = Depends(get_db)):
     """Xóa thao tác theo ID."""
     return crud.delete_thao_tac(thao_tac_id=thao_tac_id, db=db)
 
 @router.put("/thao-tac/{thao_tac_id}", response_model=schemas.ThaoTac)
-def update_thao_tac(thao_tac_id: int, thao_tac: schemas.ThaoTacBase, db: Session = Depends(get_db)):
+def update_thao_tac(thao_tac_id: str, thao_tac: schemas.ThaoTacBase, db: Session = Depends(get_db)):
     """Cập nhật thông tin thao tác."""
     return crud.update_thao_tac(thao_tac_id=thao_tac_id, thao_tac=thao_tac, db=db)

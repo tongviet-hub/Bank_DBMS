@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bank Management App</title>
+  <!-- Font Awesome CDN for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      overflow-x: hidden;
+      position: relative;
+      background: #0f172a;
+    }
+
+    /* Background Canvas */
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+    }
+
+    /* Content Overlay */
+    .content-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .sidebar {
+      width: 250px;
+      background: rgba(30, 42, 68, 0.95);
+      color: #fff;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      padding: 20px;
+      transition: transform 0.3s ease;
+      z-index: 1000;
+      backdrop-filter: blur(5px);
+    }
+
+    .sidebar.hidden {
+      transform: translateX(-100%);
+    }
+
+    .sidebar h1 {
+      font-size: 24px;
+      margin-bottom: 30px;
+      font-weight: 600;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sidebar ul {
+      list-style: none;
+    }
+
+    .sidebar ul li {
+      margin-bottom: 10px;
+    }
+
+    .sidebar ul li a {
+      color: #fff;
+      text-decoration: none;
+      padding: 10px 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-radius: 5px;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .sidebar ul li a i {
+      font-size: 18px;
+      transition: transform 0.2s;
+    }
+
+    .sidebar ul li a:hover {
+      background: rgba(42, 59, 94, 0.8);
+      transform: translateX(5px);
+    }
+
+    .sidebar ul li a:hover i {
+      transform: scale(1.2);
+    }
+
+    .sidebar .toggle-btn {
+      display: none;
+      background: #2a3b5e;
+      color: #fff;
+      border: none;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 20px;
+      width: 100%;
+      transition: background 0.2s;
+    }
+
+    .sidebar .toggle-btn:hover {
+      background: #3b82f6;
+    }
+
+    .main-content {
+      flex: 1;
+      padding: 30px;
+      margin-left: 250px;
+      transition: margin-left 0.3s ease;
+      position: relative;
+      z-index: 10;
+    }
+
+    .main-content.full {
+      margin-left: 0;
+    }
+
+    .open-sidebar-btn {
+      display: none;
+      background: #3b82f6;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-bottom: 20px;
+      transition: background 0.2s, box-shadow 0.2s;
+    }
+
+    .open-sidebar-btn:hover {
+      background: #1e40af;
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.hidden {
+        transform: translateX(0);
+      }
+
+      .main-content {
+        margin-left: 0;
+      }
+
+      .main-content.full {
+        margin-left: 250px;
+      }
+
+      .sidebar .toggle-btn, .open-sidebar-btn {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bg-canvas"></canvas>
+  <div class="content-overlay"></div>
+  <div class="flex">
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar">
+      <h1><i class="fas fa-database"></i> BankPro</h1>
+      <nav>
+        <ul>
+          <li><a href="#dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+          <li><a href="#customers"><i class="fas fa-users"></i> Customers</a></li>
+          <li><a href="#accounts"><i class="fas fa-credit-card"></i> Accounts</a></li>
+          <li><a href="#account-types"><i class="fas fa-list-alt"></i> Account Types</a></li>
+          <li><a href="#transactions"><i class="fas fa-exchange-alt"></i> Transactions</a></li>
+          <li><a href="#savings"><i class="fas fa-piggy-bank"></i> Savings</a></li>
+          <li><a href="#savings-types"><i class="fas fa-coins"></i> Savings Types</a></li>
+          <li><a href="#currencies"><i class="fas fa-money-bill-wave"></i> Currencies</a></li>
+          <li><a href="#employees"><i class="fas fa-user-tie"></i> Employees</a></li>
+          <li><a href="#branches"><i class="fas fa-building"></i> Branches</a></li>
+          <li><a href="#permissions"><i class="fas fa-user-shield"></i> Permissions</a></li>
+          <li><a href="#login"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+          <li><a href="#savings-operations"><i class="fas fa-hand-holding-usd"></i> Savings Operations</a></li>
+          <li><a href="#account-operations"><i class="fas fa-wallet"></i> Account Operations</a></li>
+          <li><a href="#operations"><i class="fas fa-cogs"></i> Operations</a></li>
+        </ul>
+      </nav>
+      <button id="toggle-sidebar" class="toggle-btn">Close</button>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content" class="main-content">
+      <button id="open-sidebar" class="open-sidebar-btn">Menu</button>
+      <div id="content"></div>
+    </div>
+  </div>
+
+  <script>
+    // Background animation
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    // Gradient animation
+    let gradientTime = 0;
+    function drawGradient() {
+      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      gradient.addColorStop(0, `hsl(${gradientTime % 360}, 60%, 20%)`);
+      gradient.addColorStop(0.5, `hsl(${(gradientTime + 120) % 360}, 60%, 30%)`);
+      gradient.addColorStop(1, `hsl(${(gradientTime + 240) % 360}, 60%, 20%)`);
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    // Geometric shapes
+    const shapes = [];
+    for (let i = 0; i < 10; i++) {
+      shapes.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 50 + 20,
+        vx: (Math.random() - 0.5) * 0.5,
+        vy: (Math.random() - 0.5) * 0.5,
+        type: Math.random() > 0.5 ? 'circle' : 'triangle',
+        opacity: Math.random() * 0.2 + 0.1,
+      });
+    }
+
+    function drawShapes() {
+      shapes.forEach(shape => {
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(255, 255, 255, ${shape.opacity})`;
+        if (shape.type === 'circle') {
+          ctx.arc(shape.x, shape.y, shape.size / 2, 0, Math.PI * 2);
+        } else {
+          ctx.moveTo(shape.x, shape.y - shape.size / 2);
+          ctx.lineTo(shape.x - shape.size / 2, shape.y + shape.size / 2);
+          ctx.lineTo(shape.x + shape.size / 2, shape.y + shape.size / 2);
+          ctx.closePath();
+        }
+        ctx.fill();
+
+        shape.x += shape.vx;
+        shape.y += shape.vy;
+        if (shape.x < 0 || shape.x > canvas.width) shape.vx *= -1;
+        if (shape.y < 0 || shape.y > canvas.height) shape.vy *= -1;
+      });
+    }
+
+    // Particles
+    const particles = [];
+    for (let i = 0; i < 50; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 3 + 1,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        opacity: Math.random() * 0.3 + 0.1,
+      });
+    }
+
+    function drawParticles() {
+      particles.forEach(p => {
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity})`;
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+      });
+    }
+
+    function animateBackground() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawGradient();
+      drawShapes();
+      drawParticles();
+      gradientTime += 0.5;
+      requestAnimationFrame(animateBackground);
+    }
+    animateBackground();
+
+    // Sidebar toggle
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('main-content');
+    const toggleSidebarBtn = document.getElementById('toggle-sidebar');
+    const openSidebarBtn = document.getElementById('open-sidebar');
+
+    toggleSidebarBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('hidden');
+      mainContent.classList.toggle('full');
+    });
+
+    openSidebarBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('hidden');
+      mainContent.classList.toggle('full');
+    });
+  </script>
+</body>
+</html>

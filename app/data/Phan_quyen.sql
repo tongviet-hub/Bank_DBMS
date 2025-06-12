@@ -1,0 +1,16 @@
+INSERT INTO "Phan_quyen" (id, "Ten_chuc_vu", "Ten_quyen", "Mo_ta") VALUES
+('CV001', 'Giám đốc điều hành', 'admin', 'Quản lý toàn bộ hệ thống và nhân sự cấp cao.'),
+('CV002', 'Trưởng phòng Kinh doanh', 'nhan_vien', 'Quản lý đội ngũ nhân viên kinh doanh, theo dõi doanh số.'),
+('CV003', 'Nhân viên Kinh doanh', 'nhan_vien', 'Tư vấn và chăm sóc khách hàng, thực hiện bán hàng.'),
+('CV004', 'Trưởng phòng Nhân sự', 'nhan_vien', 'Quản lý hồ sơ nhân sự và tuyển dụng.'),
+('CV005', 'Nhân viên Nhân sự', 'nhan_vien', 'Xử lý hồ sơ nhân viên, hỗ trợ công tác hành chính.'),
+('CV006', 'Trưởng phòng IT', 'admin', 'Quản lý hạ tầng kỹ thuật và hệ thống phần mềm.'),
+('CV007', 'Kỹ sư phần mềm', 'nhan_vien', 'Phát triển và bảo trì hệ thống phần mềm.'),
+('CV008', 'Nhân viên Hỗ trợ kỹ thuật', 'nhan_vien', 'Hỗ trợ người dùng và xử lý lỗi kỹ thuật.'),
+('CV009', 'Trưởng phòng Tài chính', 'admin', 'Quản lý ngân sách, dòng tiền và báo cáo tài chính.'),
+('CV010', 'Kế toán viên', 'nhan_vien', 'Theo dõi thu chi, lập báo cáo tài chính định kỳ.'),
+('CV011', 'Khách hàng VIP', 'khach_hang', 'Khách hàng thân thiết với nhiều quyền lợi ưu đãi.'),
+('CV012', 'Khách hàng thường', 'khach_hang', 'Khách hàng tiêu chuẩn sử dụng dịch vụ thông thường.'),
+('CV013', 'Nhân viên Kho', 'nhan_vien', 'Quản lý nhập xuất kho và tồn kho hàng hóa.'),
+('CV014', 'Quản lý Chi nhánh', 'admin', 'Quản lý toàn bộ hoạt động của một chi nhánh.'),
+('CV015', 'Nhân viên Giao hàng', 'nhan_vien', 'Thực hiện việc vận chuyển và giao nhận hàng hóa.');

@@ -1,15 +1,17 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
 from models import Chuyen_khoan
-from schemas import ChuyenKhoanCreate
-def create_chuyen_khoan(db: Session, chuyen_khoan: ChuyenKhoanCreate):
+from schemas import ChuyenKhoanBase, ChuyenKhoan
+
+
+def create_chuyen_khoan(db: Session, chuyen_khoan: ChuyenKhoan):
     db_chuyen_khoan = Chuyen_khoan(**chuyen_khoan.model_dump())
     db.add(db_chuyen_khoan)
     db.commit()
     db.refresh(db_chuyen_khoan)
     return db_chuyen_khoan
 
-def get_chuyen_khoan(db: Session, chuyen_khoan_id: int = None):
+def get_chuyen_khoan(db: Session, chuyen_khoan_id: str = None):
     if chuyen_khoan_id:
         db_chuyen_khoan = db.query(Chuyen_khoan).filter(Chuyen_khoan.id == chuyen_khoan_id).first()
     else:
@@ -22,16 +24,14 @@ def get_all_chuyen_khoan(db: Session):
     """
     Lấy danh sách tất cả chuyển khoản.
     """
-    return db.query(Chuyen_khoan).all()
+    return db.query(Chuyen_khoan).order_by(Chuyen_khoan.id).all()
 
-def delete_chuyen_khoan(db: Session, chuyen_khoan_id: int = None, chuyen_khoan_name: str = None):
+def delete_chuyen_khoan(db: Session, chuyen_khoan_id: str = None, chuyen_khoan_name: str = None):
     """
     Xóa chuyển khoản theo ID hoặc tên.
     """
     if chuyen_khoan_id:
         db_chuyen_khoan = db.query(Chuyen_khoan).filter(Chuyen_khoan.id == chuyen_khoan_id).first()
-    elif chuyen_khoan_name:
-        db_chuyen_khoan = db.query(Chuyen_khoan).filter(Chuyen_khoan.Name.ilike(f"%{chuyen_khoan_name}%")).all()
     else:
         raise HTTPException(status_code=400, detail="Cần cung cấp ID hoặc tên chuyển khoản")
     if db_chuyen_khoan is None:
@@ -40,7 +40,7 @@ def delete_chuyen_khoan(db: Session, chuyen_khoan_id: int = None, chuyen_khoan_n
     db.commit()
     return {"message": "Chuyển khoản đã được xóa thành công"}
 
-def update_chuyen_khoan(db: Session, chuyen_khoan_id: int, chuyen_khoan: ChuyenKhoanCreate):
+def update_chuyen_khoan(db: Session, chuyen_khoan_id: str, chuyen_khoan: ChuyenKhoanBase):
     db_chuyen_khoan = db.query(Chuyen_khoan).filter(Chuyen_khoan.id == chuyen_khoan_id).first()
     if db_chuyen_khoan is None:
         raise HTTPException(status_code=404, detail="Chuyển khoản không tồn tại")

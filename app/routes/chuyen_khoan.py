@@ -23,7 +23,7 @@ def get_all_chuyen_khoan(db: Session = Depends(get_db)):
 
 @router.get("/chuyen-khoan/search/", response_model=list[schemas.ChuyenKhoan])
 def search_chuyen_khoan(
-    chuyen_khoan_id: int | None = None,
+    chuyen_khoan_id: str | None = None,
     db: Session = Depends(get_db)
 ):
     """
@@ -35,14 +35,14 @@ def search_chuyen_khoan(
     raise HTTPException(status_code=400, detail="Cần cung cấp ID")
 
 @router.delete("/chuyen-khoan/{chuyen_khoan_id}")
-def delete_chuyen_khoan(chuyen_khoan_id: int, db: Session = Depends(get_db)):
+def delete_chuyen_khoan(chuyen_khoan_id: str, db: Session = Depends(get_db)):
     """
     Xóa giao dịch chuyển khoản theo ID.
     """
     return crud.delete_chuyen_khoan(db=db, chuyen_khoan_id=chuyen_khoan_id)
 
 @router.put("/chuyen-khoan/{chuyen_khoan_id}", response_model=schemas.ChuyenKhoan)
-def update_chuyen_khoan(chuyen_khoan_id: int, chuyen_khoan: schemas.ChuyenKhoanCreate, db: Session = Depends(get_db)):
+def update_chuyen_khoan(chuyen_khoan_id: str, chuyen_khoan: schemas.ChuyenKhoanCreate, db: Session = Depends(get_db)):
     """
     Cập nhật thông tin giao dịch chuyển khoản.
     """

@@ -1,0 +1,22 @@
+INSERT INTO "Thao_tac_tai_khoan" (id, "Ma_nhan_vien", "Ma_tai_khoan", "Ma_thao_tac", "Ngay_thuc_hien", "Ghi_chu") VALUES
+('TTKH001', 'NV001', 'TK001', 'TTK01', '2025-01-05 09:00:00', 'Mở tài khoản mới cho KH001'),
+('TTKH002', 'NV002', 'TK002', 'TTK03', '2025-01-10 10:30:00', 'Nạp 10 triệu tiền mặt'),
+('TTKH003', 'NV003', 'TK003', 'TTK04', '2025-01-15 14:45:00', 'Rút 2 triệu tại quầy'),
+('TTKH004', 'NV004', 'TK004', 'TTK05', '2025-01-20 16:00:00', 'Chuyển 5 triệu đến TK005'),
+('TTKH005', 'NV001', 'TK005', 'TTK02', '2025-01-25 11:20:00', 'Đóng tài khoản do KH yêu cầu'),
+('TTKH006', 'NV002', 'TK001', 'TTK06', '2025-02-01 08:10:00', 'Truy vấn số dư cuối tháng'),
+('TTKH007', 'NV003', 'TK002', 'TTK07', '2025-02-05 15:30:00', 'Khóa tài khoản nghi ngờ gian lận'),
+('TTKH008', 'NV004', 'TK003', 'TTK08', '2025-02-10 13:00:00', 'Mở khóa tài khoản sau khi xác minh'),
+('TTKH009', 'NV001', 'TK004', 'TTK09', '2025-02-15 09:45:00', 'Cập nhật số điện thoại mới'),
+('TTKH010', 'NV002', 'TK005', 'TTK10', '2025-02-20 14:20:00', 'In lịch sử giao dịch cho khách'),
+
+('TTKH011', 'NV003', 'TK001', 'TTK03', '2025-03-01 11:30:00', 'Nạp từ ATM'),
+('TTKH012', 'NV004', 'TK002', 'TTK04', '2025-03-05 10:15:00', 'Rút tại cây ATM BIDV'),
+('TTKH013', 'NV001', 'TK003', 'TTK05', '2025-03-10 12:00:00', 'Chuyển khoản online qua app'),
+('TTKH014', 'NV002', 'TK004', 'TTK01', '2025-03-15 15:40:00', 'Mở tài khoản phụ'),
+('TTKH015', 'NV003', 'TK005', 'TTK07', '2025-03-20 17:00:00', 'Khóa tài khoản theo yêu cầu KH'),
+('TTKH016', 'NV004', 'TK001', 'TTK08', '2025-04-01 08:30:00', 'Mở khóa sau 3 ngày'),
+('TTKH017', 'NV001', 'TK002', 'TTK06', '2025-04-05 13:10:00', 'Truy vấn số dư kỳ hạn'),
+('TTKH018', 'NV002', 'TK003', 'TTK09', '2025-04-10 16:25:00', 'Cập nhật địa chỉ email'),
+('TTKH019', 'NV003', 'TK004', 'TTK10', '2025-04-15 09:50:00', 'Gửi lịch sử giao dịch qua email'),
+('TTKH020', 'NV004', 'TK005', 'TTK02', '2025-05-01 10:05:00', 'Đóng tài khoản không hoạt động');

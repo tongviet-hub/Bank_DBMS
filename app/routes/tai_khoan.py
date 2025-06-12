@@ -23,30 +23,26 @@ def get_all_tai_khoan(db: Session = Depends(get_db)):
 
 @router.get("/tai-khoan/search/", response_model=List[schemas.TaiKhoan])
 def search_tai_khoan(
-    tai_khoan_id: int | None = None,
-    tai_khoan_name: str | None = None,
+    tai_khoan_id: str | None = None,
     db: Session = Depends(get_db)
 ):
     """
-    Tìm kiếm tài khoản theo ID hoặc tên.
+    Tìm kiếm tài khoản theo ID.
     """
     if tai_khoan_id:
         db_tai_khoan = crud.get_tai_khoan(db=db, tai_khoan_id=tai_khoan_id)
         return [db_tai_khoan] if db_tai_khoan else []
-    if tai_khoan_name:
-        db_tai_khoan = crud.get_tai_khoan(db=db, tai_khoan_name=tai_khoan_name)
-        return [db_tai_khoan] if db_tai_khoan else []
-    raise HTTPException(status_code=400, detail="Cần cung cấp ID hoặc tên để tìm kiếm")
+    raise HTTPException(status_code=400, detail="Cần cung cấp ID để tìm kiếm")
 
 @router.delete("/tai-khoan/{tai_khoan_id}", response_model=dict)
-def delete_tai_khoan(tai_khoan_id: int, db: Session = Depends(get_db)):
+def delete_tai_khoan(tai_khoan_id: str, db: Session = Depends(get_db)):
     """
     Xóa tài khoản theo ID.
     """
     return crud.delete_tai_khoan(db=db, tai_khoan_id=tai_khoan_id)
 
 @router.put("/tai-khoan/{tai_khoan_id}", response_model=schemas.TaiKhoan)
-def update_tai_khoan(tai_khoan_id: int, tai_khoan: schemas.TaiKhoanCreate, db: Session = Depends(get_db)):
+def update_tai_khoan(tai_khoan_id: str, tai_khoan: schemas.TaiKhoanCreate, db: Session = Depends(get_db)):
     """
     Cập nhật thông tin tài khoản.
     """

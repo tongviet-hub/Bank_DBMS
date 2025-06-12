@@ -1,204 +1,225 @@
 from pydantic import BaseModel
-from datetime import date
+from typing import Optional
+from datetime import date, datetime
+from enum import Enum
 
-# ========== KHÁCH HÀNG ==========
+class GioiTinhEnum(str, Enum):
+    NAM = "NAM"
+    NU = "NU"
+    KHAC = "KHAC"
+
 class KhachHangBase(BaseModel):
-    id: str
     Ho_va_ten: str
-    Gioi_tinh: str
+    Gioi_tinh: GioiTinhEnum
     Ngay_sinh: date
     CCCD: str
     Dia_chi: str
     SDT: str
     Email: str
-    Ngay_cap_nhat: date
-
+    Ngay_cap_nhat: Optional[date]
 
 class KhachHangCreate(KhachHangBase):
-    pass
+    id: str
 
 class KhachHang(KhachHangBase):
-    pass
-    class Config:
-        from_attributes = True  # Đã sửa
+    id: str
 
-# ========== TÀI KHOẢN ==========
+    class Config:
+        use_enum_values = True
+        from_attributes = True
+
 class TaiKhoanBase(BaseModel):
-    Ma_Chi_nhanh: int
-    Ma_khach_hang: int
-    Ma_tai_khoan: int
-    Noi_cap: date  # Thêm trường này
+    Ma_khach_hang: str
+    Ma_loai_tai_khoan: str
+    Ma_chi_nhanh: str
+    Ngay_cap: date
+    Trang_thai: bool
 
 class TaiKhoanCreate(TaiKhoanBase):
-    pass
+    id: str
 
 class TaiKhoan(TaiKhoanBase):
-    id: int
-    class Config:
-        from_attributes = True  # Đã sửa
+    id: str
 
-# ========== LOẠI TÀI KHOẢN ==========
+    class Config:
+        from_attributes = True
+
 class LoaiTaiKhoanBase(BaseModel):
-    Ten_loai: str
+    Ten_loai_tai_khoan: str
     Chuc_nang_chinh: str
-    Dieu_kien_mo_so: str  
-    So_du_toi_thieu: float  
+    Dieu_kien_mo_so: str
+    So_du_toi_thieu: float
 
 class LoaiTaiKhoanCreate(LoaiTaiKhoanBase):
-    pass
+    id: str
 
 class LoaiTaiKhoan(LoaiTaiKhoanBase):
-    id: int
+    id: str
+
     class Config:
-        from_attributes = True  # Đã sửa
+        from_attributes = True
 
-# ========== CHI NHÁNH ==========
-class ChiNhanhBase(BaseModel):
-    Name: str
-    Dia_chi: str
-    Phone: str
-
-class ChiNhanhCreate(ChiNhanhBase):
-    pass
-
-class ChiNhanh(ChiNhanhBase):
-    id: int
-    class Config:
-        from_attributes = True  # Đã sửa
-
-# ========== PHÂN QUYỀN ==========
-class PhanQuyenBase(BaseModel):
-    Ten_chuc_vu: str
-    Ten_quyen: str
-    Mo_ta: str
-
-class PhanQuyenCreate(PhanQuyenBase):
-    pass
-
-class PhanQuyen(PhanQuyenBase):
-    id: int
-    class Config:
-        from_attributes = True  # Đã sửa
-
-# ========== ĐĂNG NHẬP ==========
-class DangNhapBase(BaseModel):
-    Ten_dang_nhap: str
-    Mat_khau: str
-
-class DangNhapCreate(DangNhapBase):
-    pass
-
-class DangNhap(DangNhapBase):
-    id: int
-    class Config:
-        from_attributes = True  # Đã sửa
-
-# ========== NHÂN VIÊN ==========
-class NhanVienBase(BaseModel):
-    Name: str
-    CCCD: str
-    Phone: str
-    Email: str
-    Dia_chi: str
-    Luong: int
-    Ma_chi_nhanh: int  # Sửa tên trường
-    Ma_chuc_vu: int
-
-class NhanVienCreate(NhanVienBase):
-    pass
-
-class NhanVien(NhanVienBase):
-    id: int
-    class Config:
-        from_attributes = True  # Đã sửa
-
-# ========== CHUYỂN KHOẢN ==========
 class ChuyenKhoanBase(BaseModel):
-    Ma_tk_gui: int
-    Ma_tk_nhan: int
-    Ngay: date  # Sửa kiểu thành `date`
+    Ma_tk_gui: str
+    Ma_tk_nhan: str
     So_tien: float
-    Noi_dung: str
+    Thoi_gian: date
+    Ghi_chu: Optional[str]
 
 class ChuyenKhoanCreate(ChuyenKhoanBase):
-    pass
+    id: str
 
 class ChuyenKhoan(ChuyenKhoanBase):
-    id: int
-    class Config:
-        from_attributes = True  # Đã sửa
+    id: str
 
-# ========== SỔ TIẾT KIỆM ==========
+    class Config:
+        from_attributes = True
+
 class SoTietKiemBase(BaseModel):
-    Ma_nhan_vien: int
-    Ma_loai_tich_kiem: int
+    Ma_tai_khoan: str
+    Ma_loai_tien_te: str
+    Ma_loai_tiet_kiem: str
     Ngay_mo_so: date
     Ngay_het_han: date
     So_tien: float
 
 class SoTietKiemCreate(SoTietKiemBase):
-    pass
+    id: str
 
 class SoTietKiem(SoTietKiemBase):
-    id: int
-    class Config:
-        from_attributes = True  # Đã sửa
+    id: str
 
-# ========== LOẠI TIẾT KIỆM ==========
+    class Config:
+        from_attributes = True
+
 class LoaiTietKiemBase(BaseModel):
-    Ten_loai: str
+    Ten_loai_tiet_kiem: str
     Lai_suat: float
     Ky_han: int
 
 class LoaiTietKiemCreate(LoaiTietKiemBase):
-    pass
+    id: str
 
 class LoaiTietKiem(LoaiTietKiemBase):
-    id: int
-    class Config:
-        from_attributes = True  # Đã sửa
+    id: str
 
-# ========== THAO TÁC SỔ TK ==========
+    class Config:
+        from_attributes = True
+
+class LoaiTienTeBase(BaseModel):
+    Ten_loai_tien_te: str
+    Ty_gia: float
+
+class LoaiTienTeCreate(LoaiTienTeBase):
+    id: str
+
+class LoaiTienTe(LoaiTienTeBase):
+    id: str
+
+    class Config:
+        from_attributes = True
+
+class NhanVienBase(BaseModel):
+    Ho_va_ten: str
+    Gioi_tinh: GioiTinhEnum
+    Ngay_sinh: date
+    CCCD: str
+    Dia_chi: str
+    SDT: str
+    Email: str
+    Ngay_cap_nhat: Optional[date]
+    Ma_chuc_vu: str
+    Ma_chi_nhanh: str
+
+class NhanVienCreate(NhanVienBase):
+    id: str
+
+class NhanVien(NhanVienBase):
+    id: str
+    tuoi: int
+
+    class Config:
+        from_attributes = True
+
+class ChiNhanhCreate(BaseModel):
+    Ten_chi_nhanh: str
+    Dia_chi: str
+    SDT: str
+
+class ChiNhanh(ChiNhanhCreate):
+    id: str
+
+    class Config:
+        from_attributes = True
+
+class PhanQuyenBase(BaseModel):
+    Ten_chuc_vu: str
+    Ten_quyen: str
+    Mo_ta: Optional[str]
+
+class PhanQuyenCreate(PhanQuyenBase):
+    id: str
+
+class PhanQuyen(PhanQuyenBase):
+    id: str
+
+    class Config:
+        from_attributes = True
+
+class DangNhapBase(BaseModel):
+    Ten_dang_nhap: str
+    Mat_khau: str
+
+class DangNhapCreate(DangNhapBase):
+    id: str
+
+class DangNhap(DangNhapBase):
+    id: str
+
+    class Config:
+        from_attributes = True
+
 class ThaoTacSoTietKiemBase(BaseModel):
-    Ma_so_tich_kiem: int
-    Ma_nhan_vien: int
-    Ma_thao_tac: int  # Thêm trường này
-    ma_khach_hang: int
-    Ngay_thao_tac: date
-    Ghi_chu: str
+    Ma_so_tiet_kiem: str
+    Ma_nhan_vien: str
+    Ma_thao_tac: str
+    Ma_khach_hang: str
+    Ngay_thuc_hien: datetime
+    Ghi_chu: Optional[str]
 
 class ThaoTacSoTietKiemCreate(ThaoTacSoTietKiemBase):
-    pass
+    id: str
 
 class ThaoTacSoTietKiem(ThaoTacSoTietKiemBase):
-    id: int
-    class Config:
-        from_attributes = True  # Đã sửa
+    id: str
 
-# ========== THAO TÁC TK ==========
+    class Config:
+        from_attributes = True
+
 class ThaoTacTaiKhoanBase(BaseModel):
-    Ma_so_tai_khoan: int
-    Ma_nhan_vien: int
-    Ma_thao_tac: int  # Thêm trường này
-    Ngay_thao_tac: date
-    Ghi_chu: str
+    Ma_nhan_vien: str
+    Ma_tai_khoan: str
+    Ma_thao_tac: str
+    Ngay_thuc_hien: datetime
+    Ghi_chu: Optional[str]
 
 class ThaoTacTaiKhoanCreate(ThaoTacTaiKhoanBase):
-    pass
+    id: str
 
 class ThaoTacTaiKhoan(ThaoTacTaiKhoanBase):
-    id: int
-    class Config:
-        from_attributes = True  # Đã sửa
+    id: str
 
-# ========== THAO TÁC ==========
+    class Config:
+        from_attributes = True
+
 class ThaoTacBase(BaseModel):
     Ten_thao_tac: str
 
 class ThaoTacCreate(ThaoTacBase):
-    pass
+    id: str
 
 class ThaoTac(ThaoTacBase):
-    id: int
+    id: str
+
     class Config:
         from_attributes = True

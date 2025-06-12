@@ -77,12 +77,14 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>CCCD</th>
-                    <th>Name</th>
+                    <th>Họ và tên</th>
+                    <th>Giới tính</th>
                     <th>Ngày sinh</th>
-                    <th>Phone</th>
-                    <th>Email</th>
+                    <th>CCCD</th>
                     <th>Địa chỉ</th>
+                    <th>Số điện thoại</th>
+                    <th>Email</th>
+                    <th>Ngày cập nhật</th>
                     <th>Hành động</th>
                 </tr>
             </thead>
@@ -108,15 +110,17 @@
                     console.log(customer);
                     row.innerHTML = `
                         <td>${customer.id}</td>
-                        <td>${customer.CCCD}</td>
-                        <td>${customer.Name}</td>
+                        <td>${customer.Ho_va_ten}</td>
+                        <td>${customer.Gioi_tinh}</td>
                         <td>${customer.Ngay_sinh}</td>
-                        <td>${customer.Phone}</td>
-                        <td>${customer.Email}</td>
+                        <td>${customer.CCCD}</td>
                         <td>${customer.Dia_chi}</td>
+                        <td>${customer.SDT}</td>
+                        <td>${customer.Email}</td>
+                        <td>${customer.Ngay_cap_nhat}</td>
                         <td>
-                            <button class="btn btn-delete" onclick="deleteCustomer(${customer.id})">Xóa</button>
-                            <button class="btn" onclick="editcustomer(${customer.id})">Sửa</button>
+                            <button class="btn btn-delete" onclick="deleteCustomer('${customer.id}')">Xóa</button>
+                            <button class="btn" onclick="editcustomer('${customer.id}')">Sửa</button>
                         </td>
                     `;
                     tableBody.appendChild(row);

@@ -23,7 +23,7 @@ def get_all_nhan_vien(db: Session = Depends(get_db)):
 
 @router.get("/nhan-vien/search/", response_model=list[schemas.NhanVien])
 def search_nhan_vien(
-    nhan_vien_id: int | None = None,
+    nhan_vien_id: str | None = None,
     name: str | None = None,
     db: Session = Depends(get_db)
 ):
@@ -39,14 +39,14 @@ def search_nhan_vien(
     raise HTTPException(status_code=400, detail="Cần cung cấp ID hoặc tên để tìm kiếm")
 
 @router.delete("/nhan-vien/{nhan_vien_id}")
-def delete_nhan_vien(nhan_vien_id: int, db: Session = Depends(get_db)):
+def delete_nhan_vien(nhan_vien_id: str, db: Session = Depends(get_db)):
     """
     Xóa nhân viên theo ID.
     """
     return crud.delete_nhan_vien(db=db, nhan_vien_id=nhan_vien_id)
 
 @router.put("/nhan-vien/{nhan_vien_id}", response_model=schemas.NhanVien)
-def update_nhan_vien(nhan_vien_id: int, nhan_vien: schemas.NhanVienCreate, db: Session = Depends(get_db)):
+def update_nhan_vien(nhan_vien_id: str, nhan_vien: schemas.NhanVienCreate, db: Session = Depends(get_db)):
     """
     Cập nhật thông tin nhân viên.
     """

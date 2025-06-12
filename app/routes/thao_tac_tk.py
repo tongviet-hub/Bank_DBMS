@@ -23,7 +23,7 @@ def create_thao_tac_tk(thao_tac_tai_khoan: schemas.ThaoTacTaiKhoanCreate, db: Se
 
 @router.get("/thao-tac-tk/search/", response_model=List[schemas.ThaoTacTaiKhoan])
 def search_thao_tac_tk(
-    thao_tac_tai_khoan_id: int | None = None,
+    thao_tac_tai_khoan_id: str | None = None,
     db: Session = Depends(get_db)
 ):
     """
@@ -35,14 +35,14 @@ def search_thao_tac_tk(
     raise HTTPException(status_code=400, detail="Cần cung cấp ID để tìm kiếm")
 
 @router.delete("/thao-tac-tk/{thao_tac_tai_khoan_id}", response_model=dict)
-def delete_thao_tac_tk(thao_tac_tai_khoan_id: int, db: Session = Depends(get_db)):
+def delete_thao_tac_tk(thao_tac_tai_khoan_id: str, db: Session = Depends(get_db)):
     """
     Xóa thao tác tài khoản theo ID.
     """
     return crud.delete_thao_tac_tai_khoan(db=db, thao_tac_tai_khoan_id=thao_tac_tai_khoan_id)
 
 @router.put("/thao-tac-tk/{thao_tac_tai_khoan_id}", response_model=schemas.ThaoTacTaiKhoan)
-def update_thao_tac_tk(thao_tac_tai_khoan_id: int, thao_tac_tai_khoan: schemas.ThaoTacTaiKhoanCreate, db: Session = Depends(get_db)):
+def update_thao_tac_tk(thao_tac_tai_khoan_id: str, thao_tac_tai_khoan: schemas.ThaoTacTaiKhoanCreate, db: Session = Depends(get_db)):
     """
     Cập nhật thông tin thao tác tài khoản.
     """

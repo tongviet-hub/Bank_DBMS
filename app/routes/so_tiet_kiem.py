@@ -23,7 +23,7 @@ def get_all_so_tiet_kiem(db: Session = Depends(get_db)):
 
 @router.get("/so-tiet-kiem/search/", response_model=list[schemas.SoTietKiem])
 def search_so_tiet_kiem(
-    so_tiet_kiem_id: int | None = None,
+    so_tiet_kiem_id: str | None = None,
     db: Session = Depends(get_db)
 ):
     """
@@ -35,14 +35,14 @@ def search_so_tiet_kiem(
     raise HTTPException(status_code=400, detail="Cần cung cấp ID để tìm kiếm")
 
 @router.delete("/so-tiet-kiem/{so_tiet_kiem_id}")
-def delete_so_tiet_kiem(so_tiet_kiem_id: int, db: Session = Depends(get_db)):
+def delete_so_tiet_kiem(so_tiet_kiem_id: str, db: Session = Depends(get_db)):
     """
     Xóa sổ tiết kiệm theo ID.
     """
     return crud.delete_so_tiet_kiem(db=db, so_tiet_kiem_id=so_tiet_kiem_id)
 
 @router.put("/so-tiet-kiem/{so_tiet_kiem_id}", response_model=schemas.SoTietKiem)
-def update_so_tiet_kiem(so_tiet_kiem_id: int, so_tiet_kiem: schemas.SoTietKiemCreate, db: Session = Depends(get_db)):
+def update_so_tiet_kiem(so_tiet_kiem_id: str, so_tiet_kiem: schemas.SoTietKiemCreate, db: Session = Depends(get_db)):
     """
     Cập nhật thông tin sổ tiết kiệm.
     """

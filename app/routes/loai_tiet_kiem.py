@@ -6,48 +6,47 @@ import schemas
 
 router = APIRouter()
 
-@router.post("/loai-tai-khoan/", response_model=schemas.LoaiTaiKhoan)
-def create_loai_tai_khoan(loai_tai_khoan: schemas.LoaiTaiKhoanCreate, db: Session = Depends(get_db)):
+@router.post("/loai-tiet-kiem/", response_model=schemas.LoaiTietKiem)
+def create_loai_tiet_kiem(loai_tiet_kiem: schemas.LoaiTietKiemCreate, db: Session = Depends(get_db)):
     """
-    Tạo mới một loại tài khoản.
+    Tạo mới một loại tiết kiệm.
     """
-    return crud.create_loai_tai_khoan(db=db, loai_tai_khoan=loai_tai_khoan)
+    return crud.create_loai_tiet_kiem(db=db, loai_tiet_kiem=loai_tiet_kiem)
 
-@router.get("/loai-tai-khoan/", response_model=list[schemas.LoaiTaiKhoan])
-def get_all_loai_tai_khoan(db: Session = Depends(get_db)):
+@router.get("/loai-tiet-kiem/", response_model=list[schemas.LoaiTietKiem])
+def get_all_loai_tiet_kiem(db: Session = Depends(get_db)):
     """
-    Lấy danh sách tất cả các loại tài khoản.
+    Lấy danh sách tất cả các loại tiết kiệm.
     """
-    db_loai_tai_khoan = crud.get_all_loai_tai_khoan(db=db)
-    return db_loai_tai_khoan
-
-@router.get("/loai-tai-khoan/search/", response_model=list[schemas.LoaiTaiKhoan])
+    db_loai_tiet_kiem = crud.get_all_loai_tiet_kiem(db=db)
+    return db_loai_tiet_kiem
+@router.get("/loai-tiet-kiem/search/", response_model=list[schemas.LoaiTietKiem])
 def search_loai_tai_khoan(
-    loai_tai_khoan_id: int | None = None,
+    loai_tiet_kiem_id: str | None = None,
     name: str | None = None,
     db: Session = Depends(get_db)
 ):
     """
     Tìm kiếm loại tài khoản theo ID hoặc tên.
     """
-    if loai_tai_khoan_id:
-        db_loai_tai_khoan = crud.get_loai_tiet_kiem(db=db, loai_tai_khoan_id=loai_tai_khoan_id)
-        return [db_loai_tai_khoan] if db_loai_tai_khoan else []
+    if loai_tiet_kiem_id:
+        db_loai_tiet_kiem = crud.get_loai_tiet_kiem(db=db, loai_tiet_kiem_id=loai_tiet_kiem_id)
+        return [db_loai_tiet_kiem] if db_loai_tiet_kiem else []
     if name:
-        db_loai_tai_khoan = crud.get_loai_tiet_kiem(db=db, loai_tiet_kiem_name=name)
-        return db_loai_tai_khoan
+        db_loai_tiet_kiem = crud.get_loai_tiet_kiem(db=db, loai_tiet_kiem_name=name)
+        return db_loai_tiet_kiem
     raise HTTPException(status_code=400, detail="Cần cung cấp ID hoặc tên để tìm kiếm")
 
-@router.delete("/loai-tai-khoan/{loai_tai_khoan_id}")
-def delete_loai_tai_khoan(loai_tai_khoan_id: int, db: Session = Depends(get_db)):
+@router.delete("/loai-tiet-kiem/{loai_tiet_kiem_id}")
+def delete_loai_tiet_kiem(loai_tiet_kiem_id: str, db: Session = Depends(get_db)):
     """
     Xóa loại tài khoản theo ID.
     """
-    return crud.delete_loai_tai_khoan(db=db, loai_tai_khoan_id=loai_tai_khoan_id)
+    return crud.delete_loai_tiet_kiem(db=db, loai_tiet_kiem_id=loai_tiet_kiem_id)
 
-@router.put("/loai-tai-khoan/{loai_tai_khoan_id}", response_model=schemas.LoaiTaiKhoan)
-def update_loai_tai_khoan(loai_tai_khoan_id: int, loai_tai_khoan: schemas.LoaiTaiKhoanCreate, db: Session = Depends(get_db)):
+@router.put("/loai-tai-khoan/{loai_tiet_kiem_id}", response_model=schemas.LoaiTietKiem)
+def update_loai_tiet_kiem(loai_tiet_kiem_id: str, loai_tiet_kiem: schemas.LoaiTietKiemCreate, db: Session = Depends(get_db)):
     """
     Cập nhật thông tin loại tài khoản.
     """
-    return crud.update_loai_tai_khoan(db=db, loai_tai_khoan_id=loai_tai_khoan_id, loai_tai_khoan=loai_tai_khoan)
+    return crud.update_loai_tiet_kiem(db=db, loai_tiet_kiem_id=loai_tiet_kiem_id, loai_tiet_kiem=loai_tiet_kiem)

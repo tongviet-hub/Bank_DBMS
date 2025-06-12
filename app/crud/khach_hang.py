@@ -2,9 +2,9 @@ from sqlalchemy.orm import Session
 from sqlalchemy import or_
 from fastapi import HTTPException
 from models import Khach_hang
-from schemas import KhachHangCreate
+from schemas import KhachHangBase, KhachHang
 
-def create_khach_hang(db: Session, khach_hang: KhachHangCreate):
+def create_khach_hang(db: Session, khach_hang: KhachHang):
     db_khach_hang = Khach_hang(**khach_hang.dict())
     db.add(db_khach_hang)
     db.commit()
@@ -30,7 +30,7 @@ def get_all_khach_hang(db: Session):
     """
     Lấy danh sách tất cả khách hàng.
     """
-    return db.query(Khach_hang).all()
+    return db.query(Khach_hang).order_by(Khach_hang.id).all()
 
 def delete_khach_hang(db: Session, khach_hang_id: str = None, khach_hang_name: str = None):
     """
@@ -51,7 +51,7 @@ def delete_khach_hang(db: Session, khach_hang_id: str = None, khach_hang_name: s
     return {"message": "Khách hàng đã được xóa thành công"}
 
 
-def update_khach_hang(db: Session, khach_hang_id: str, khach_hang: KhachHangCreate):
+def update_khach_hang(db: Session, khach_hang_id: str, khach_hang: KhachHangBase):
     db_khach_hang = db.query(Khach_hang).filter(Khach_hang.id == khach_hang_id).first()
     if db_khach_hang is None:
         raise HTTPException(status_code=404, detail="Khách hàng không tồn tại")

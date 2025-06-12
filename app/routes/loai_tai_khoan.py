@@ -24,7 +24,7 @@ def get_all_loai_tai_khoan(db: Session = Depends(get_db)):
 
 @router.get("/loai-tai-khoan/search/", response_model=list[schemas.LoaiTaiKhoan])
 def search_loai_tai_khoan(
-    loai_tai_khoan_id: int | None = None,
+    loai_tai_khoan_id: str | None = None,
     name: str | None = None,
     db: Session = Depends(get_db)
 ):
@@ -40,14 +40,14 @@ def search_loai_tai_khoan(
     raise HTTPException(status_code=400, detail="Cần cung cấp ID hoặc tên để tìm kiếm")
 
 @router.delete("/loai-tai-khoan/{loai_tai_khoan_id}")
-def delete_loai_tai_khoan(loai_tai_khoan_id: int, db: Session = Depends(get_db)):
+def delete_loai_tai_khoan(loai_tai_khoan_id: str, db: Session = Depends(get_db)):
     """
     Xóa loại tài khoản theo ID.
     """
     return crud.delete_loai_tai_khoan(db=db, loai_tai_khoan_id=loai_tai_khoan_id)
 
 @router.put("/loai-tai-khoan/{loai_tai_khoan_id}", response_model=schemas.LoaiTaiKhoan)
-def update_loai_tai_khoan(loai_tai_khoan_id: int, loai_tai_khoan: schemas.LoaiTaiKhoanCreate, db: Session = Depends(get_db)):
+def update_loai_tai_khoan(loai_tai_khoan_id: str, loai_tai_khoan: schemas.LoaiTaiKhoanCreate, db: Session = Depends(get_db)):
     """
     Cập nhật thông tin loại tài khoản.
     """

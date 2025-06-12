@@ -22,7 +22,7 @@ def get_all_phan_quyen(db: Session = Depends(get_db)):
 
 @router.get("/phan-quyen/search/", response_model=list[schemas.PhanQuyen])
 def search_phan_quyen(
-    phan_quyen_id: int | None = None,
+    phan_quyen_id: str | None = None,
     name: str | None = None,
     db: Session = Depends(get_db)
 ):
@@ -38,14 +38,14 @@ def search_phan_quyen(
     raise HTTPException(status_code=400, detail="Cần cung cấp ID hoặc tên để tìm kiếm")
 
 @router.delete("/phan-quyen/{phan_quyen_id}")
-def delete_phan_quyen(phan_quyen_id: int, db: Session = Depends(get_db)):
+def delete_phan_quyen(phan_quyen_id: str, db: Session = Depends(get_db)):
     """
     Xóa phân quyền theo ID.
     """
     return crud.delete_phan_quyen(db=db, phan_quyen_id=phan_quyen_id)
 
 @router.put("/phan-quyen/{phan_quyen_id}", response_model=schemas.PhanQuyen)
-def update_phan_quyen(phan_quyen_id: int, phan_quyen: schemas.PhanQuyenCreate, db: Session = Depends(get_db)):
+def update_phan_quyen(phan_quyen_id: str, phan_quyen: schemas.PhanQuyenCreate, db: Session = Depends(get_db)):
     """
     Cập nhật thông tin phân quyền.
     """
