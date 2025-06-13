@@ -57,6 +57,8 @@
             text-decoration: none;
             border-radius: 5px;
             text-align: center;
+            cursor: pointer;
+            border: none;
         }
         .btn:hover {
             background: #0056b3;
@@ -67,12 +69,67 @@
         .btn-delete:hover {
             background: #c82333;
         }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+        .modal-content {
+            background: #fff;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 20px;
+            width: 70%;
+            max-width: 500px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .search-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .search-group input {
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            flex: 1;
+        }
     </style>
 </head>
 <body>
     <h1>Danh sách khách hàng</h1>
     <div class="container">
-        <a href="#" class="btn" id="addCustomer">Thêm khách hàng</a>
+        <div class="search-group">
+            <input type="text" id="searchId" placeholder="Nhập ID khách hàng...">
+            <input type="text" id="searchName" placeholder="Nhập tên khách hàng...">
+            <button class="btn" onclick="searchCustomer()">Tìm kiếm</button>
+            <button class="btn" onclick="fetchCustomers()">Hiện tất cả</button>
+        </div>
+        <button class="btn" id="addCustomer" onclick="showAddModal()">Thêm khách hàng</button>
         <table>
             <thead>
                 <tr>
@@ -94,20 +151,106 @@
         </table>
     </div>
 
+    <!-- Modal thêm khách hàng -->
+    <div id="addModal" class="modal">
+        <div class="modal-content">
+            <h2>Thêm khách hàng</h2>
+            <form id="addForm">
+                <div class="form-group">
+                    <label for="id">ID:</label>
+                    <input type="text" id="id" required>
+                </div>
+                <div class="form-group">
+                    <label for="ho_va_ten">Họ và tên:</label>
+                    <input type="text" id="ho_va_ten" required>
+                </div>
+                <div class="form-group">
+                    <label for="gioi_tinh">Giới tính:</label>
+                    <input type="text" id="gioi_tinh" required>
+                </div>
+                <div class="form-group">
+                    <label for="ngay_sinh">Ngày sinh:</label>
+                    <input type="date" id="ngay_sinh" required>
+                </div>
+                <div class="form-group">
+                    <label for="cccd">CCCD:</label>
+                    <input type="text" id="cccd" required>
+                </div>
+                <div class="form-group">
+                    <label for="dia_chi">Địa chỉ:</label>
+                    <input type="text" id="dia_chi" required>
+                </div>
+                <div class="form-group">
+                    <label for="sdt">Số điện thoại:</label>
+                    <input type="text" id="sdt" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" required>
+                </div>
+                <button type="submit" class="btn">Thêm</button>
+                <button type="button" class="btn btn-delete" onclick="hideAddModal()">Hủy</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal cập nhật khách hàng -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <h2>Cập nhật khách hàng</h2>
+            <form id="editForm">
+                <input type="hidden" id="edit_id">
+                <div class="form-group">
+                    <label for="edit_ho_va_ten">Họ và tên:</label>
+                    <input type="text" id="edit_ho_va_ten" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit_gioi_tinh">Giới tính:</label>
+                    <input type="text" id="edit_gioi_tinh" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit_ngay_sinh">Ngày sinh:</label>
+                    <input type="date" id="edit_ngay_sinh" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit_cccd">CCCD:</label>
+                    <input type="text" id="edit_cccd" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit_dia_chi">Địa chỉ:</label>
+                    <input type="text" id="edit_dia_chi" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit_sdt">Số điện thoại:</label>
+                    <input type="text" id="edit_sdt" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit_email">Email:</label>
+                    <input type="email" id="edit_email" required>
+                </div>
+                <button type="submit" class="btn">Cập nhật</button>
+                <button type="button" class="btn btn-delete" onclick="hideEditModal()">Hủy</button>
+            </form>
+        </div>
+    </div>
+
     <script>
         const apiUrl = "http://127.0.0.1:8000/khach-hang/khach-hang/";
 
         // Hàm lấy danh sách khách hàng từ API
         async function fetchCustomers() {
             try {
-                const response = await fetch(apiUrl);
-                const customers = await response.json();
+                const response = await fetch(`${apiUrl}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                let customers = await response.json();
+                customers.sort((a, b) => a.id.localeCompare(b.id));
                 const tableBody = document.getElementById("customerTableBody");
-                tableBody.innerHTML = ""; // Xóa nội dung cũ
+                tableBody.innerHTML = "";
 
                 customers.forEach(customer => {
                     const row = document.createElement("tr");
-                    console.log(customer);
                     row.innerHTML = `
                         <td>${customer.id}</td>
                         <td>${customer.Ho_va_ten}</td>
@@ -119,66 +262,222 @@
                         <td>${customer.Email}</td>
                         <td>${customer.Ngay_cap_nhat}</td>
                         <td>
+                            <button class="btn" onclick="showEditModal('${customer.id}')">Sửa</button>
                             <button class="btn btn-delete" onclick="deleteCustomer('${customer.id}')">Xóa</button>
-                            <button class="btn" onclick="editcustomer('${customer.id}')">Sửa</button>
                         </td>
                     `;
                     tableBody.appendChild(row);
                 });
             } catch (error) {
                 console.error("Lỗi khi lấy danh sách khách hàng:", error);
+                alert("Không thể lấy danh sách khách hàng. Vui lòng thử lại sau.");
             }
         }
 
-        // Hàm xóa khách hàng
-        async function deleteCustomer(id) {
+        // Tìm khách hàng theo ID hoặc tên
+        async function searchCustomer() {
+            const id = document.getElementById("searchId").value.trim();
+            const name = document.getElementById("searchName").value.trim();
+            const tableBody = document.getElementById("customerTableBody");
+            tableBody.innerHTML = "";
+
+            if (!id && !name) {
+                alert("Vui lòng nhập ID hoặc tên khách hàng!");
+                return;
+            }
+
+            if (id && name) {
+                alert("Vui lòng chỉ nhập một trong hai: ID hoặc tên!");
+                return;
+            }
+
             try {
-                const response = await fetch(`${apiUrl}${id}`, {
-                    method: "DELETE",
-                });
-                if (response.ok) {
-                    alert("Khách hàng đã được xóa thành công!");
-                    fetchCustomers(); // Cập nhật lại danh sách
+                let queryParam;
+                if (id) {
+                    queryParam = `khach_hang_id=${encodeURIComponent(id)}`;
                 } else {
-                    alert("Lỗi khi xóa khách hàng!");
+                    queryParam = `name=${encodeURIComponent(name)}`;
                 }
+
+                const response = await fetch(`${apiUrl}search/?${queryParam}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const customers = await response.json();
+
+                if (customers.length === 0) {
+                    alert("Không tìm thấy khách hàng!");
+                    return;
+                }
+
+                customers.forEach(customer => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${customer.id}</td>
+                        <td>${customer.Ho_va_ten}</td>
+                        <td>${customer.Gioi_tinh}</td>
+                        <td>${customer.Ngay_sinh}</td>
+                        <td>${customer.CCCD}</td>
+                        <td>${customer.Dia_chi}</td>
+                        <td>${customer.SDT}</td>
+                        <td>${customer.Email}</td>
+                        <td>${customer.Ngay_cap_nhat}</td>
+                        <td>
+                            <button class="btn" onclick="showEditModal('${customer.id}')">Sửa</button>
+                            <button class="btn btn-delete" onclick="deleteCustomer('${customer.id}')">Xóa</button>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
             } catch (error) {
-                console.error("Lỗi khi xóa khách hàng:", error);
+                console.error("Lỗi khi tìm khách hàng:", error);
+                alert("Lỗi khi tìm khách hàng! Vui lòng kiểm tra lại.");
             }
         }
 
-        // Hiển thị modal sửa sinh viên
+        // Hiển thị modal thêm khách hàng
         function showAddModal() {
             document.getElementById("addModal").style.display = "block";
         }
 
-        // Ẩn modal sửa sinh viên
+        // Ẩn modal thêm khách hàng
         function hideAddModal() {
             document.getElementById("addModal").style.display = "none";
+            document.getElementById("addForm").reset();
         }
 
+        // Xử lý form thêm khách hàng
+        document.getElementById("addForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const newCustomer = {
+                id: document.getElementById("id").value.trim(),
+                Ho_va_ten: document.getElementById("ho_va_ten").value.trim(),
+                Gioi_tinh: document.getElementById("gioi_tinh").value.trim(),
+                Ngay_sinh: document.getElementById("ngay_sinh").value,
+                CCCD: document.getElementById("cccd").value.trim(),
+                Dia_chi: document.getElementById("dia_chi").value.trim(),
+                SDT: document.getElementById("sdt").value.trim(),
+                Email: document.getElementById("email").value.trim(),
+                Ngay_cap_nhat: new Date().toISOString().split('T')[0]
+            };
 
-        // Hàm chỉnh sửa khách hàng
-
-        async function editcustomer(id) {
             try {
-                const response = await fetch(`${apiUrL}${id}`,{
-                    method: "PUT",
+                const response = await fetch(`${apiUrl}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(newCustomer)
                 });
+
                 if (response.ok) {
-                    alert("Khách hàng đã được sửa thành công!");
-                    fetchCustomers(); // Cập nhật lại danh sách
+                    alert("Thêm khách hàng thành công!");
+                    hideAddModal();
+                    fetchCustomers();
+                } else {
+                    const errorData = await response.json();
+                    alert("Thêm khách hàng thất bại! " + (errorData.detail || "Vui lòng kiểm tra lại dữ liệu."));
                 }
-                else {
-                    alert("Lỗi khi sửa khách hàng!")
-                }
+            } catch (error) {
+                console.error("Lỗi khi thêm khách hàng:", error);
+                alert("Không thể thêm khách hàng. Vui lòng thử lại sau.");
             }
-            catch (error) {
+        });
+
+        // Hiển thị modal cập nhật và điền thông tin khách hàng
+        async function showEditModal(id) {
+            try {
+                const response = await fetch(`${apiUrl}search/?khach_hang_id=${encodeURIComponent(id)}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const customers = await response.json();
+                if (customers.length === 0) {
+                    alert("Không tìm thấy khách hàng!");
+                    return;
+                }
+                const customer = customers[0];
+                document.getElementById("edit_id").value = customer.id;
+                document.getElementById("edit_ho_va_ten").value = customer.Ho_va_ten;
+                document.getElementById("edit_gioi_tinh").value = customer.Gioi_tinh;
+                document.getElementById("edit_ngay_sinh").value = customer.Ngay_sinh;
+                document.getElementById("edit_cccd").value = customer.CCCD;
+                document.getElementById("edit_dia_chi").value = customer.Dia_chi;
+                document.getElementById("edit_sdt").value = customer.SDT;
+                document.getElementById("edit_email").value = customer.Email;
+                document.getElementById("editModal").style.display = "block";
+            } catch (error) {
                 console.error("Lỗi khi lấy thông tin khách hàng:", error);
+                alert("Lỗi khi lấy thông tin khách hàng!");
             }
         }
 
+        // Ẩn modal cập nhật
+        function hideEditModal() {
+            document.getElementById("editModal").style.display = "none";
+        }
 
+        // Xử lý cập nhật khách hàng
+        document.getElementById("editForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const id = document.getElementById("edit_id").value.trim();
+            const updatedCustomer = {
+                id: id,
+                Ho_va_ten: document.getElementById("edit_ho_va_ten").value.trim(),
+                Gioi_tinh: document.getElementById("edit_gioi_tinh").value.trim(),
+                Ngay_sinh: document.getElementById("edit_ngay_sinh").value,
+                CCCD: document.getElementById("edit_cccd").value.trim(),
+                Dia_chi: document.getElementById("edit_dia_chi").value.trim(),
+                SDT: document.getElementById("edit_sdt").value.trim(),
+                Email: document.getElementById("edit_email").value.trim(),
+                Ngay_cap_nhat: new Date().toISOString().split('T')[0]
+            };
+
+            try {
+                const response = await fetch(`${apiUrl}${id}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(updatedCustomer)
+                });
+
+                if (response.ok) {
+                    alert("Cập nhật khách hàng thành công!");
+                    hideEditModal();
+                    fetchCustomers();
+                } else {
+                    const errorData = await response.json();
+                    alert("Cập nhật thất bại! " + (errorData.detail || "Vui lòng kiểm tra lại dữ liệu."));
+                }
+            } catch (error) {
+                console.error("Lỗi khi cập nhật khách hàng:", error);
+                alert("Lỗi khi cập nhật khách hàng!");
+            }
+        });
+
+        // Hàm xóa khách hàng
+        async function deleteCustomer(id) {
+            if (confirm("Bạn có chắc muốn xóa khách hàng này?")) {
+                try {
+                    const response = await fetch(`${apiUrl}${id}`, {
+                        method: "DELETE",
+                    });
+                    if (response.ok) {
+                        alert("Khách hàng đã được xóa thành công!");
+                        fetchCustomers();
+                    } else {
+                        const errorData = await response.json();
+                        alert("Không thể xóa khách hàng! " + (errorData.detail || "Vui lòng thử lại sau."));
+                    }
+                } catch (error) {
+                    console.error("Lỗi khi xóa khách hàng:", error);
+                    alert("Không thể xóa khách hàng. Vui lòng thử lại sau.");
+                }
+            }
+        }
+
+        // Load danh sách khách hàng khi trang được tải
         document.addEventListener("DOMContentLoaded", fetchCustomers);
     </script>
 </body>
