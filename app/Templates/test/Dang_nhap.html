@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bank Management App - Đăng nhập</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .container {
+      width: 100%;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    h1 {
+      text-align: center;
+      margin: 20px 0;
+      color: #f0f0f0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    table th,
+    table td {
+      padding: 12px 15px;
+      text-align: left;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #d8d8d8;
+    }
+
+    table th {
+      background: #00aaff;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    table tr:nth-child(even) {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    table tr:hover {
+      background: rgba(0, 170, 255, 0.15);
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      margin: 10px 0;
+      background: #00aaff;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+      text-align: center;
+      cursor: pointer;
+      border: none;
+      transition: background 0.2s;
+    }
+
+    .btn:hover {
+      background: #0088cc;
+    }
+
+    .btn-delete {
+      background: #ff8c00;
+    }
+
+    .btn-delete:hover {
+      background: #e07b00;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.75);
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: rgba(30, 30, 30, 0.95);
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 20px;
+      width: 70%;
+      max-width: 500px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+      max-height: 80vh;
+      overflow-y: auto;
+      color: #f0f0f0;
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #d8d8d8;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #f0f0f0;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #00aaff;
+    }
+
+    .search-group {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .search-group input {
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.08);
+      color: #f0f0f0;
+      flex: 1;
+    }
+
+    .search-group input:focus {
+      outline: none;
+      border-color: #00aaff;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.hidden {
+        transform: translateX(0);
+      }
+
+      .main-content {
+        margin-left: 0;
+      }
+
+      .main-content.full {
+        margin-left: 250px;
+      }
+
+      .sidebar .toggle-btn,
+      .open-sidebar-btn {
+        display: block;
+      }
+
+      table {
+        font-size: 14px;
+      }
+
+      table th,
+      table td {
+        padding: 8px;
+      }
+
+      .modal-content {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bg-canvas"></canvas>
+  <div class="content-overlay"></div>
+  <div class="flex">
+    <div id="sidebar" class="sidebar">
+      <h1><i class="fas fa-database"></i> BankPro</h1>
+      <nav>
+        <ul>
+          <li><a href="#dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+          <l
+System: i><a href="Khach_hang.html"><i class="fas fa-users"></i> Customers</a></li>
+          <li><a href="Tai_khoan.html"><i class="fas fa-credit-card"></i> Accounts</a></li>
+          <li><a href="Loai_tai_khoan.html"><i class="fas fa-list-alt"></i> Account Types</a></li>
+          <li><a href="Chuyen_khoan.html"><i class="fas fa-exchange-alt"></i> Transactions</a></li>
+          <li><a href="So_tiet_kiem.html"><i class="fas fa-piggy-bank"></i> Savings</a></li>
+          <li><a href="Loai_tiet_kiem.html"><i class="fas fa-coins"></i> Savings Types</a></li>
+          <li><a href="Loai_tien_te.html"><i class="fas fa-money-bill-wave"></i> Currencies</a></li>
+          <li><a href="Nhan_vien.html"><i class="fas fa-user-tie"></i> Employees</a></li>
+          <li><a href="Chi_nhanh.html"><i class="fas fa-building"></i> Branches</a></li>
+          <li><a href="Phan_quyen.html"><i class="fas fa-user-shield"></i> Permissions</a></li>
+          <li><a href="Dang_nhap.html"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+          <li><a href="Thao_tac_so_tiet_kiem.html"><i class="fas fa-hand-holding-usd"></i> Savings Operations</a></li>
+          <li><a href="Thao_tac_tai_khoan.html"><i class="fas fa-wallet"></i> Account Operations</a></li>
+          <li><a href="Thao_tac.html"><i class="fas fa-cogs"></i> Operations</a></li>
+        </ul>
+      </nav>
+      <button id="toggle-sidebar" class="toggle-btn" aria-expanded="true">Close</button>
+    </div>
+
+    <div id="main-content" class="main-content">
+      <button id="open-sidebar" class="open-sidebar-btn">Menu</button>
+      <div id="content">
+        <div id="login-list-content">
+          <h1>Danh sách đăng nhập</h1>
+          <div class="container">
+            <div class="search-group">
+              <input type="text" id="searchId" placeholder="Nhập ID đăng nhập...">
+              <input type="text" id="searchUsername" placeholder="Nhập tên người dùng...">
+              <button class="btn" onclick="searchLogin()">Tìm kiếm</button>
+              <button class="btn" onclick="fetchLogins()">Hiện tất cả</button>
+            </div>
+            <button class="btn" onclick="showAddModal()">Thêm đăng nhập</button>
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Tên đăng nhập</th>
+                  <th>Mật khẩu</th>
+                  <th>Hành động</th>
+                </tr>
+              </thead>
+              <tbody id="loginTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="addModal" class="modal">
+          <div class="modal-content">
+            <h2>Thêm đăng nhập</h2>
+            <form id="addForm">
+              <div class="form-group">
+                <label for="id">ID:</label>
+                <input type="text" id="id" required>
+              </div>
+              <div class="form-group">
+                <label for="ten_dang_nhap">Tên đăng nhập:</label>
+                <input type="text" id="ten_dang_nhap" required>
+              </div>
+              <div class="form-group">
+                <label for="mat_khau">Mật khẩu:</label>
+                <input type="password" id="mat_khau" required>
+              </div>
+              <button type="submit" class="btn">Thêm</button>
+              <button type="button" class="btn btn-delete" onclick="hideAddModal()">Hủy</button>
+            </form>
+          </div>
+        </div>
+
+        <div id="editModal" class="modal">
+          <div class="modal-content">
+            <h2>Cập nhật đăng nhập</h2>
+            <form id="editForm">
+              <input type="hidden" id="edit_id">
+              <div class="form-group">
+                <label for="edit_ten_dang_nhap">Tên đăng nhập:</label>
+                <input type="text" id="edit_ten_dang_nhap" required>
+              </div>
+              <div class="form-group">
+                <label for="edit_mat_khau">Mật khẩu:</label>
+                <input type="password" id="edit_mat_khau" required>
+              </div>
+              <button type="submit" class="btn">Cập nhật</button>
+              <button type="button" class="btn btn-delete" onclick="hideEditModal()">Hủy</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="background.js"></script>
+  <script src="sidebar.js"></script>
+  <script>
+    const apiUrl = "http://127.0.0.1:8000/dang-nhap/dang-nhap/";
+
+    async function fetchLogins() {
+      try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        let logins = await response.json();
+        logins.sort((a, b) => a.id.localeCompare(b.id));
+        const tableBody = document.getElementById("loginTableBody");
+        tableBody.innerHTML = "";
+        logins.forEach(login => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${login.id}</td>
+            <td>${login.Ten_dang_nhap}</td>
+            <td>${login.Mat_khau}</td>
+            <td>
+              <button class="btn" onclick="showEditModal('${login.id}')">Sửa</button>
+              <button class="btn btn-delete" onclick="deleteLogin('${login.id}')">Xóa</button>
+            </td>
+          `;
+          tableBody.appendChild(row);
+        });
+      } catch (error) {
+        console.error("Lỗi khi lấy danh sách đăng nhập:", error);
+        alert("Không thể lấy danh sách đăng nhập. Vui lòng thử lại sau.");
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      fetchLogins();
+    });
+
+    async function searchLogin(event) {
+      event.preventDefault();
+      const id = document.getElementById("searchId").value.trim();
+      const username = document.getElementById("searchUsername").value.trim();
+      const tableBody = document.getElementById("loginTableBody");
+      tableBody.innerHTML = "";
+
+      if (!id && !username) {
+        alert("Vui lòng nhập ID hoặc tên đăng nhập!");
+        return;
+      }
+
+      if (id && username) {
+        alert("Vui lòng chỉ nhập một trong hai: ID hoặc tên đăng nhập!");
+        return;
+      }
+
+      try {
+        let queryParam = id ? `dang_nhap_id=${encodeURIComponent(id)}` : `username=${encodeURIComponent(username)}`;
+        const response = await fetch(`${apiUrl}search/?${queryParam}`, {
+          headers: { "Content-Type": "application/json" }
+        });
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        const logins = await response.json();
+        if (logins.length === 0) {
+          alert("Không tìm thấy thông tin đăng nhập!");
+          return;
+        }
+        logins.forEach(login => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${login.id}</td>
+            <td>${login.Ten_dang_nhap}</td>
+            <td>${login.Mat_khau}</td>
+            <td>
+              <button class="btn" onclick="showEditModal('${login.id}')">Sửa</button>
+              <button class="btn btn-delete" onclick="deleteLogin('${login.id}')">Xóa</button>
+            </td>
+          `;
+          tableBody.appendChild(row);
+        });
+      } catch (error) {
+        console.error("Lỗi khi tìm kiếm:", error);
+        alert("Lỗi khi tìm kiếm! Vui lòng thử lại.");
+      }
+    }
+
+    function showAddModal() {
+      document.getElementById("addModal").style.display = "block";
+    }
+
+    function hideAddModal() {
+      document.getElementById("addModal").style.display = "none";
+      document.getElementById("addForm").reset();
+    }
+
+    document.getElementById("addForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const newLogin = {
+        id: document.getElementById("id").value.trim(),
+        Ten_dang_nhap: document.getElementById("ten_dang_nhap").value.trim(),
+        Mat_khau: document.getElementById("mat_khau").value.trim()
+      };
+
+      try {
+        const response = await fetch(apiUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(newLogin)
+        });
+
+        if (response.ok) {
+          alert("Thêm đăng nhập thành công!");
+          hideAddModal();
+          fetchLogins();
+        } else {
+          const errorData = await response.json();
+          alert("Thêm thất bại! " + (errorData.detail || "Vui lòng kiểm tra lại."));
+        }
+      } catch (error) {
+        console.error("Lỗi khi thêm đăng nhập:", error);
+        alert("Không thể thêm đăng nhập. Vui lòng thử lại sau.");
+      }
+    });
+
+    async function showEditModal(id) {
+      try {
+        const response = await fetch(`${apiUrl}search/?dang_nhap_id=${encodeURIComponent(id)}`, {
+          headers: { "Content-Type": "application/json" }
+        });
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        const logins = await response.json();
+        if (logins.length === 0) {
+          alert("Không tìm thấy thông tin đăng nhập!");
+          return;
+        }
+        const login = logins[0];
+        document.getElementById("edit_id").value = login.id;
+        document.getElementById("edit_ten_dang_nhap").value = login.Ten_dang_nhap;
+        document.getElementById("edit_mat_khau").value = "";
+        document.getElementById("editModal").style.display = "block";
+      } catch (error) {
+        console.error("Lỗi khi lấy thông tin đăng nhập:", error);
+        alert("Lỗi khi lấy thông tin đăng nhập!");
+      }
+    }
+
+    function hideEditModal() {
+      document.getElementById("editModal").style.display = "none";
+      document.getElementById("editForm").reset();
+    }
+
+    document.getElementById("editForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const id = document.getElementById("edit_id").value.trim();
+      const updatedLogin = {
+        id: id,
+        Ten_dang_nhap: document.getElementById("edit_ten_dang_nhap").value.trim(),
+        Mat_khau: document.getElementById("edit_mat_khau").value.trim()
+      };
+
+      try {
+        const response = await fetch(`${apiUrl}${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updatedLogin)
+        });
+
+        if (response.ok) {
+          alert("Cập nhật thành công!");
+          hideEditModal();
+          fetchLogins();
+        } else {
+          const errorData = await response.json();
+          alert("Cập nhật thất bại! " + (errorData.detail || "Vui lòng kiểm tra lại."));
+        }
+      } catch (error) {
+        console.error("Lỗi khi cập nhật:", error);
+        alert("Lỗi khi cập nhật!");
+      }
+    });
+
+    async function deleteLogin(id) {
+      if (confirm("Bạn có chắc muốn xóa thông tin đăng nhập này?")) {
+        try {
+          const response = await fetch(`${apiUrl}${id}`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" }
+          });
+          if (response.ok) {
+            alert("Xóa thành công!");
+            fetchLogins();
+          } else {
+            const errorData = await response.json();
+            alert("Không thể xóa! " + (errorData.detail || "Vui lòng thử lại sau."));
+          }
+        } catch (error) {
+          console.error("Lỗi khi xóa:", error);
+          alert("Không thể xóa. Vui lòng thử lại sau.");
+        }
+      }
+    }
+  </script>
+</body>
+</html>

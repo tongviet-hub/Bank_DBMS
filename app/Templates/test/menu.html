@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bank Management App</title>
+  <!-- Font Awesome CDN for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <!-- Shared CSS -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <canvas id="bg-canvas"></canvas>
+  <div class="content-overlay"></div>
+  <div class="flex">
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar">
+      <h1><i class="fas fa-database"></i> BankPro</h1>
+      <nav>
+        <ul>
+          <li><a href="#dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+          <li><a href="Khach_hang.html"><i class="fas fa-users"></i> Customers</a></li>
+          <li><a href="Tai_khoan.html"><i class="fas fa-credit-card"></i> Accounts</a></li>
+          <li><a href="Loai_tai_khoan.html"><i class="fas fa-list-alt"></i> Account Types</a></li>
+          <li><a href="Chuyen_khoan.html"><i class="fas fa-exchange-alt"></i> Transactions</a></li>
+          <li><a href="So_tiet_kiem.html"><i class="fas fa-piggy-bank"></i> Savings</a></li>
+          <li><a href="Loai_tiet_kiem.html"><i class="fas fa-coins"></i> Savings Types</a></li>
+          <li><a href="Loai_tien_te.html"><i class="fas fa-money-bill-wave"></i> Currencies</a></li>
+          <li><a href="Nhan_vien.html"><i class="fas fa-user-tie"></i> Employees</a></li>
+          <li><a href="Chi_nhanh.html"><i class="fas fa-building"></i> Branches</a></li>
+          <li><a href="Phan_quyen.html"><i class="fas fa-user-shield"></i> Permissions</a></li>
+          <li><a href="Dang_nhap.html"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+          <li><a href="Thao_tac_so_tiet_kiem.html"><i class="fas fa-hand-holding-usd"></i> Savings Operations</a></li>
+          <li><a href="Thao_tac_tai_khoan.html"><i class="fas fa-wallet"></i> Account Operations</a></li>
+          <li><a href="Thao_tac.html"><i class="fas fa-cogs"></i> Operations</a></li>
+        </ul>
+      </nav>
+      <button id="toggle-sidebar" class="toggle-btn" aria-expanded="true">Close</button>
+    </div>
+    <!-- Main Content -->
+    <div id="main-content" class="main-content">
+      <button id="open-sidebar" class="open-sidebar-btn">Menu</button>
+      <div id="content"></div>
+    </div>
+  </div>
+
+  <!-- Shared JavaScript -->
+  <script src="background.js"></script>
+  <script src="sidebar.js"></script>
+</body>
+</html>

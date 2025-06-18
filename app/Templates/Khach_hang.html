@@ -1,484 +1,988 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danh sách khách hàng</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 0;
-            background: #f4f4f9;
-            color: #333;
-        }
-        h1 {
-            text-align: center;
-            margin: 20px 0;
-            color: #444;
-        }
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            background: #fff;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-        table th, table td {
-            padding: 12px 15px;
-            text-align: left;
-            border: 1px solid #ddd;
-        }
-        table th {
-            background: #007bff;
-            color: #fff;
-            font-weight: bold;
-        }
-        table tr:nth-child(even) {
-            background: #f9f9f9;
-        }
-        table tr:hover {
-            background: #f1f1f1;
-        }
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            margin: 10px 0;
-            background: #007bff;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            text-align: center;
-            cursor: pointer;
-            border: none;
-        }
-        .btn:hover {
-            background: #0056b3;
-        }
-        .btn-delete {
-            background: #dc3545;
-        }
-        .btn-delete:hover {
-            background: #c82333;
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 1000;
-        }
-        .modal-content {
-            background: #fff;
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 20px;
-            width: 70%;
-            max-width: 500px;
-            border-radius: 5px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        .form-group input {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        .search-group {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .search-group input {
-            padding: 8px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-            flex: 1;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bank Management App</title>
+  <!-- Font Awesome CDN for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <!-- Google Fonts for Roboto -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      overflow-x: hidden;
+      position: relative;
+      background: #1a1a1a;
+    }
+
+    /* Background Canvas */
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+    }
+
+    /* Content Overlay */
+    .content-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.3);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .sidebar {
+      width: 250px;
+      background: rgba(20, 20, 20, 0.95);
+      color: #fff;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      padding: 20px;
+      transition: transform 0.3s ease;
+      z-index: 1000;
+      backdrop-filter: blur(8px);
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar.hidden {
+      transform: translateX(-100%);
+    }
+
+    .sidebar h1 {
+      font-size: 22px;
+      margin-bottom: 30px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #e0e0e0;
+    }
+
+    .sidebar ul {
+      list-style: none;
+    }
+
+    .sidebar ul li {
+      margin-bottom: 8px;
+    }
+
+    .sidebar ul li a {
+      color: #d0d0d0;
+      text-decoration: none;
+      padding: 10px 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-radius: 4px;
+      transition: background 0.2s, color 0.2s, transform 0.2s;
+      font-size: 15px;
+    }
+
+    .sidebar ul li a i {
+      font-size: 16px;
+      transition: transform 0.2s;
+    }
+
+    .sidebar ul li a:hover,
+    .sidebar ul li a.active {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      transform: translateX(3px);
+    }
+
+    .sidebar ul li a.active {
+      font-weight: 600;
+    }
+
+    .sidebar ul li a:hover i {
+      transform: scale(1.1);
+    }
+
+    .sidebar .toggle-btn {
+      display: none;
+      background: #333;
+      color: #fff;
+      border: none;
+      padding: 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 20px;
+      width: 100%;
+      transition: background 0.2s;
+      font-weight: 500;
+    }
+
+    .sidebar .toggle-btn:hover {
+      background: #555;
+    }
+
+    .main-content {
+      flex: 1;
+      padding: 30px;
+      margin-left: 250px;
+      transition: margin-left 0.3s ease;
+      position: relative;
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      color: #e0e0e0;
+    }
+
+    .main-content.full {
+      margin-left: 0;
+    }
+
+    .open-sidebar-btn {
+      display: none;
+      background: #333;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-bottom: 20px;
+      transition: background 0.2s;
+      font-weight: 500;
+    }
+
+    .open-sidebar-btn:hover {
+      background: #555;
+    }
+
+    /* Customer List Styles */
+    .container {
+      width: 100%;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
+      text-align: center;
+      margin: 20px 0;
+      color: #e0e0e0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    table th, table td {
+      padding: 12px 15px;
+      text-align: left;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #d0d0d0;
+    }
+
+    table th {
+      background: #007bff;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    table tr:nth-child(even) {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    table tr:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      margin: 10px 0;
+      background: #007bff;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+      text-align: center;
+      cursor: pointer;
+      border: none;
+      transition: background 0.2s;
+    }
+
+    .btn:hover {
+      background: #0056b3;
+    }
+
+    .btn-delete {
+      background: #dc3545;
+    }
+
+    .btn-delete:hover {
+      background: #c82333;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: rgba(20, 20, 20, 0.95);
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 20px;
+      width: 70%;
+      max-width: 500px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      max-height: 80vh;
+      overflow-y: auto;
+      color: #e0e0e0;
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #d0d0d0;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.05);
+      color: #e0e0e0;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #007bff;
+    }
+
+    .search-group {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .search-group input {
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.05);
+      color: #e0e0e0;
+      flex: 1;
+    }
+
+    .search-group input:focus {
+      outline: none;
+      border-color: #007bff;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.hidden {
+        transform: translateX(0);
+      }
+
+      .main-content {
+        margin-left: 0;
+      }
+
+      .main-content.full {
+        margin-left: 250px;
+      }
+
+      .sidebar .toggle-btn, .open-sidebar-btn {
+        display: block;
+      }
+
+      table {
+        font-size: 14px;
+      }
+
+      table th, table td {
+        padding: 8px;
+      }
+
+      .modal-content {
+        width: 90%;
+      }
+    }
+  </style>
 </head>
 <body>
-    <h1>Danh sách khách hàng</h1>
-    <div class="container">
-        <div class="search-group">
+  <canvas id="bg-canvas"></canvas>
+  <div class="content-overlay"></div>
+  <div class="flex">
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar">
+      <h عهده: 1px;">
+      <h1><i class="fas fa-database"></i> BankPro</h1>
+      <nav>
+        <ul>
+          <li><a href="#dashboard" aria-label="Go to Dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+          <li><a href="#customers" aria-label="Go to Customers" class="active"><i class="fas fa-users"></i> Customers</a></li>
+          <li><a href="#accounts" aria-label="Go to Accounts"><i class="fas fa-credit-card"></i> Accounts</a></li>
+          <li><a href="#account-types" aria-label="Go to Account Types"><i class="fas fa-list-alt"></i> Account Types</a></li>
+          <li><a href="#transactions" aria-label="Go to Transactions"><i class="fas fa-exchange-alt"></i> Transactions</a></li>
+          <li><a href="#savings" aria-label="Go to Savings"><i class="fas fa-piggy-bank"></i> Savings</a></li>
+          <li><a href="#savings-types" aria-label="Go to Savings Types"><i class="fas fa-coins"></i> Savings Types</a></li>
+          <li><a href="#currencies" aria-label="Go to Currencies"><i class="fas fa-money-bill-wave"></i> Currencies</a></li>
+          <li><a href="#employees" aria-label="Go to Employees"><i class="fas fa-user-tie"></i> Employees</a></li>
+          <li><a href="#branches" aria-label="Go to Branches"><i class="fas fa-building"></i> Branches</a></li>
+          <li><a href="#permissions" aria-label="Go to Permissions"><i class="fas fa-user-shield"></i> Permissions</a></li>
+          <li><a href="#login" aria-label="Go to Login"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+          <li><a href="#savings-operations" aria-label="Go to Savings Operations"><i class="fas fa-hand-holding-usd"></i> Savings Operations</a></li>
+          <li><a href="#account-operations" aria-label="Go to Account Operations"><i class="fas fa-wallet"></i> Account Operations</a></li>
+          <li><a href="#operations" aria-label="Go to Operations"><i class="fas fa-cogs"></i> Operations</a></li>
+        </ul>
+      </nav>
+      <button id="toggle-sidebar" class="toggle-btn" aria-expanded="true">Close</button>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content" class="main-content">
+      <button id="open-sidebar" class="open-sidebar-btn">Menu</button>
+      <div id="content">
+        <!-- Customer List Content -->
+        <h1>Danh sách khách hàng</h1>
+        <div class="container">
+          <div class="search-group">
             <input type="text" id="searchId" placeholder="Nhập ID khách hàng...">
             <input type="text" id="searchName" placeholder="Nhập tên khách hàng...">
             <button class="btn" onclick="searchCustomer()">Tìm kiếm</button>
             <button class="btn" onclick="fetchCustomers()">Hiện tất cả</button>
-        </div>
-        <button class="btn" id="addCustomer" onclick="showAddModal()">Thêm khách hàng</button>
-        <table>
+          </div>
+          <button class="btn" id="addCustomer" onclick="showAddModal()">Thêm khách hàng</button>
+          <table>
             <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Họ và tên</th>
-                    <th>Giới tính</th>
-                    <th>Ngày sinh</th>
-                    <th>CCCD</th>
-                    <th>Địa chỉ</th>
-                    <th>Số điện thoại</th>
-                    <th>Email</th>
-                    <th>Ngày cập nhật</th>
-                    <th>Hành động</th>
-                </tr>
+              <tr>
+                <th>ID</th>
+                <th>Họ và tên</th>
+                <th>Giới tính</th>
+                <th>Ngày sinh</th>
+                <th>CCCD</th>
+                <th>Địa chỉ</th>
+                <th>Số điện thoại</th>
+                <th>Email</th>
+                <th>Ngày cập nhật</th>
+                <th>Hành động</th>
+              </tr>
             </thead>
             <tbody id="customerTableBody">
-                <!-- Dữ liệu sẽ được thêm vào đây bằng JavaScript -->
+              <!-- Dữ liệu sẽ được thêm vào đây bằng JavaScript -->
             </tbody>
-        </table>
-    </div>
+          </table>
+        </div>
 
-    <!-- Modal thêm khách hàng -->
-    <div id="addModal" class="modal">
-        <div class="modal-content">
+        <!-- Modal thêm khách hàng -->
+        <div id="addModal" class="modal">
+          <div class="modal-content">
             <h2>Thêm khách hàng</h2>
             <form id="addForm">
+              <div class="form-group">
+                <label for="id">ID:</label>
+                <input type="text" id="id" required>
+              </div>
+              <div class="form-group">
+                <label for="ho_va_ten">Họ và tên:</label>
+                <input type="text" id="ho_va_ten" required>
+              </div>
+              <div class="form-group">
+                <label for="gioi_tinh">Giới tính:</label>
+                <input type="text" id="gioi_tinh" required>
+              </div>
+              <div class="form-group">
+                <label for="ngay_sinh">Ngày sinh:</label>
+                <input type="date" id="ngay_sinh" required>
+              </div>
+              <div class="form-group">
+                <label for="cccd">CCCD:</label>
+                <input type="text" id="cccd" required>
+              </div>
+              <div class="form-group">
+                <label for="dia_chi">Địa chỉ:</label>
+                <input type="text" id="dia_chi" required>
+              </div>
+              <div class="form-group">
+                <label for="sdt">Số điện thoại:</label>
+                <input type="text" id="sdt" required>
+              </div>
+              <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" required>
+              </div>
+              <button type="submit" class="btn">Thêm</button>
+              <button type="button" class="btn btn-delete" onclick="hideAddModal()">Hủy</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Modal cập nhật khách hàng -->
+        <div id="editModal" class="modal">
+          <div class="modal-content">
+            <h2>Cập nhật khách hàng</h2>
+            <form id="editForm">
+              <input type="hidden" id="edit_id">
+              <div class="form-group">
+                <label for="edit_ho_va_ten">Họ và tên:</label>
+                <input type="text" id="edit_ho_va_ten" required>
+              </div>
+              <div class="form-group">
+                <label for="edit_gioi_tinh">Giới tính:</label>
+                <input type="text" id="edit_gioi_tinh" required>
+              </div>
+              <div class="form-group">
+                <label for="edit_ngay_sinh">Ngày sinh:</label>
+                <input type="date" id="edit_ngay_sinh" required>
+              </div>
+              <div class="form-group">
+                <label for="edit_cccd">CCCD:</label>
+                <input type="text" id="edit_cccd" required>
+              </div>
+              <div class="form-group">
+                <label for="edit_dia_chi">Địa chỉ:</label>
+                <input type="text" id="edit_dia_chi" required>
+              </div>
+              <div class="form-group">
+                <label for="edit_sdt">Số điện thoại:</label>
+                <input type="text" id="edit_sdt" required>
+              </div>
+              <div class="form-group">
+                <label for="edit_email">Email:</label>
+                <input type="email" id="edit_email" required>
+              </div>
+              <button type="submit" class="btn">Cập nhật</button>
+              <button type="button" class="btn btn-delete" onclick="hideEditModal()">Hủy</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Background animation
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    let gradientTime = 0;
+    function drawGradient() {
+      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      gradient.addColorStop(0, `hsl(0, 0%, ${10 + Math.sin(gradientTime * 0.01) * 5}%)`);
+      gradient.addColorStop(0.5, `hsl(0, 0%, ${20 + Math.sin(gradientTime * 0.01 + 1) * 5}%)`);
+      gradient.addColorStop(1, `hsl(0, 0%, ${10 + Math.sin(gradientTime * 0.01 + 2) * 5}%)`);
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    const shapes = [];
+    for (let i = 0; i < 8; i++) {
+      shapes.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 40 + 15,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.4,
+        type: Math.random() > 0.5 ? 'circle' : 'square',
+        opacity: Math.random() * 0.15 + 0.05,
+      });
+    }
+
+    function drawShapes() {
+      shapes.forEach(shape => {
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(255, 255, 255, ${shape.opacity})`;
+        if (shape.type === 'circle') {
+          ctx.arc(shape.x, shape.y, shape.size / 2, 0, Math.PI * 2);
+        } else {
+          ctx.rect(shape.x - shape.size / 2, shape.y - shape.size / 2, shape.size, shape.size);
+        }
+        ctx.fill();
+
+        shape.x += shape.vx;
+        shape.y += shape.vy;
+        if (shape.x < 0 || shape.x > canvas.width) shape.vx *= -1;
+        if (shape.y < 0 || shape.y > canvas.height) shape.vy *= -1;
+      });
+    }
+
+    const particles = [];
+    for (let i = 0; i < 40; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 2 + 0.5,
+        vx: (Math.random() - 0.5) * 0.2,
+        vy: (Math.random() - 0.5) * 0.2,
+        opacity: Math.random() * 0.2 + 0.05,
+      });
+    }
+
+    function drawParticles() {
+      particles.forEach(p => {
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity})`;
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+      });
+    }
+
+    function animateBackground() {
+      if (document.hidden) {
+        requestAnimationFrame(animateBackground);
+        return;
+      }
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawGradient();
+      drawShapes();
+      drawParticles();
+      gradientTime += 0.3;
+      requestAnimationFrame(animateBackground);
+    }
+    animateBackground();
+
+    // Sidebar toggle
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('main-content');
+    const toggleSidebarBtn = document.getElementById('toggle-sidebar');
+    const openSidebarBtn = document.getElementById('open-sidebar');
+    const contentDiv = document.getElementById('content');
+    const navLinks = document.querySelectorAll('.sidebar ul li a');
+
+    toggleSidebarBtn.addEventListener('click', () => {
+      const isHidden = sidebar.classList.toggle('hidden');
+      mainContent.classList.toggle('full');
+      toggleSidebarBtn.setAttribute('aria-expanded', !isHidden);
+    });
+
+    openSidebarBtn.addEventListener('click', () => {
+      const isHidden = sidebar.classList.toggle('hidden');
+      mainContent.classList.toggle('full');
+      toggleSidebarBtn.setAttribute('aria-expanded', !isHidden);
+    });
+
+    // Customer List JavaScript
+    const apiUrl = "http://127.0.0.1:8000/khach-hang/khach-hang/";
+
+    async function fetchCustomers() {
+      try {
+        const response = await fetch(`${apiUrl}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        let customers = await response.json();
+        customers.sort((a, b) => a.id.localeCompare(b.id));
+        const tableBody = document.getElementById("customerTableBody");
+        tableBody.innerHTML = "";
+
+        customers.forEach(customer => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${customer.id}</td>
+            <td>${customer.Ho_va_ten}</td>
+            <td>${customer.Gioi_tinh}</td>
+            <td>${customer.Ngay_sinh}</td>
+            <td>${customer.CCCD}</td>
+            <td>${customer.Dia_chi}</td>
+            <td>${customer.SDT}</td>
+            <td>${customer.Email}</td>
+            <td>${customer.Ngay_cap_nhat}</td>
+            <td>
+              <button class="btn" onclick="showEditModal('${customer.id}')">Sửa</button>
+              <button class="btn btn-delete" onclick="deleteCustomer('${customer.id}')">Xóa</button>
+            </td>
+          `;
+          tableBody.appendChild(row);
+        });
+      } catch (error) {
+        console.error("Lỗi khi lấy danh sách khách hàng:", error);
+        alert("Không thể lấy danh sách khách hàng. Vui lòng thử lại sau.");
+      }
+    }
+
+    async function searchCustomer(event) {
+      event.preventDefault();
+      const id = document.getElementById("searchId").value.trim();
+      const name = document.getElementById("searchName").value.trim();
+      const tableBody = document.getElementById("customerTableBody");
+      tableBody.innerHTML = "";
+
+      if (!id && !name) {
+        alert("Vui lòng nhập ID hoặc tên khách hàng!");
+        return;
+      }
+
+      if (id && name) {
+        alert("Vui lòng chỉ nhập một trong hai: ID hoặc tên!");
+        return;
+      }
+
+      try {
+        let queryParam;
+        if (id) {
+          queryParam = `khach_hang_id=${encodeURIComponent(id)}`;
+        } else {
+          queryParam = `name=${encodeURIComponent(name)}`;
+        }
+
+        const response = await fetch(`${apiUrl}search/?${queryParam}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const customers = await response.json();
+
+        if (customers.length === 0) {
+          alert("Không tìm thấy khách hàng!");
+          return;
+        }
+
+        customers.forEach(customer => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${customer.id}</td>
+            <td>${customer.Ho_va_ten}</td>
+            <td>${customer.Gioi_tinh}</td>
+            <td>${customer.Ngay_sinh}</td>
+            <td>${customer.CCCD}</td>
+            <td>${customer.Dia_chi}</td>
+            <td>${customer.SDT}</td>
+            <td>${customer.Email}</td>
+            <td>${customer.Ngay_cap_nhat}</td>
+            <td>
+              <button class="btn" onclick="showEditModal('${customer.id}')">Sửa</button>
+              <button class="btn btn-delete" onclick="deleteCustomer('${customer.id}')">Xóa</button>
+            </td>
+          `;
+          tableBody.appendChild(row);
+        });
+      } catch (error) {
+        console.error("Lỗi khi tìm khách hàng:", error);
+        alert("Lỗi khi tìm khách hàng! Vui lòng kiểm tra lại.");
+      }
+    }
+
+    function showAddModal() {
+      document.getElementById("addModal").style.display = "block";
+    }
+
+    function hideAddModal() {
+      document.getElementById("addModal").style.display = "none";
+      document.getElementById("addForm").reset();
+    }
+
+    document.getElementById("addForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const newCustomer = {
+        id: document.getElementById("id").value.trim(),
+        Ho_va_ten: document.getElementById("ho_va_ten").value.trim(),
+        Gioi_tinh: document.getElementById("gioi_tinh").value.trim(),
+        Ngay_sinh: document.getElementById("ngay_sinh").value,
+        CCCD: document.getElementById("cccd").value.trim(),
+        Dia_chi: document.getElementById("dia_chi").value.trim(),
+        SDT: document.getElementById("sdt").value.trim(),
+        Email: document.getElementById("email").value.trim(),
+        Ngay_cap_nhat: new Date().toISOString().split('T')[0]
+      };
+
+      try {
+        const response = await fetch(`${apiUrl}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newCustomer)
+        });
+
+        if (response.ok) {
+          alert("Thêm khách hàng thành công!");
+          hideAddModal();
+          fetchCustomers();
+        } else {
+          const errorData = await response.json();
+          alert("Thêm khách hàng thất bại! " + (errorData.detail || "Vui lòng kiểm tra lại dữ liệu."));
+        }
+      } catch (error) {
+        console.error("Lỗi khi thêm khách hàng:", error);
+        alert("Không thể thêm khách hàng. Vui lòng thử lại sau.");
+      }
+    });
+
+    async function showEditModal(id) {
+      try {
+        const response = await fetch(`${apiUrl}search/?khach_hang_id=${encodeURIComponent(id)}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const customers = await response.json();
+        if (customers.length === 0) {
+          alert("Không tìm thấy khách hàng!");
+          return;
+        }
+        const customer = customers[0];
+        document.getElementById("edit_id").value = customer.id;
+        document.getElementById("edit_ho_va_ten").value = customer.Ho_va_ten;
+        document.getElementById("edit_gioi_tinh").value = customer.Gioi_tinh;
+        document.getElementById("edit_ngay_sinh").value = customer.Ngay_sinh;
+        document.getElementById("edit_cccd").value = customer.CCCD;
+        document.getElementById("edit_dia_chi").value = customer.Dia_chi;
+        document.getElementById("edit_sdt").value = customer.SDT;
+        document.getElementById("edit_email").value = customer.Email;
+        document.getElementById("editModal").style.display = "block";
+      } catch (error) {
+        console.error("Lỗi khi lấy thông tin khách hàng:", error);
+        alert("Lỗi khi lấy thông tin khách hàng!");
+      }
+    }
+
+    function hideEditModal() {
+      document.getElementById("editModal").style.display = "none";
+    }
+
+    document.getElementById("editForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const id = document.getElementById("edit_id").value.trim();
+      const updatedCustomer = {
+        id: id,
+        Ho_va_ten: document.getElementById("edit_ho_va_ten").value.trim(),
+        Gioi_tinh: document.getElementById("edit_gioi_tinh").value.trim(),
+        Ngay_sinh: document.getElementById("edit_ngay_sinh").value,
+        CCCD: document.getElementById("edit_cccd").value.trim(),
+        Dia_chi: document.getElementById("edit_dia_chi").value.trim(),
+        SDT: document.getElementById("edit_sdt").value.trim(),
+        Email: document.getElementById("edit_email").value.trim(),
+        Ngay_cap_nhat: new Date().toISOString().split('T')[0]
+      };
+
+      try {
+        const response = await fetch(`${apiUrl}${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedCustomer)
+        });
+
+        if (response.ok) {
+          alert("Cập nhật khách hàng thành công!");
+          hideEditModal();
+          fetchCustomers();
+        } else {
+          const errorData = await response.json();
+          alert("Cập nhật thất bại! " + (errorData.detail || "Vui lòng kiểm tra lại dữ liệu."));
+        }
+      } catch (error) {
+        console.error("Lỗi khi cập nhật khách hàng:", error);
+        alert("Lỗi khi cập nhật khách hàng!");
+      }
+    });
+
+    async function deleteCustomer(id) {
+      if (confirm("Bạn có chắc muốn xóa khách hàng này?")) {
+        try {
+          const response = await fetch(`${apiUrl}${id}`, {
+            method: "DELETE",
+          });
+          if (response.ok) {
+            alert("Khách hàng đã được xóa thành công!");
+            fetchCustomers();
+          } else {
+            const errorData = await response.json();
+            alert("Không thể xóa khách hàng! " + (errorData.detail || "Vui lòng thử lại sau."));
+          }
+        } catch (error) {
+          console.error("Lỗi khi xóa khách hàng:", error);
+          alert("Không thể xóa khách hàng. Vui lòng thử lại sau.");
+        }
+      }
+    }
+
+    // Navigation handling
+    function loadContent(hash) {
+      navLinks.forEach(link => link.classList.remove('active'));
+      const link = document.querySelector(`.sidebar ul li a[href="${hash}"]`);
+      if (link) link.classList.add('active');
+
+      if (hash === '#customers') {
+        contentDiv.innerHTML = `
+          <h1>Danh sách khách hàng</h1>
+          <div class="container">
+            <div class="search-group">
+              <input type="text" id="searchId" placeholder="Nhập ID khách hàng...">
+              <input type="text" id="searchName" placeholder="Nhập tên khách hàng...">
+              <button class="btn" onclick="searchCustomer()">Tìm kiếm</button>
+              <button class="btn" onclick="fetchCustomers()">Hiện tất cả</button>
+            </div>
+            <button class="btn" id="addCustomer" onclick="showAddModal()">Thêm khách hàng</button>
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Họ và tên</th>
+                  <th>Giới tính</th>
+                  <th>Ngày sinh</th>
+                  <th>CCCD</th>
+                  <th>Địa chỉ</th>
+                  <th>Số điện thoại</th>
+                  <th>Email</th>
+                  <th>Ngày cập nhật</th>
+                  <th>Hành động</th>
+                </tr>
+              </thead>
+              <tbody id="customerTableBody"></tbody>
+            </table>
+          </div>
+          <!-- Modal thêm khách hàng -->
+          <div id="addModal" class="modal">
+            <div class="modal-content">
+              <h2>Thêm khách hàng</h2>
+              <form id="addForm">
                 <div class="form-group">
-                    <label for="id">ID:</label>
-                    <input type="text" id="id" required>
+                  <label for="id">ID:</label>
+                  <input type="text" id="id" required>
                 </div>
                 <div class="form-group">
-                    <label for="ho_va_ten">Họ và tên:</label>
-                    <input type="text" id="ho_va_ten" required>
+                  <label for="ho_va_ten">Họ và tên:</label>
+                  <input type="text" id="ho_va_ten" required>
                 </div>
                 <div class="form-group">
-                    <label for="gioi_tinh">Giới tính:</label>
-                    <input type="text" id="gioi_tinh" required>
+                  <label for="gioi_tinh">Giới tính:</label>
+                  <input type="text" id="gioi_tinh" required>
                 </div>
                 <div class="form-group">
-                    <label for="ngay_sinh">Ngày sinh:</label>
-                    <input type="date" id="ngay_sinh" required>
+                  <label for="ngay_sinh">Ngày sinh:</label>
+                  <input type="date" id="ngay_sinh" required>
                 </div>
                 <div class="form-group">
-                    <label for="cccd">CCCD:</label>
-                    <input type="text" id="cccd" required>
+                  <label for="cccd">CCCD:</label>
+                  <input type="text" id="cccd" required>
                 </div>
                 <div class="form-group">
-                    <label for="dia_chi">Địa chỉ:</label>
-                    <input type="text" id="dia_chi" required>
+                  <label for="dia_chi">Địa chỉ:</label>
+                  <input type="text" id="dia_chi" required>
                 </div>
                 <div class="form-group">
-                    <label for="sdt">Số điện thoại:</label>
-                    <input type="text" id="sdt" required>
+                  <label for="sdt">Số điện thoại:</label>
+                  <input type="text" id="sdt" required>
                 </div>
                 <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" required>
+                  <label for="email">Email:</label>
+                  <input type="email" id="email" required>
                 </div>
                 <button type="submit" class="btn">Thêm</button>
                 <button type="button" class="btn btn-delete" onclick="hideAddModal()">Hủy</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal cập nhật khách hàng -->
-    <div id="editModal" class="modal">
-        <div class="modal-content">
-            <h2>Cập nhật khách hàng</h2>
-            <form id="editForm">
+              </form>
+            </div>
+          </div>
+          <!-- Modal cập nhật khách hàng -->
+          <div id="editModal" class="modal">
+            <div class="modal-content">
+              <h2>Cập nhật khách hàng</h2>
+              <form id="editForm">
                 <input type="hidden" id="edit_id">
                 <div class="form-group">
-                    <label for="edit_ho_va_ten">Họ và tên:</label>
-                    <input type="text" id="edit_ho_va_ten" required>
+                  <label for="edit_ho_va_ten">Họ và tên:</label>
+                  <input type="text" id="edit_ho_va_ten" required>
                 </div>
                 <div class="form-group">
-                    <label for="edit_gioi_tinh">Giới tính:</label>
-                    <input type="text" id="edit_gioi_tinh" required>
+                  <label for="edit_gioi_tinh">Giới tính:</label>
+                  <input type="text" id="edit_gioi_tinh" required>
                 </div>
                 <div class="form-group">
-                    <label for="edit_ngay_sinh">Ngày sinh:</label>
-                    <input type="date" id="edit_ngay_sinh" required>
+                  <label for="edit_ngay_sinh">Ngày sinh:</label>
+                  <input type="date" id="edit_ngay_sinh" required>
                 </div>
                 <div class="form-group">
-                    <label for="edit_cccd">CCCD:</label>
-                    <input type="text" id="edit_cccd" required>
+                  <label for="edit_cccd">CCCD:</label>
+                  <input type="text" id="edit_cccd" required>
                 </div>
                 <div class="form-group">
-                    <label for="edit_dia_chi">Địa chỉ:</label>
-                    <input type="text" id="edit_dia_chi" required>
+                  <label for="edit_dia_chi">Địa chỉ:</label>
+                  <input type="text" id="edit_dia_chi" required>
                 </div>
                 <div class="form-group">
-                    <label for="edit_sdt">Số điện thoại:</label>
-                    <input type="text" id="edit_sdt" required>
+                  <label for="edit_sdt">Số điện thoại:</label>
+                  <input type="text" id="edit_sdt" required>
                 </div>
                 <div class="form-group">
-                    <label for="edit_email">Email:</label>
-                    <input type="email" id="edit_email" required>
+                  <label for="edit_email">Email:</label>
+                  <input type="email" id="edit_email" required>
                 </div>
                 <button type="submit" class="btn">Cập nhật</button>
                 <button type="button" class="btn btn-delete" onclick="hideEditModal()">Hủy</button>
-            </form>
-        </div>
-    </div>
+              </form>
+            </div>
+          </div>
+        `;
+        fetchCustomers();
+      } else {
+        contentDiv.innerHTML = `<h2>${hash.slice(1).toUpperCase() || 'DASHBOARD'}</h2><p>Content for ${hash.slice(1) || 'dashboard'} goes here.</p>`;
+      }
 
-    <script>
-        const apiUrl = "http://127.0.0.1:8000/khach-hang/khach-hang/";
+      if (window.innerWidth <= 768) {
+        sidebar.classList.add('hidden');
+        mainContent.classList.remove('full');
+      }
+    }
 
-        // Hàm lấy danh sách khách hàng từ API
-        async function fetchCustomers() {
-            try {
-                const response = await fetch(`${apiUrl}`);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                let customers = await response.json();
-                customers.sort((a, b) => a.id.localeCompare(b.id));
-                const tableBody = document.getElementById("customerTableBody");
-                tableBody.innerHTML = "";
+    navLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const hash = link.getAttribute('href');
+        history.pushState(null, null, hash);
+        loadContent(hash);
+      });
+    });
 
-                customers.forEach(customer => {
-                    const row = document.createElement("tr");
-                    row.innerHTML = `
-                        <td>${customer.id}</td>
-                        <td>${customer.Ho_va_ten}</td>
-                        <td>${customer.Gioi_tinh}</td>
-                        <td>${customer.Ngay_sinh}</td>
-                        <td>${customer.CCCD}</td>
-                        <td>${customer.Dia_chi}</td>
-                        <td>${customer.SDT}</td>
-                        <td>${customer.Email}</td>
-                        <td>${customer.Ngay_cap_nhat}</td>
-                        <td>
-                            <button class="btn" onclick="showEditModal('${customer.id}')">Sửa</button>
-                            <button class="btn btn-delete" onclick="deleteCustomer('${customer.id}')">Xóa</button>
-                        </td>
-                    `;
-                    tableBody.appendChild(row);
-                });
-            } catch (error) {
-                console.error("Lỗi khi lấy danh sách khách hàng:", error);
-                alert("Không thể lấy danh sách khách hàng. Vui lòng thử lại sau.");
-            }
-        }
-
-        // Tìm khách hàng theo ID hoặc tên
-        async function searchCustomer() {
-            const id = document.getElementById("searchId").value.trim();
-            const name = document.getElementById("searchName").value.trim();
-            const tableBody = document.getElementById("customerTableBody");
-            tableBody.innerHTML = "";
-
-            if (!id && !name) {
-                alert("Vui lòng nhập ID hoặc tên khách hàng!");
-                return;
-            }
-
-            if (id && name) {
-                alert("Vui lòng chỉ nhập một trong hai: ID hoặc tên!");
-                return;
-            }
-
-            try {
-                let queryParam;
-                if (id) {
-                    queryParam = `khach_hang_id=${encodeURIComponent(id)}`;
-                } else {
-                    queryParam = `name=${encodeURIComponent(name)}`;
-                }
-
-                const response = await fetch(`${apiUrl}search/?${queryParam}`);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const customers = await response.json();
-
-                if (customers.length === 0) {
-                    alert("Không tìm thấy khách hàng!");
-                    return;
-                }
-
-                customers.forEach(customer => {
-                    const row = document.createElement("tr");
-                    row.innerHTML = `
-                        <td>${customer.id}</td>
-                        <td>${customer.Ho_va_ten}</td>
-                        <td>${customer.Gioi_tinh}</td>
-                        <td>${customer.Ngay_sinh}</td>
-                        <td>${customer.CCCD}</td>
-                        <td>${customer.Dia_chi}</td>
-                        <td>${customer.SDT}</td>
-                        <td>${customer.Email}</td>
-                        <td>${customer.Ngay_cap_nhat}</td>
-                        <td>
-                            <button class="btn" onclick="showEditModal('${customer.id}')">Sửa</button>
-                            <button class="btn btn-delete" onclick="deleteCustomer('${customer.id}')">Xóa</button>
-                        </td>
-                    `;
-                    tableBody.appendChild(row);
-                });
-            } catch (error) {
-                console.error("Lỗi khi tìm khách hàng:", error);
-                alert("Lỗi khi tìm khách hàng! Vui lòng kiểm tra lại.");
-            }
-        }
-
-        // Hiển thị modal thêm khách hàng
-        function showAddModal() {
-            document.getElementById("addModal").style.display = "block";
-        }
-
-        // Ẩn modal thêm khách hàng
-        function hideAddModal() {
-            document.getElementById("addModal").style.display = "none";
-            document.getElementById("addForm").reset();
-        }
-
-        // Xử lý form thêm khách hàng
-        document.getElementById("addForm").addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const newCustomer = {
-                id: document.getElementById("id").value.trim(),
-                Ho_va_ten: document.getElementById("ho_va_ten").value.trim(),
-                Gioi_tinh: document.getElementById("gioi_tinh").value.trim(),
-                Ngay_sinh: document.getElementById("ngay_sinh").value,
-                CCCD: document.getElementById("cccd").value.trim(),
-                Dia_chi: document.getElementById("dia_chi").value.trim(),
-                SDT: document.getElementById("sdt").value.trim(),
-                Email: document.getElementById("email").value.trim(),
-                Ngay_cap_nhat: new Date().toISOString().split('T')[0]
-            };
-
-            try {
-                const response = await fetch(`${apiUrl}`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(newCustomer)
-                });
-
-                if (response.ok) {
-                    alert("Thêm khách hàng thành công!");
-                    hideAddModal();
-                    fetchCustomers();
-                } else {
-                    const errorData = await response.json();
-                    alert("Thêm khách hàng thất bại! " + (errorData.detail || "Vui lòng kiểm tra lại dữ liệu."));
-                }
-            } catch (error) {
-                console.error("Lỗi khi thêm khách hàng:", error);
-                alert("Không thể thêm khách hàng. Vui lòng thử lại sau.");
-            }
-        });
-
-        // Hiển thị modal cập nhật và điền thông tin khách hàng
-        async function showEditModal(id) {
-            try {
-                const response = await fetch(`${apiUrl}search/?khach_hang_id=${encodeURIComponent(id)}`);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const customers = await response.json();
-                if (customers.length === 0) {
-                    alert("Không tìm thấy khách hàng!");
-                    return;
-                }
-                const customer = customers[0];
-                document.getElementById("edit_id").value = customer.id;
-                document.getElementById("edit_ho_va_ten").value = customer.Ho_va_ten;
-                document.getElementById("edit_gioi_tinh").value = customer.Gioi_tinh;
-                document.getElementById("edit_ngay_sinh").value = customer.Ngay_sinh;
-                document.getElementById("edit_cccd").value = customer.CCCD;
-                document.getElementById("edit_dia_chi").value = customer.Dia_chi;
-                document.getElementById("edit_sdt").value = customer.SDT;
-                document.getElementById("edit_email").value = customer.Email;
-                document.getElementById("editModal").style.display = "block";
-            } catch (error) {
-                console.error("Lỗi khi lấy thông tin khách hàng:", error);
-                alert("Lỗi khi lấy thông tin khách hàng!");
-            }
-        }
-
-        // Ẩn modal cập nhật
-        function hideEditModal() {
-            document.getElementById("editModal").style.display = "none";
-        }
-
-        // Xử lý cập nhật khách hàng
-        document.getElementById("editForm").addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const id = document.getElementById("edit_id").value.trim();
-            const updatedCustomer = {
-                id: id,
-                Ho_va_ten: document.getElementById("edit_ho_va_ten").value.trim(),
-                Gioi_tinh: document.getElementById("edit_gioi_tinh").value.trim(),
-                Ngay_sinh: document.getElementById("edit_ngay_sinh").value,
-                CCCD: document.getElementById("edit_cccd").value.trim(),
-                Dia_chi: document.getElementById("edit_dia_chi").value.trim(),
-                SDT: document.getElementById("edit_sdt").value.trim(),
-                Email: document.getElementById("edit_email").value.trim(),
-                Ngay_cap_nhat: new Date().toISOString().split('T')[0]
-            };
-
-            try {
-                const response = await fetch(`${apiUrl}${id}`, {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(updatedCustomer)
-                });
-
-                if (response.ok) {
-                    alert("Cập nhật khách hàng thành công!");
-                    hideEditModal();
-                    fetchCustomers();
-                } else {
-                    const errorData = await response.json();
-                    alert("Cập nhật thất bại! " + (errorData.detail || "Vui lòng kiểm tra lại dữ liệu."));
-                }
-            } catch (error) {
-                console.error("Lỗi khi cập nhật khách hàng:", error);
-                alert("Lỗi khi cập nhật khách hàng!");
-            }
-        });
-
-        // Hàm xóa khách hàng
-        async function deleteCustomer(id) {
-            if (confirm("Bạn có chắc muốn xóa khách hàng này?")) {
-                try {
-                    const response = await fetch(`${apiUrl}${id}`, {
-                        method: "DELETE",
-                    });
-                    if (response.ok) {
-                        alert("Khách hàng đã được xóa thành công!");
-                        fetchCustomers();
-                    } else {
-                        const errorData = await response.json();
-                        alert("Không thể xóa khách hàng! " + (errorData.detail || "Vui lòng thử lại sau."));
-                    }
-                } catch (error) {
-                    console.error("Lỗi khi xóa khách hàng:", error);
-                    alert("Không thể xóa khách hàng. Vui lòng thử lại sau.");
-                }
-            }
-        }
-
-        // Load danh sách khách hàng khi trang được tải
-        document.addEventListener("DOMContentLoaded", fetchCustomers);
-    </script>
+    window.addEventListener('hashchange', () => loadContent(window.location.hash));
+    window.addEventListener('DOMContentLoaded', () => loadContent(window.location.hash || '#customers'));
+  </script>
 </body>
 </html>
