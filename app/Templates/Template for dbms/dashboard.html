@@ -10,53 +10,55 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <!-- Shared CSS -->
   <link rel="stylesheet" href="styles.css">
-  <style>
-    .dashboard-container {
-      padding: 20px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    .dashboard-cards {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
-    .card {
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      padding: 20px;
-      text-align: center;
-    }
-    .card i {
-      font-size: 2em;
-      color: #007bff;
-      margin-bottom: 10px;
-    }
-    .card h3 {
-      margin: 10px 0;
-      font-size: 1.5em;
-    }
-    .card p {
-      font-size: 2em;
-      color: #333;
-    }
-    .chart-container {
-      margin-top: 30px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
-    .chart-card {
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      padding: 20px;
-    }
-    canvas {
-      max-width: 100%;
-    }
-  </style>
+<style>
+  .dashboard-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .dashboard-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .card {
+    background: linear-gradient(145deg, #2a3439, #3b4a54); /* Dark gradient for cards */
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 20px;
+    text-align: center;
+  }
+  .card i {
+    font-size: 2em;
+    color: #00b4d8; /* Bright cyan for icons */
+    margin-bottom: 10px;
+  }
+  .card h3 {
+    margin: 10px 0;
+    font-size: 1.5em;
+    color: #f5f6fa; /* Light text for headings */
+  }
+  .card p {
+    font-size: 2em;
+    color: #dfe6e9; /* Light gray for numbers */
+  }
+  .chart-container {
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .chart-card {
+    background: linear-gradient(145deg, #2a3439, #3b4a54); /* Matching dark gradient for chart cards */
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 20px;
+  }
+  canvas {
+    max-width: 100%;
+    background: #2d3436; /* Dark background for chart canvas */
+  }
+</style>
 </head>
 <body>
   <canvas id="bg-canvas"></canvas>
@@ -64,7 +66,7 @@
   <div class="flex">
     <!-- Sidebar -->
     <div id="sidebar" class="sidebar">
-      <h1><i class="fas fa-database"></i> BankPro</h1>
+      <h1><i class="fas fa-database"></i>Immortal Bank</h1>
       <nav>
         <ul>
           <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
@@ -186,7 +188,7 @@
           labels: ['Savings', 'Checking', 'Credit', 'Investment'],
           datasets: [{
             data: [40, 30, 20, 10],
-            backgroundColor: ['#007bff', '#28a745', '#dc3545', '#ffc107']
+            backgroundColor: ['#00b4d8', '#55efc4', '#ff6b6b', '#ffd166']
           }]
         },
         options: {
