@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 from sqlalchemy.exc import SQLAlchemyError  # Bắt lỗi
 
 # 🔐 Kết nối đến PostgreSQL
-database_url = "postgresql://postgres:pro133%40v@localhost:5432/Bank"
+database_url = "postgresql://postgres:hntd1cd%40@localhost:5432/Bank"
 
 # 🛠️ Tạo engine
 engine = create_engine(database_url)

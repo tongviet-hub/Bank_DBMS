@@ -235,26 +235,27 @@ INSERT INTO "Nhan_vien" (id, "Ho_va_ten", "Gioi_tinh", "Ngay_sinh", "CCCD", "Dia
 ('NV020', 'Trần Thị Thảo', 'NU', '1997-11-11', '001234567809', 'Phường 9, TP. Đà Lạt, Tỉnh Lâm Đồng', '0909123456', 'thao.tran@example.com', '2025-06-01', 'CV001', 'CN012');
 
 INSERT INTO "Dang_nhap" (id, "Ten_dang_nhap", "Mat_khau") VALUES
-('NV001', 'nguyenvana', 'ript@123'),
-('NV002', 'tranthib', 'ript@123'),
-('NV003', 'levanc', 'ript@123'),
-('NV004', 'phamthid', 'ript@123'),
-('NV005', 'ngovane', 'ript@123'),
-('NV006', 'dangthif', 'ript@123'),
-('NV007', 'hoangvang', 'ript@123'),
-('NV008', 'vothih', 'ript@123'),
-('NV009', 'buivani', 'ript@123'),
-('NV010', 'nguyenthij', 'ript@123'),
-('NV011', 'tranvank', 'ript@123'),
-('NV012', 'lethil', 'ript@123'),
-('NV013', 'phamvanm', 'ript@123'),
-('NV014', 'ngothin', 'ript@123'),
-('NV015', 'dangvano', 'ript@123'),
-('NV016', 'hoangthip', 'ript@123'),
-('NV017', 'vovanq', 'ript@123'),
-('NV018', 'buithir', 'ript@123'),
-('NV019', 'nguyenvans', 'ript@123'),
-('NV020', 'tranthit', 'ript@123');
+('NV001', 'nguyenvana', '$2b$12$JBYQU93Gik7pwXPRTND.jOGXS1nqsnTlORK/FVAgIAg48b9VhDme6'),
+('NV002', 'tranthib', '$2b$12$3WA0oM7Om/6VaifzmtjvMu2qTTemBifxIK9cf9MWrJ71TZflLuMUm'),
+('NV003', 'levanc', '$2b$12$3WA0oM7Om/6VaifzmtjvMu2qTTemBifxIK9cf9MWrJ71TZflLuMUm'),
+('NV004', 'phamthid', '$2b$12$3WA0oM7Om/6VaifzmtjvMu2qTTemBifxIK9cf9MWrJ71TZflLuMUm'),
+('NV005', 'ngovane', '$2b$12$3WA0oM7Om/6VaifzmtjvMu2qTTemBifxIK9cf9MWrJ71TZflLuMUm'),
+('NV006', 'dangthif', '$2b$12$3WA0oM7Om/6VaifzmtjvMu2qTTemBifxIK9cf9MWrJ71TZflLuMUm'),
+('NV007', 'hoangvang', '$2b$12$3WA0oM7Om/6VaifzmtjvMu2qTTemBifxIK9cf9MWrJ71TZflLuMUm'),
+('NV008', 'vothih', '$2b$12$3WA0oM7Om/6VaifzmtjvMu2qTTemBifxIK9cf9MWrJ71TZflLuMUm'),
+('NV009', 'buivani', '$2b$12$3WA0oM7Om/6VaifzmtjvMu2qTTemBifxIK9cf9MWrJ71TZflLuMUm'),
+('NV010', 'nguyenthij', '$2b$12$3WA0oM7Om/6VaifzmtjvMu2qTTemBifxIK9cf9MWrJ71TZflLuMUm'),
+('NV011', 'tranvank', '$2b$12$3WA0oM7Om/6VaifzmtjvMu2qTTemBifxIK9cf9MWrJ71TZflLuMUm'),
+('NV012', 'lethil', '$2b$12$3WA0oM7Om/6VaifzmtjvMu2qTTemBifxIK9cf9MWrJ71TZflLuMUm'),
+('NV013', 'phamvanm', '$2b$12$3WA0oM7Om/6VaifzmtjvMu2qTTemBifxIK9cf9MWrJ71TZflLuMUm'),
+('NV014', 'ngothin', '$2b$12$3WA0oM7Om/6VaifzmtjvMu2qTTemBifxIK9cf9MWrJ71TZflLuMUm'),
+('NV015', 'dangvano', '$2b$12$3WA0oM7Om/6VaifzmtjvMu2qTTemBifxIK9cf9MWrJ71TZflLuMUm'),
+('NV016', 'hoangthip', '$2b$12$3WA0oM7Om/6VaifzmtjvMu2qTTemBifxIK9cf9MWrJ71TZflLuMUm'),
+('NV017', 'vovanq', '$2b$12$3WA0oM7Om/6VaifzmtjvMu2qTTemBifxIK9cf9MWrJ71TZflLuMUm'),
+('NV018', 'buithir', '$2b$12$3WA0oM7Om/6VaifzmtjvMu2qTTemBifxIK9cf9MWrJ71TZflLuMUm'),
+('NV019', 'nguyenvans', '$2b$12$3WA0oM7Om/6VaifzmtjvMu2qTTemBifxIK9cf9MWrJ71TZflLuMUm'),
+('NV020', 'tranthit', '$2b$12$3WA0oM7Om/6VaifzmtjvMu2qTTemBifxIK9cf9MWrJ71TZflLuMUm');
+
 
 INSERT INTO "Thao_tac_so_tiet_kiem" (id, "Ma_so_tiet_kiem", "Ma_nhan_vien", "Ma_thao_tac", "Ma_khach_hang", "Ngay_thuc_hien", "Ghi_chu") VALUES
 ('TSK001', 'STK001', 'NV001', 'STK01', 'KH001', '2025-01-10 09:15:00', 'Mở sổ lần đầu cho khách hàng mới'),

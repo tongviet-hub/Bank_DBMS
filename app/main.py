@@ -21,6 +21,7 @@ from routes.phan_quyen import router as phan_quyen_router
 from routes.so_tiet_kiem import router as so_tiet_kiem_router
 from routes.tai_khoan import router as tai_khoan_router
 from routes.nhan_vien import router as nhan_vien_router
+from routes.loai_tien_te import router as loai_tien_te_router
 from helper.security import hash_password, verify_password
 from dependencies import get_db
 app = FastAPI()
@@ -51,3 +52,4 @@ app.include_router(phan_quyen_router, prefix="/phan-quyen", tags=["Phân quyền
 app.include_router(so_tiet_kiem_router, prefix="/so-tiet-kiem", tags=["Sổ tiết kiệm"])
 app.include_router(tai_khoan_router, prefix="/tai-khoan", tags=["Tài khoản"])
 app.include_router(nhan_vien_router, prefix="/nhan-vien", tags=["Nhân viên"])
+app.include_router(loai_tien_te_router, prefix="/loai-tien-te", tags=["Loại tiền tệ"])

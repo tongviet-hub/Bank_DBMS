@@ -44,7 +44,7 @@ def delete_loai_tiet_kiem(loai_tiet_kiem_id: str, db: Session = Depends(get_db))
     """
     return crud.delete_loai_tiet_kiem(db=db, loai_tiet_kiem_id=loai_tiet_kiem_id)
 
-@router.put("/loai-tai-khoan/{loai_tiet_kiem_id}", response_model=schemas.LoaiTietKiem)
+@router.put("/loai-tiet-kiem/{loai_tiet_kiem_id}", response_model=schemas.LoaiTietKiem)
 def update_loai_tiet_kiem(loai_tiet_kiem_id: str, loai_tiet_kiem: schemas.LoaiTietKiemCreate, db: Session = Depends(get_db)):
     """
     Cập nhật thông tin loại tài khoản.

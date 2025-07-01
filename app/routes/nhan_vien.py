@@ -51,3 +51,11 @@ def update_nhan_vien(nhan_vien_id: str, nhan_vien: schemas.NhanVienCreate, db: S
     Cập nhật thông tin nhân viên.
     """
     return crud.update_nhan_vien(db=db, nhan_vien_id=nhan_vien_id, nhan_vien=nhan_vien)
+
+@router.get("/nhan-vien/count")
+def count_nhan_vien(db: Session = Depends(get_db)):
+    """
+    Trả về tổng số nhân viên.
+    """
+    total = crud.count_nhan_vien(db=db)
+    return {"total": total}

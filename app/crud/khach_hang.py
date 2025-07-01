@@ -60,3 +60,6 @@ def update_khach_hang(db: Session, khach_hang_id: str, khach_hang: KhachHangBase
     db.commit()
     db.refresh(db_khach_hang)
     return db_khach_hang
+
+def count_khach_hang(db: Session):
+    return db.query(Khach_hang).count()

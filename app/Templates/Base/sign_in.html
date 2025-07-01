@@ -210,6 +210,7 @@
         }
     </style>
 </head>
+
 <body>
     <nav class="navbar">
         <ul>
@@ -241,25 +242,42 @@
             </div>
         </div>
     </div>
-
-    <script src="../particles.min.js"></script>
+    
+    <script src="particles.min.js"></script>
+    <script src="particles.js"></script>
     <script>
-        particlesJS('particles-js', {
-            particles: {
-                number: { value: 80, density: { enable: true, value_area: 800 } },
-                color: { value: '#ffffff' },
-                shape: { type: 'circle', stroke: { width: 0, color: '#000000' } },
-                opacity: { value: 0.5, random: true },
-                size: { value: 3, random: true },
-                line_linked: { enable: true, distance: 150, color: '#ffffff', opacity: 0.4, width: 1 },
-                move: { enable: true, speed: 2, direction: 'none', random: false, straight: false, out_mode: 'out', bounce: false }
-            },
-            interactivity: {
-                detect_on: 'canvas',
-                events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true },
-                modes: { grab: { distance: 400, line_linked: { opacity: 1 } }, bubble: { distance: 400, size: 40, duration: 2, opacity: 8 }, repulse: { distance: 200, duration: 0.4 }, push: { particles_nb: 4 }, remove: { particles_nb: 2 } }
-            },
-            retina_detect: true
+        // Xử lý form đăng nhập
+        document.querySelector('.sign-in-form').addEventListener('submit', async (e) => {
+            e.preventDefault(); // Ngăn form reload trang
+
+            const username = document.querySelector('input[type="text"]').value;
+            const password = document.querySelector('input[type="password"]').value;
+
+            try {
+                const response = await fetch('http://localhost:8000/dang-nhap/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        Ten_dang_nhap: username, 
+                        Mat_khau: password 
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    // Lưu user_id vào localStorage (tùy chọn)
+                    localStorage.setItem('user_id', data.user_id);
+                    // Chuyển hướng đến dashboard
+                    window.location.href = '../Template for dbms/dashboard.html';
+                } else {
+                    // Hiển thị lỗi
+                    alert(data.detail || 'Đăng nhập thất bại');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Đã xảy ra lỗi. Vui lòng thử lại.');
+            }
         });
     </script>
 </body>

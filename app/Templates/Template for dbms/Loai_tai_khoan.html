@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bank Management App - Loại Tài Khoản</title>
+  <!-- Font Awesome CDN for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <!-- Google Fonts for Roboto -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Shared CSS -->
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Account Type List Styles */
+    .container {
+      width: 100%;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    h1 {
+      text-align: center;
+      margin: 20px 0;
+      color: #f0f0f0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    table th,
+    table td {
+      padding: 12px 15px;
+      text-align: left;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #d8d8d8;
+    }
+
+    table th {
+      background: #00aaff;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    table tr:nth-child(even) {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    table tr:hover {
+      background: rgba(0, 170, 255, 0.15);
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      margin: 10px 0;
+      background: #00aaff;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+      text-align: center;
+      cursor: pointer;
+      border: none;
+      transition: background 0.2s;
+    }
+
+    .btn:hover {
+      background: #0088cc;
+    }
+
+    .btn-delete {
+      background: #ff8c00;
+    }
+
+    .btn-delete:hover {
+      background: #e07b00;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.75);
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: rgba(30, 30, 30, 0.95);
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 20px;
+      width: 70%;
+      max-width: 500px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+      max-height: 80vh;
+      overflow-y: auto;
+      color: #f0f0f0;
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #d8d8d8;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #f0f0f0;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #00aaff;
+    }
+
+    .search-group {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .search-group input {
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.08);
+      color: #f0f0f0;
+      flex: 1;
+    }
+
+    .search-group input:focus {
+      outline: none;
+      border-color: #00aaff;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.hidden {
+        transform: translateX(0);
+      }
+
+      .main-content {
+        margin-left: 0;
+      }
+
+      .main-content.full {
+        margin-left: 250px;
+      }
+
+      .sidebar .toggle-btn,
+      .open-sidebar-btn {
+        display: block;
+      }
+
+      table {
+        font-size: 14px;
+      }
+
+      table th,
+      table td {
+        padding: 8px;
+      }
+
+      .modal-content {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bg-canvas"></canvas>
+  <div class="content-overlay"></div>
+  <div class="flex">
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar">
+      <h1><i class="fas fa-database"></i> BankPro</h1>
+      <nav>
+        <ul>
+          <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+          <li><a href="Khach_hang.html"><i class="fas fa-users"></i> Customers</a></li>
+          <li><a href="Tai_khoan.html"><i class="fas fa-credit-card"></i> Accounts</a></li>
+          <li><a href="Loai_tai_khoan.html"><i class="fas fa-list-alt"></i> Account Types</a></li>
+          <li><a href="Chuyen_khoan.html"><i class="fas fa-exchange-alt"></i> Transactions</a></li>
+          <li><a href="So_tiet_kiem.html"><i class="fas fa-piggy-bank"></i> Savings</a></li>
+          <li><a href="Loai_tiet_kiem.html"><i class="fas fa-coins"></i> Savings Types</a></li>
+          <li><a href="Loai_tien_te.html"><i class="fas fa-money-bill-wave"></i> Currencies</a></li>
+          <li><a href="Nhan_vien.html"><i class="fas fa-user-tie"></i> Employees</a></li>
+          <li><a href="Chi_nhanh.html"><i class="fas fa-building"></i> Branches</a></li>
+          <li><a href="Phan_quyen.html"><i class="fas fa-user-shield"></i> Permissions</a></li>
+          <li><a href="Dang_nhap.html"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+          <li><a href="Thao_tac_so_tiet_kiem.html"><i class="fas fa-hand-holding-usd"></i> Savings Operations</a></li>
+          <li><a href="Thao_tac_tai_khoan.html"><i class="fas fa-wallet"></i> Account Operations</a></li>
+          <li><a href="Thao_tac.html"><i class="fas fa-cogs"></i> Operations</a></li>
+        </ul>
+      </nav>
+      <button id="toggle-sidebar" class="toggle-btn" aria-expanded="true">Close</button>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content" class="main-content">
+      <button id="open-sidebar" class="open-sidebar-btn">Menu</button>
+      <div id="content">
+        <!-- Account Type List Content -->
+        <div id="account-type-list-content">
+          <h1>Danh sách loại tài khoản</h1>
+          <div class="container">
+            <div class="search-group">
+              <input type="text" id="searchId" placeholder="Nhập ID loại tài khoản...">
+              <input type="text" id="searchName" placeholder="Nhập tên loại tài khoản...">
+              <button class="btn" onclick="searchAccountType()">Tìm kiếm</button>
+              <button class="btn" onclick="fetchAccountTypes()">Hiện tất cả</button>
+            </div>
+            <button class="btn" id="addAccountType" onclick="showAddModal()">Thêm loại tài khoản</button>
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Tên loại tài khoản</th>
+                  <th>Chức năng chính</th>
+                  <th>Điều kiện mở sổ</th>
+                  <th>Số dư tối thiểu</th>
+                  <th>Hành động</th>
+                </tr>
+              </thead>
+              <tbody id="accountTypeTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Modal thêm loại tài khoản -->
+        <div id="addModal" class="modal">
+          <div class="modal-content">
+            <h2>Thêm loại tài khoản</h2>
+            <form id="addForm">
+              <div class="form-group">
+                <label for="id">ID:</label>
+                <input type="text" id="id" required>
+              </div>
+              <div class="form-group">
+                <label for="ten_loai_tai_khoan">Tên loại tài khoản:</label>
+                <input type="text" id="ten_loai_tai_khoan" required>
+              </div>
+              <div class="form-group">
+                <label for="chuc_nang_chinh">Chức năng chính:</label>
+                <textarea id="chuc_nang_chinh" required></textarea>
+              </div>
+              <div class="form-group">
+                <label for="dieu_kien_mo_so">Điều kiện mở sổ:</label>
+                <textarea id="dieu_kien_mo_so" required></textarea>
+              </div>
+              <div class="form-group">
+                <label for="so_du_toi_thieu">Số dư tối thiểu:</label>
+                <input type="number" id="so_du_toi_thieu" step="0.01" min="0" required>
+              </div>
+              <button type="submit" class="btn">Thêm</button>
+              <button type="button" class="btn btn-delete" onclick="hideAddModal()">Hủy</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Modal cập nhật loại tài khoản -->
+        <div id="editModal" class="modal">
+          <div class="modal-content">
+            <h2>Cập nhật loại tài khoản</h2>
+            <form id="editForm">
+              <input type="hidden" id="edit_id">
+              <div class="form-group">
+                <label for="edit_ten_loai_tai_khoan">Tên loại tài khoản:</label>
+                <input type="text" id="edit_ten_loai_tai_khoan" required>
+              </div>
+              <div class="form-group">
+                <label for="edit_chuc_nang_chinh">Chức năng chính:</label>
+                <textarea id="edit_chuc_nang_chinh" required></textarea>
+              </div>
+              <div class="form-group">
+                <label for="edit_dieu_kien_mo_so">Điều kiện mở sổ:</label>
+                <textarea id="edit_dieu_kien_mo_so" required></textarea>
+              </div>
+              <div class="form-group">
+                <label for="edit_so_du_toi_thieu">Số dư tối thiểu:</label>
+                <input type="number" id="edit_so_du_toi_thieu" step="0.01" min="0" required>
+              </div>
+              <button type="submit" class="btn">Cập nhật</button>
+              <button type="button" class="btn btn-delete" onclick="hideEditModal()">Hủy</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shared JavaScript -->
+  <script src="background.js"></script>
+  <script src="sidebar.js"></script>
+  <script>
+    const apiUrl = "http://127.0.0.1:8000/loai-tai-khoan/loai-tai-khoan/";
+
+    // Fetch account types
+    async function fetchAccountTypes() {
+      try {
+        const response = await fetch(`${apiUrl}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        let accountTypes = await response.json();
+        accountTypes.sort((a, b) => a.id.localeCompare(b.id));
+        const tableBody = document.getElementById("accountTypeTableBody");
+        tableBody.innerHTML = "";
+
+        accountTypes.forEach(accountType => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${accountType.id}</td>
+            <td>${accountType.Ten_loai_tai_khoan}</td>
+            <td>${accountType.Chuc_nang_chinh}</td>
+            <td>${accountType.Dieu_kien_mo_so}</td>
+            <td>${accountType.So_du_toi_thieu.toFixed(2)}</td>
+            <td>
+              <button class="btn" onclick="showEditModal('${accountType.id}')">Sửa</button>
+              <button class="btn btn-delete" onclick="deleteAccountType('${accountType.id}')">Xóa</button>
+            </td>
+          `;
+          tableBody.appendChild(row);
+        });
+      } catch (error) {
+        console.error("Lỗi khi lấy danh sách loại tài khoản:", error);
+        alert("Không thể lấy danh sách loại tài khoản. Vui lòng thử lại sau.");
+      }
+    }
+
+    // Initialize account type list on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      fetchAccountTypes();
+    });
+
+    // Search account type
+    async function searchAccountType() {
+      const id = document.getElementById("searchId").value.trim();
+      const name = document.getElementById("searchName").value.trim();
+      const tableBody = document.getElementById("accountTypeTableBody");
+      tableBody.innerHTML = "";
+
+      if (!id && !name) {
+        alert("Vui lòng nhập ID hoặc tên loại tài khoản!");
+        return;
+      }
+
+      if (id && name) {
+        alert("Vui lòng chỉ nhập một trong hai: ID hoặc tên!");
+        return;
+      }
+
+      try {
+        let queryParam;
+        if (id) {
+          queryParam = `loai_tai_khoan_id=${encodeURIComponent(id)}`;
+        } else {
+          queryParam = `name=${encodeURIComponent(name)}`;
+        }
+
+        const response = await fetch(`${apiUrl}search/?${queryParam}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const accountTypes = await response.json();
+
+        if (accountTypes.length === 0) {
+          alert("Không tìm thấy loại tài khoản!");
+          return;
+        }
+
+        accountTypes.forEach(accountType => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${accountType.id}</td>
+            <td>${accountType.Ten_loai_tai_khoan}</td>
+            <td>${accountType.Chuc_nang_chinh}</td>
+            <td>${accountType.Dieu_kien_mo_so}</td>
+            <td>${accountType.So_du_toi_thieu.toFixed(2)}</td>
+            <td>
+              <button class="btn" onclick="showEditModal('${accountType.id}')">Sửa</button>
+              <button class="btn btn-delete" onclick="deleteAccountType('${accountType.id}')">Xóa</button>
+            </td>
+          `;
+          tableBody.appendChild(row);
+        });
+      } catch (error) {
+        console.error("Lỗi khi tìm loại tài khoản:", error);
+        alert("Lỗi khi tìm loại tài khoản! Vui lòng kiểm tra lại.");
+      }
+    }
+
+    function showAddModal() {
+      document.getElementById("addModal").style.display = "block";
+    }
+
+    function hideAddModal() {
+      document.getElementById("addModal").style.display = "none";
+      document.getElementById("addForm").reset();
+    }
+
+    document.getElementById("addForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const newAccountType = {
+        id: document.getElementById("id").value.trim(),
+        Ten_loai_tai_khoan: document.getElementById("ten_loai_tai_khoan").value.trim(),
+        Chuc_nang_chinh: document.getElementById("chuc_nang_chinh").value.trim(),
+        Dieu_kien_mo_so: document.getElementById("dieu_kien_mo_so").value.trim(),
+        So_du_toi_thieu: parseFloat(document.getElementById("so_du_toi_thieu").value)
+      };
+
+      if (!newAccountType.id) {
+        alert("Vui lòng nhập ID loại tài khoản!");
+        return;
+      }
+
+      if (isNaN(newAccountType.So_du_toi_thieu) || newAccountType.So_du_toi_thieu < 0) {
+        alert("Số dư tối thiểu phải là một số không âm!");
+        return;
+      }
+
+      try {
+        const response = await fetch(`${apiUrl}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newAccountType)
+        });
+
+        if (response.ok) {
+          alert("Thêm loại tài khoản thành công!");
+          hideAddModal();
+          fetchAccountTypes();
+        } else {
+          const errorData = await response.json();
+          alert("Thêm loại tài khoản thất bại! " + (errorData.detail || "Vui lòng kiểm tra lại dữ liệu."));
+        }
+      } catch (error) {
+        console.error("Lỗi khi thêm loại tài khoản:", error);
+        alert("Không thể thêm loại tài khoản. Vui lòng thử lại sau.");
+      }
+    });
+
+    async function showEditModal(id) {
+      try {
+        const response = await fetch(`${apiUrl}search/?loai_tai_khoan_id=${encodeURIComponent(id)}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const accountTypes = await response.json();
+        if (accountTypes.length === 0) {
+          alert("Không tìm thấy loại tài khoản!");
+          return;
+        }
+        const accountType = accountTypes[0];
+        document.getElementById("edit_id").value = accountType.id;
+        document.getElementById("edit_ten_loai_tai_khoan").value = accountType.Ten_loai_tai_khoan;
+        document.getElementById("edit_chuc_nang_chinh").value = accountType.Chuc_nang_chinh;
+        document.getElementById("edit_dieu_kien_mo_so").value = accountType.Dieu_kien_mo_so;
+        document.getElementById("edit_so_du_toi_thieu").value = accountType.So_du_toi_thieu;
+        document.getElementById("editModal").style.display = "block";
+      } catch (error) {
+        console.error("Lỗi khi lấy thông tin loại tài khoản:", error);
+        alert("Lỗi khi lấy thông tin loại tài khoản!");
+      }
+    }
+
+    function hideEditModal() {
+      document.getElementById("editModal").style.display = "none";
+    }
+
+    document.getElementById("editForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const id = document.getElementById("edit_id").value.trim();
+      const updatedAccountType = {
+        id: id,
+        Ten_loai_tai_khoan: document.getElementById("edit_ten_loai_tai_khoan").value.trim(),
+        Chuc_nang_chinh: document.getElementById("edit_chuc_nang_chinh").value.trim(),
+        Dieu_kien_mo_so: document.getElementById("edit_dieu_kien_mo_so").value.trim(),
+        So_du_toi_thieu: parseFloat(document.getElementById("edit_so_du_toi_thieu").value)
+      };
+
+      if (isNaN(updatedAccountType.So_du_toi_thieu) || updatedAccountType.So_du_toi_thieu < 0) {
+        alert("Số dư tối thiểu phải là một số không âm!");
+        return;
+      }
+
+      try {
+        const response = await fetch(`${apiUrl}${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedAccountType)
+        });
+
+        if (response.ok) {
+          alert("Cập nhật loại tài khoản thành công!");
+          hideEditModal();
+          fetchAccountTypes();
+        } else {
+          const errorData = await response.json();
+          alert("Cập nhật thất bại! " + (errorData.detail || "Vui lòng kiểm tra lại dữ liệu."));
+        }
+      } catch (error) {
+        console.error("Lỗi khi cập nhật loại tài khoản:", error);
+        alert("Lỗi khi cập nhật loại tài khoản!");
+      }
+    });
+
+    async function deleteAccountType(id) {
+      if (confirm("Bạn có chắc muốn xóa loại tài khoản này?")) {
+        try {
+          const response = await fetch(`${apiUrl}${id}`, {
+            method: "DELETE",
+          });
+          if (response.ok) {
+            alert("Loại tài khoản đã được xóa thành công!");
+            fetchAccountTypes();
+          } else {
+            const errorData = await response.json();
+            alert("Không thể xóa loại tài khoản! " + (errorData.detail || "Vui lòng thử lại sau."));
+          }
+        } catch (error) {
+          console.error("Lỗi khi xóa loại tài khoản:", error);
+          alert("Không thể xóa loại tài khoản. Vui lòng thử lại sau.");
+        }
+      }
+    }
+  </script>
+</body>
+</html>

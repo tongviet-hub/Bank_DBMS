@@ -51,3 +51,12 @@ def update_khach_hang(khach_hang_id: str, khach_hang: schemas.KhachHangCreate, d
     Cập nhật thông tin khách hàng.
     """
     return crud.update_khach_hang(db=db, khach_hang_id=khach_hang_id, khach_hang=khach_hang)
+
+@router.get("/khach-hang/count")
+def count_khach_hang(db: Session = Depends(get_db)):
+    """
+    Trả về tổng số khách hàng.
+    """
+    total = crud.count_khach_hang(db=db)
+    return {"total": total}
+

@@ -14,13 +14,17 @@ def create_dang_nhap(db: Session, dang_nhap: DangNhap):
     db.refresh(db_dang_nhap)
     return db_dang_nhap
 
-def get_dang_nhap(db: Session, dang_nhap_id: str, username: str = None):
+def get_dang_nhap(db: Session, dang_nhap_id: str = None, username: str = None):
     if dang_nhap_id:
         db_dang_nhap = db.query(Dang_nhap).filter(Dang_nhap.id == dang_nhap_id).first()
     elif username:
         db_dang_nhap = db.query(Dang_nhap).filter(Dang_nhap.Ten_dang_nhap == username).first()
     else:
         raise HTTPException(status_code=400, detail="Cần cung cấp ID hoặc tên người dùng")
+    if not db_dang_nhap:
+        raise HTTPException(status_code=404, detail="Không tìm thấy đăng nhập")
+    return db_dang_nhap 
+
 
 def get_all_dang_nhap(db: Session):
     """
@@ -51,3 +55,4 @@ def update_dang_nhap(db: Session, dang_nhap_id: str, dang_nhap: DangNhapBase):
     db.commit()
     db.refresh(db_dang_nhap)
     return db_dang_nhap
+

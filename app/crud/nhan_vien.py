@@ -16,7 +16,7 @@ def get_nhan_vien(db: Session, nhan_vien_id: str = None, nhan_vien_name: str = N
     if nhan_vien_id:
         db_nhan_vien = db.query(Nhan_vien).filter(Nhan_vien.id == nhan_vien_id).first()
     elif nhan_vien_name:
-        db_nhan_vien = db.query(Nhan_vien).filter(Nhan_vien.Ho_va_ten == nhan_vien_name).first()
+        db_nhan_vien = db.query(Nhan_vien).filter(Nhan_vien.Ho_va_ten.ilike(f"%{nhan_vien_name}%")).all()
     else:
         raise HTTPException(status_code=400, detail="Cần cung cấp ID hoặc tên nhân viên")
     if db_nhan_vien is None:
@@ -54,4 +54,10 @@ def update_nhan_vien(db: Session, nhan_vien_id: str, nhan_vien: NhanVienBase):
     db.commit()
     db.refresh(db_nhan_vien)
     return db_nhan_vien
+
+def count_nhan_vien(db: Session):
+    """
+    Đếm tổng số nhân viên.
+    """
+    return db.query(Nhan_vien).count()
 

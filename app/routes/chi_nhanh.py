@@ -7,7 +7,7 @@ import schemas
 router = APIRouter()
 
 @router.post("/chi-nhanh/", response_model=schemas.ChiNhanh)
-def create_chi_nhanh(chi_nhanh: schemas.ChiNhanhCreate, db: Session = Depends(get_db)):
+def create_chi_nhanh(chi_nhanh: schemas.ChiNhanh, db: Session = Depends(get_db)):
     """Tạo mới một chi nhánh."""
     existing_chi_nhanh = crud.get_chi_nhanh(db=db, chi_nhanh_name=chi_nhanh.Ten_chi_nhanh)
     if existing_chi_nhanh:
